@@ -3,7 +3,7 @@
 //
 
 #ifndef CUB3D_GRAPHICS_H
-#define CUB3D_GRAPHICS_H
+# define CUB3D_GRAPHICS_H
 
 typedef struct	s_data {
 	void		*image;
@@ -11,6 +11,8 @@ typedef struct	s_data {
 	int			bits_per_pixel;
 	int			line_length;
 	int			endian;
-};				t_data;
+}				t_data;
 
-#endif //CUB3D_GRAPHICS_H
+void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
+
+# endif //CUB3D_GRAPHICS_H
