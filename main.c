@@ -20,7 +20,7 @@ int main()
 	window = mlx_new_window(mlx, 1920, 1080, "Shamil");
 	my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
 	my_mlx_pixel_put(&img, 10, 10, 0x00FF0000);
-	my_mlx_line_put(&start, &end);
+	my_mlx_line_put(&start, &end, &img);
 	mlx_put_image_to_window(mlx, window, img.image, 0, 0);
 	mlx_loop(mlx);
 }
