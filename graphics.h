@@ -5,7 +5,9 @@
 #ifndef CUB3D_GRAPHICS_H
 # define CUB3D_GRAPHICS_H
 
+#define SCALE 16
 #include <stdio.h>
+#include <math.h>
 
 typedef struct	s_data {
 	void		*image;
@@ -19,6 +21,20 @@ typedef struct	s_point {
 	int			x;
 	int			y;
 }				t_point;
+
+typedef struct	s_plr {
+	float		x;
+	float		y;
+	float		dir;
+	float		start;
+	float		end;
+}				t_plr;
+
+typedef struct	s_all {
+	t_data		*win;
+	t_plr		*plr;
+	char		**map;
+}				t_all;
 
 void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void			my_mlx_line_put(t_point *start, t_point *end, t_data *data);
