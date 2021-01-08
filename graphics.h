@@ -9,6 +9,7 @@
 #include "mlx/mlx.h"
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
 
 typedef struct	s_data {
 	void		*image;
@@ -43,5 +44,6 @@ void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void			my_mlx_line_put(t_point *start, t_point *end, t_data *data);
 void			hooks();
 void			event_hook();
+int				events(int keycode, t_data *data);
 
 # endif //CUB3D_GRAPHICS_H

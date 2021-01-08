@@ -8,7 +8,9 @@ int	events(int keycode, t_data *data)
 {
 	printf("keycode is: %i\n", keycode);
 	if (keycode == 53)
-		mlx_destroy_window(data->mlx, data->window);
+		exit(0);
+	else if (keycode == 1)
+		printf("keycode is 1\n");
 }
 
 void	event_hook(t_data *vars)

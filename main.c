@@ -1,5 +1,10 @@
 #include "graphics.h"
 
+void	render_next_frame(t_data *img)
+{
+	mlx_hook(img->window, 2, 1L<<0, events, &img);
+}
+
 int main()
 {
 	t_data	img;
@@ -11,6 +16,6 @@ int main()
 	my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
 	my_mlx_pixel_put(&img, 100, 100, 0x00FF0000);
 	mlx_put_image_to_window(img.mlx, img.window, img.image, 0, 0);
-	event_hook(&img);
+	mlx_loop_hook(img.mlx, render_next_frame, &img);
 	mlx_loop(img.mlx);
 }
