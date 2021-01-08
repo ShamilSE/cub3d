@@ -1,17 +1,26 @@
 NAME = cub3d
 
-MLX_DIR = minilibx_opengl_20191021
+LIBFT = libft.a
+
+MLX = libmlx.a
 
 MLXFLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit
 
-LIBFT_DIR = libft
+all: $(MLX) $(LIBFT) $(NAME)
 
-all: $(NAME)
+$(MLX): mlx/*.c
+	cd mlx && make && mv $(MLX) ../
+
+$(LIBFT): libft/*.c
+	cd libft && make && mv $(LIBFT) ../ && make clean
 
 $(NAME):
-	gcc *.c -L $(LIBFT_DIR) -lft libmlx.a $(MLXFLAGS) -o cub3d
+	gcc *.c $(LIBFT) libmlx.a $(MLXFLAGS) -o cub3d
 
 clean:
-	rm $(NAME)
+	rm -rf $(NAME)
 
-re: clean all
+fclean: clean
+	rm -rf $(MLX) $(LIBFT)
+
+re: fclean all
