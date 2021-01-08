@@ -42,5 +42,6 @@ typedef struct	s_all {
 void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void			my_mlx_line_put(t_point *start, t_point *end, t_data *data);
 void			hooks();
+void			event_hook();
 
 # endif //CUB3D_GRAPHICS_H

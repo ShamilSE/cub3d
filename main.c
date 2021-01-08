@@ -11,6 +11,6 @@ int main()
 	my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
 	my_mlx_pixel_put(&img, 100, 100, 0x00FF0000);
 	mlx_put_image_to_window(img.mlx, img.window, img.image, 0, 0);
-	hooks();
-//	mlx_loop(img.mlx);
+	event_hook(&img);
+	mlx_loop(img.mlx);
 }
