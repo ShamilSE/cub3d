@@ -1,5 +1,7 @@
 NAME = cub3d
 
+SRC = my_mlx_pixel_put.c my_mlx_line_put.c ft_cast_ray.c events.c main.c
+
 LIBFT = libft.a
 
 MLX = libmlx.a
@@ -14,8 +16,8 @@ $(MLX): mlx/*.c
 $(LIBFT): libft/*.c
 	cd libft && make && mv $(LIBFT) ../ && make clean
 
-$(NAME):
-	gcc *.c $(LIBFT) libmlx.a $(MLXFLAGS) -o cub3d
+$(NAME): $(SRC)
+	gcc $(SRC) $(LIBFT) libmlx.a $(MLXFLAGS) -o cub3d
 
 clean:
 	rm -rf $(NAME)
