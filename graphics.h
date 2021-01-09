@@ -45,5 +45,7 @@ void			my_mlx_line_put(t_point *start, t_point *end, t_data *data);
 void			hooks();
 void			event_hook();
 int				events(int keycode, t_data *data);
+void			draw_square(t_point *x, t_point *y, t_point *z, t_point *j, t_data *data);
+
 
 # endif //CUB3D_GRAPHICS_H
