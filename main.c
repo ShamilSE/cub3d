@@ -1,32 +1,28 @@
 #include "graphics.h"
 
-//void	move_player(int player)
-
-
-void	render_next_frame(t_data *img)
+t_player	*player_place(char **map)
 {
-	int			step;
 	t_player	player;
-	//определяю игрока
+
 	player.x = 10;
 	player.y = 10;
-	my_mlx_pixel_put(img, (int)player.x, (int)player.y, 0x00FF0000);
-	mlx_put_image_to_window(img->mlx, img->window, img->image, 0, 0);
-	//инициализация mlx
-	step = mlx_hook(img->window, 2, 1L<<0, events, img);
+}
+
+
+void	key_press(t_all *all)
+{
+	mlx_pixel_put(all->data->mlx, all->data->window, 10, 10, 0x00FF0000);
+	mlx_put_image_to_window(all->data->mlx, all->data->window, all->data->image, 0, 0);
 }
 
 int main()
 {
-	t_data		img;
+	t_data		data;
+	t_all		all;
 
-	img.mlx = mlx_init();
-	img.image = mlx_new_image(img.mlx, 500, 500);
-	img.address = mlx_get_data_addr(img.image, &img.bits_per_pixel, &img.line_length, &img.endian);
-	img.window = mlx_new_window(img.mlx, 500, 500, "Shamil");
-//	кладу image в window
-	mlx_put_image_to_window(img.mlx, img.window, img.image, 0, 0);
-//	зацикливаю
-	mlx_loop_hook(img.mlx, render_next_frame, &img);
-	mlx_loop(img.mlx);
+	data.mlx = mlx_init();
+	data.window = mlx_new_window(data.mlx, 500, 500, "Shamil");
+	all.data = &data;
+	mlx_hook(data.window, 2, (1L<<0), key_press, &all);
+	mlx_loop(data.mlx);
 }

@@ -35,7 +35,7 @@ typedef struct	s_player {
 }				t_player;
 
 typedef struct	s_all {
-	t_data		*win;
+	t_data		*data;
 	t_player	*player;
 	char		**map;
 }				t_all;
