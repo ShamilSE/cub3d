@@ -1,1 +1,0 @@
-![](ray_casting.gif)
