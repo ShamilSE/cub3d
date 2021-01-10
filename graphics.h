@@ -7,9 +7,11 @@
 
 #define SCALE 16
 #include "mlx/mlx.h"
+#include "libft/libft.h"
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <fcntl.h>
 
 typedef struct	s_data {
 	void		*image;
