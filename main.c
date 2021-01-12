@@ -1,9 +1,16 @@
-#include "graphics.h"
+#include "headers/graphics.h"
 
-char	*parse_map(char **str, t_player *player)
-{
-	printf("parse_map\n");
-}
+//char	**parse_map(char *str, t_player *player)
+//{
+//	char	map[10][10];
+//	int i, j = 0;
+//	int fd = open(str, O_RDONLY);
+//	while (get_next_line(fd, map[i][j]))
+//	{
+//
+//	}
+//	printf("parse_map\n");
+//}
 
 void	move_forward(t_player *player)
 {
@@ -34,8 +41,7 @@ void	key_press(int keycode, t_all *all)
 	else if (keycode == 13)
 	{
 		move_forward(all->player);
-	}
-	else if (keycode == 1)
+	} else if (keycode == 1)
 	{
 		move_backward(all->player);
 	} else if (keycode == 0) {
@@ -56,7 +62,11 @@ int main(int argc, char **argv)
 //	if (argc == 2)
 //		all.map = parse_map(argv[1], &player);
 //	else
+//	{
+//		printf("you need to put map as second argument\n");
 //		exit(1);
+//	}
+
 	data.mlx = mlx_init();
 	data.window = mlx_new_window(data.mlx, 500, 500, "Shamil");
 	data.image = mlx_new_image(data.mlx, 500, 500);

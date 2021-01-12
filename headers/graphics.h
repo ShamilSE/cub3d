@@ -5,9 +5,12 @@
 #ifndef CUB3D_GRAPHICS_H
 # define CUB3D_GRAPHICS_H
 
+#define BUFFER_SIZE 1
+
 #define SCALE 16
-#include "mlx/mlx.h"
-#include "libft/libft.h"
+#include "mlx.h"
+#include "libft.h"
+#include "ft_printf.h"
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
@@ -48,6 +51,8 @@ void			hooks();
 void			event_hook();
 int				events(int keycode, t_data *data);
 void			draw_square(t_point *x, t_point *y, t_point *z, t_point *j, t_data *data);
-
+char			*ft_strnew(unsigned int size);
+char			*ft_strcpy(char *dst, const char *src);
+int				get_next_line(int fd, char **line);
 
 # endif //CUB3D_GRAPHICS_H

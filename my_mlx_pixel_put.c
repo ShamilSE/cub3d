@@ -1,7 +1,7 @@
 //
 // Created by Shamil on 06.01.2021.
 //
-#include "graphics.h"
+#include "headers/graphics.h"
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {

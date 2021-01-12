@@ -2,7 +2,7 @@
 // Created by Shamil on 07.01.2021.
 //
 
-#include "graphics.h"
+#include "headers/graphics.h"
 
 void	ft_cast_ray(t_all *all)
 {
