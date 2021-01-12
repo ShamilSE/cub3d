@@ -11,6 +11,7 @@
 #include "mlx.h"
 #include "libft.h"
 #include "ft_printf.h"
+#include "get_next_line.h"
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>

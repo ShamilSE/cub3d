@@ -1,6 +1,6 @@
 NAME = cub3d
 
-SRC = my_mlx_pixel_put.c my_mlx_line_put.c ft_cast_ray.c events.c main.c draw_square.c
+SRC = my_mlx_pixel_put.c my_mlx_line_put.c ft_cast_ray.c main.c get_next_line.c get_next_line_utils.c
 
 MLXFLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit
 

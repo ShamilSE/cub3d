@@ -3,7 +3,7 @@
 //char	**parse_map(char *str, t_player *player)
 //{
 //	char	map[10][10];
-//	int i, j = 0;
+//	int i = 0, j = 0;
 //	int fd = open(str, O_RDONLY);
 //	while (get_next_line(fd, map[i][j]))
 //	{
@@ -32,7 +32,7 @@ void	move_right(t_player *player)
 	player->x++;
 }
 
-void	key_press(int keycode, t_all *all)
+int	key_press(int keycode, t_all *all)
 {
 	my_mlx_pixel_put(all->data, all->player->x, all->player->y, 0);
 	printf("keycode: %d\n", keycode);
@@ -51,6 +51,7 @@ void	key_press(int keycode, t_all *all)
 	}
 	my_mlx_pixel_put(all->data, all->player->x, all->player->y, 0xFFFFFF);
 	mlx_put_image_to_window(all->data->mlx, all->data->window, all->data->image, 0, 0);
+	return (0);
 }
 
 int main(int argc, char **argv)

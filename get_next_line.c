@@ -86,7 +86,7 @@ int		get_next_line(int fd, char **line)
 			if (*p_n && !(reminder[fd] = ft_strdup(p_n)))
 				return (-1);
 		}
-		if (!(*line = ft_strjoin(*line, buf)))
+		if (!(*line = ft_gnl_strjoin(*line, buf)))
 			return (-1);
 	}
 	free(buf);
