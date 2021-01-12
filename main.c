@@ -1,55 +1,55 @@
 #include "headers/graphics.h"
 
-//char	**parse_map(char *str, t_player *player)
-//{
-//	char	map[10][10];
-//	int i = 0, j = 0;
-//	int fd = open(str, O_RDONLY);
-//	while (get_next_line(fd, map[i][j]))
-//	{
-//
-//	}
-//	printf("parse_map\n");
-//}
-
-void	move_forward(t_player *player)
+size_t	count_map_strings(char *str)
 {
-	player->y--;
+	int		fd;
+	size_t	map_length;
+	char	*line;
+
+	map_length = 1;
+	fd = open(str, O_RDONLY);
+	while (get_next_line(fd, &line) > 0)
+		map_length++;
+	return (map_length);
 }
 
-void	move_backward(t_player *player)
+char	**parse_map(char *str, t_player *player)
 {
-	player->y++;
-}
+	char	**map;
+	int		i;
+	int		fd;
+	char	*line;
 
-void	move_left(t_player *player)
-{
-	player->x--;
-}
-
-void	move_right(t_player *player)
-{
-	player->x++;
+	fd =  open(str, O_RDONLY);
+	ft_printf(" fd: %i\n", fd);
+	i = 0;
+	map = (char **)malloc(count_map_strings(str) + 1);
+	while (get_next_line(fd, &line) > 0)
+	{
+		map[i] = ft_strdup(line);
+		free(line);
+		i++;
+	}
+	map[i] = ft_strdup(line);
+	free(line);
+	return (map);
 }
 
 int	key_press(int keycode, t_all *all)
 {
-	my_mlx_pixel_put(all->data, all->player->x, all->player->y, 0);
+	my_mlx_pixel_put(all->data, (int)all->player->x, (int)all->player->y, 0);
 	printf("keycode: %d\n", keycode);
 	if (keycode == 53)
 		exit(0);
 	else if (keycode == 13)
-	{
 		move_forward(all->player);
-	} else if (keycode == 1)
-	{
+	else if (keycode == 1)
 		move_backward(all->player);
-	} else if (keycode == 0) {
+	else if (keycode == 0)
 		move_left(all->player);
-	} else if (keycode == 2) {
+	else if (keycode == 2)
 		move_right(all->player);
-	}
-	my_mlx_pixel_put(all->data, all->player->x, all->player->y, 0xFFFFFF);
+	my_mlx_pixel_put(all->data, (int)all->player->x, (int)all->player->y, 0xFFFFFF);
 	mlx_put_image_to_window(all->data->mlx, all->data->window, all->data->image, 0, 0);
 	return (0);
 }
@@ -60,14 +60,13 @@ int main(int argc, char **argv)
 	t_all		all;
 	t_player	player;
 
-//	if (argc == 2)
-//		all.map = parse_map(argv[1], &player);
-//	else
-//	{
-//		printf("you need to put map as second argument\n");
-//		exit(1);
-//	}
-
+	if (argc == 2)
+		all.map = parse_map(argv[1], &player);
+	else
+	{
+		printf("you need to put map as second argument\n");
+		exit(1);
+	}
 	data.mlx = mlx_init();
 	data.window = mlx_new_window(data.mlx, 500, 500, "Shamil");
 	data.image = mlx_new_image(data.mlx, 500, 500);

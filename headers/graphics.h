@@ -48,12 +48,17 @@ typedef struct	s_all {
 
 void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void			my_mlx_line_put(t_point *start, t_point *end, t_data *data);
-void			hooks();
-void			event_hook();
-int				events(int keycode, t_data *data);
-void			draw_square(t_point *x, t_point *y, t_point *z, t_point *j, t_data *data);
-char			*ft_strnew(unsigned int size);
-char			*ft_strcpy(char *dst, const char *src);
-int				get_next_line(int fd, char **line);
+
+/*
+ * moving
+ */
+int				move_forward(t_player *player);
+void			move_backward(t_player *player);
+void			move_left(t_player *player);
+void			move_right(t_player *player);
+/*
+ * map
+ */
+void			draw_map(char **map);
 
 # endif //CUB3D_GRAPHICS_H

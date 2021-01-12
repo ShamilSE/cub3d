@@ -12,7 +12,6 @@
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
-# include <stdio.h>
 # include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -110,4 +109,5 @@ void						print_formated_u_p4(t_shamil *tab,
 								unsigned int digit);
 void						print_formated_hex_helper_p4(t_shamil *tab,
 								char *str);
+int							ft_printf(char *string, ...);
 #endif
