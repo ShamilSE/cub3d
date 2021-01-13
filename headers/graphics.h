@@ -59,6 +59,6 @@ void			move_right(t_player *player);
 /*
  * map
  */
-void			draw_map(char **map, t_all *all);
+void			draw_map(t_all *all);
 
 # endif //CUB3D_GRAPHICS_H

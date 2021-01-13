@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "headers/graphics.h"
+#include "../headers/graphics.h"
 
 void	free_str(char **s)
 {

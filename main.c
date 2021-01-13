@@ -21,9 +21,8 @@ char	**parse_map(char *str, t_player *player)
 	char	*line;
 
 	fd =  open(str, O_RDONLY);
-	ft_printf(" fd: %i\n", fd);
 	i = 0;
-	map = (char **)malloc(count_map_strings(str) + 1);
+	map = malloc(sizeof(char *) * (count_map_strings(str) + 1));
 	while (get_next_line(fd, &line) > 0)
 	{
 		map[i] = ft_strdup(line);
@@ -32,13 +31,14 @@ char	**parse_map(char *str, t_player *player)
 	}
 	map[i] = ft_strdup(line);
 	free(line);
+	map[i + 1] = 0x0;
 	return (map);
 }
 
 int	key_press(int keycode, t_all *all)
 {
 	my_mlx_pixel_put(all->data, (int)all->player->x, (int)all->player->y, 0);
-	printf("keycode: %d\n", keycode);
+	ft_printf("keycode: %d\n", keycode);
 	if (keycode == 53)
 		exit(0);
 	else if (keycode == 13)
@@ -57,14 +57,15 @@ int	key_press(int keycode, t_all *all)
 int main(int argc, char **argv)
 {
 	t_data		data;
-	t_all		all;
+	t_all		*all;
 	t_player	player;
 
+	all = malloc(sizeof(t_all));
 	if (argc == 2)
-		all.map = parse_map(argv[1], &player);
+		all->map = parse_map(argv[1], &player);
 	else
 	{
-		printf("you need to put map as second argument\n");
+		ft_printf("you need to put map as second argument\n");
 		exit(1);
 	}
 	data.mlx = mlx_init();
@@ -74,8 +75,9 @@ int main(int argc, char **argv)
 	mlx_put_image_to_window(data.mlx, data.window, data.image, 0, 0);
 	player.x = 10;
 	player.y = 10;
-	all.data = &data;
-	all.player = &player;
-	mlx_hook(data.window, 2, (1L<<0), &key_press, &all);
+	all->data = &data;
+	all->player = &player;
+	draw_map(all);
+	mlx_hook(data.window, 2, (1L<<0), &key_press, all);
 	mlx_loop(data.mlx);
 }
