@@ -1,5 +1,14 @@
 #include "headers/graphics.h"
 
+//void	draw_block(int size) {
+//	while (size)
+//	{
+//		my_mlx_pixel_put();
+//		size--;
+//	}
+//}
+
+
 void	draw_map(t_all *all)
 {
 	int i;
