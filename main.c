@@ -1,5 +1,9 @@
 #include "headers/graphics.h"
 
+t_data		*data;
+t_all		*all;
+t_player	*player;
+
 size_t	count_map_strings(char *str)
 {
 	int		fd;
@@ -13,7 +17,7 @@ size_t	count_map_strings(char *str)
 	return (map_length);
 }
 
-char	**parse_map(char *str, t_player *player)
+char	**parse_map(char *str)
 {
 	char	**map;
 	int		i;
@@ -35,7 +39,7 @@ char	**parse_map(char *str, t_player *player)
 	return (map);
 }
 
-int	key_press(int keycode, t_all *all)
+int	key_press(int keycode)
 {
 	my_mlx_pixel_put(all->data, (int)all->player->x, (int)all->player->y, 0);
 	ft_printf("keycode: %d\n", keycode);
@@ -56,15 +60,11 @@ int	key_press(int keycode, t_all *all)
 
 int main(int argc, char **argv)
 {
-	t_data		*data;
-	t_all		*all;
-	t_player	*player;
-
 	data = malloc(sizeof(t_data));
 	all = malloc(sizeof(t_all));
 	player = malloc(sizeof(t_player));
 	if (argc == 2)
-		all->map = parse_map(argv[1], player);
+		all->map = parse_map(argv[1]);
 	else
 	{
 		ft_printf("you need to put map as second argument\n");
