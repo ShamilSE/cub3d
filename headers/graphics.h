@@ -63,6 +63,7 @@ void			move_right();
 void			draw_map();
 void			draw_block(int size, t_point *point, int color);
 char			**parse_map(char *str);
+void			ft_cast_ray();
 
 /*
  * global variables

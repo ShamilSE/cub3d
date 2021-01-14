@@ -11,7 +11,7 @@ void	player_ini()
 	player->direction = PI;
 	player->pdx = (float)cos((double)player->direction) * 5;
 	player->pdy = (float)sin((double)player->direction) * 5;
-	my_mlx_pixel_put(all->data, (int)all->player->location->x, (int)all->player->location->y, 0xFFFFFF);
+	my_mlx_pixel_put(all->data, (int)all->player->location->x, (int)all->player->location->y, 0x000000);
 	mlx_put_image_to_window(all->data->mlx, all->data->window, all->data->image, 0, 0);
 }
 
@@ -44,8 +44,8 @@ int	key_press(int keycode)
 	data->image = mlx_new_image(data->mlx, 1200, 800);
 	data->address = mlx_get_data_addr(data->image, &data->bits_per_pixel, &data->line_length, &data->endian);
 	draw_map();
-
-	my_mlx_pixel_put(all->data, (int)all->player->location->x, (int)all->player->location->y, 0xFFFFFF);
+	ft_cast_ray();
+	my_mlx_pixel_put(all->data, (int)all->player->location->x, (int)all->player->location->y, 0x000000);
 	mlx_put_image_to_window(all->data->mlx, all->data->window, all->data->image, 0, 0);
 	return (0);
 }
