@@ -28,14 +28,15 @@ typedef struct	s_data {
 }				t_data;
 
 typedef struct	s_point {
-	int			x;
-	int			y;
+	float		x;
+	float		y;
 }				t_point;
 
 typedef struct	s_player {
-	float		x;
-	float		y;
 	float		direction;
+	float		pdx;
+	float		pdy;
+	t_point		*location;
 	float		start;
 	float		end;
 }				t_player;
@@ -52,14 +53,24 @@ void			my_mlx_line_put(t_point *start, t_point *end, t_data *data);
 /*
  * moving
  */
-int				move_forward(t_player *player);
-void			move_backward(t_player *player);
-void			move_left(t_player *player);
-void			move_right(t_player *player);
+int				move_forward();
+void			move_backward();
+void			look_left();
+void			move_right();
 /*
- * map
+ * map and player drawing
  */
-void			draw_map(t_all *all);
+void			draw_map();
+void			draw_block(int size, t_point *point, int color);
 char			**parse_map(char *str);
+
+/*
+ * global variables
+ */
+t_data			*data;
+t_all			*all;
+t_player		*player;
+t_point			*player_location;
+#define PI 3.1415926f
 
 # endif //CUB3D_GRAPHICS_H

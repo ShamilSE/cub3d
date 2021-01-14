@@ -4,23 +4,33 @@
 
 #include "headers/graphics.h"
 
-int	move_forward(t_player *player)
+int	move_forward()
 {
-	player->y--;
+	player->location->x += player->pdx;
+	player->location->y += player->pdy;
 	return 1;
 }
 
-void	move_backward(t_player *player)
+void	move_backward()
 {
-	player->y++;
+	player->location->x -= player->pdx;
+	player->location->y -= player->pdy;
 }
 
-void	move_left(t_player *player)
+void	look_left()
 {
-	player->x--;
+	player->direction -= 0.1f;
+	if (player->direction < 0)
+		player->direction += 2 * PI;
+	player->pdx = (float)cos((double)player->direction) * 5;
+	player->pdy = (float)sin((double)player->direction) * 5;
 }
 
-void	move_right(t_player *player)
+void	move_right()
 {
-	player->x++;
+	player->direction += 0.1f;
+	if (player->direction > 2 * PI)
+		player->direction -= 2 * PI;
+	player->pdx = (float)cos((double)player->direction) * 5;
+	player->pdy = (float)sin((double)player->direction) * 5;
 }
