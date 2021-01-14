@@ -20,8 +20,6 @@ void	move_backward()
 void	look_left()
 {
 	player->direction -= 0.1f;
-	if (player->direction < 0)
-		player->direction += 2 * PI;
 	player->pdx = (float)cos((double)player->direction) * 5;
 	player->pdy = (float)sin((double)player->direction) * 5;
 }
@@ -29,8 +27,6 @@ void	look_left()
 void	move_right()
 {
 	player->direction += 0.1f;
-	if (player->direction > 2 * PI)
-		player->direction -= 2 * PI;
 	player->pdx = (float)cos((double)player->direction) * 5;
 	player->pdy = (float)sin((double)player->direction) * 5;
 }
