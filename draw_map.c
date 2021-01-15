@@ -1,10 +1,10 @@
 #include "headers/graphics.h"
 
 void	draw_block(int size, t_point *point, int color) {
-	int size_reminder;
-	int size_reminder2;
-	int x_reminder;
-	int y_reminder;
+	float	size_reminder;
+	float	size_reminder2;
+	float	x_reminder;
+	float	y_reminder;
 
 	size_reminder2 = size;
 	y_reminder = point->y;

@@ -6,8 +6,8 @@
 # define CUB3D_GRAPHICS_H
 
 #define BUFFER_SIZE 1
+#define SCALE 80
 
-#define SCALE 16
 #include "mlx.h"
 #include "libft.h"
 #include "ft_printf.h"

@@ -6,13 +6,12 @@ t_player		*player;
 
 void	player_ini()
 {
-	player->location->x = 10;
-	player->location->y = 10;
+	player->location->x = 200;
+	player->location->y = 200;
 	player->direction = PI;
 	player->pdx = (float)cos((double)player->direction) * 5;
 	player->pdy = (float)sin((double)player->direction) * 5;
-	printf("pdx: %f\n", player->pdx);
-	printf("pdy: %f\n", player->pdy);
+	throw_ray();
 	my_mlx_pixel_put(all->data, (int)all->player->location->x, (int)all->player->location->y, 0x000000);
 	mlx_put_image_to_window(all->data->mlx, all->data->window, all->data->image, 0, 0);
 }
@@ -20,33 +19,37 @@ void	player_ini()
 int	key_press(int keycode)
 {
 	my_mlx_pixel_put(all->data, (int)all->player->location->x, (int)all->player->location->y, 0);
-	ft_printf("keycode: %d\n", keycode);
+//	ft_printf("keycode: %d\n", keycode);
 	if (keycode == 53)
 		exit(0);
 // w
-	else if (keycode == 13) {
+	else if (keycode == 13)
+	{
 		mlx_destroy_image(all->data->mlx, all->data->image);
 		move_forward();
 	}
 //	s
-	else if (keycode == 1) {
+	else if (keycode == 1)
+	{
 		mlx_destroy_image(all->data->mlx, all->data->image);
 		move_backward();
 	}
 //	a
-	else if (keycode == 0) {
+	else if (keycode == 0)
+	{
 		mlx_destroy_image(all->data->mlx, all->data->image);
 		look_left();
 	}
 //	d
-	else if (keycode == 2) {
+	else if (keycode == 2)
+	{
 		mlx_destroy_image(all->data->mlx, all->data->image);
 		move_right();
 	}
 	data->image = mlx_new_image(data->mlx, 1200, 800);
 	data->address = mlx_get_data_addr(data->image, &data->bits_per_pixel, &data->line_length, &data->endian);
 	draw_map();
-//	throw_ray();
+	throw_ray();
 	my_mlx_pixel_put(all->data, (int)all->player->location->x, (int)all->player->location->y, 0x000000);
 	mlx_put_image_to_window(all->data->mlx, all->data->window, all->data->image, 0, 0);
 	return (0);

@@ -6,17 +6,18 @@
 
 void	throw_ray()
 {
-	int	i;
-	t_point *point;
+	int		i;
+	float	x;
+	float	y;
 
-	point = malloc(sizeof(t_point));
+	x = player->location->x;
+	y = player->location->y;
 	i = 0;
 	while (i < 10)
 	{
-		point->x += player->pdx;
-		point->y += player->pdy;
-//		my_mlx_pixel_put(all->data, (int)point->x, (int)point->y, 0xFF0000);
+		x += player->pdx;
+		y += player->pdy;
+		my_mlx_pixel_put(all->data, (int)x, (int)y, 0xFF0000);
 		i++;
 	}
-	free(point);
 }
