@@ -9,15 +9,25 @@ void	throw_ray()
 	int		i;
 	float	x;
 	float	y;
+	float	start;
+	float	end;
 
+	start = player->direction - PI / 4;
+	end = player->direction + PI / 4;
 	x = player->location->x;
 	y = player->location->y;
 	i = 0;
-	while (i < 10)
+	while (start <= end)
 	{
-		x += player->pdx;
-		y += player->pdy;
-		my_mlx_pixel_put(all->data, (int)x, (int)y, 0xFF0000);
-		i++;
+		while (all->map[(int) (y / SCALE)][(int) (x / SCALE)] != '1')
+		{
+			x += cosf(start);
+			y += sinf(start);
+			my_mlx_pixel_put(all->data, (int)x, (int)y, 0xFF0000);
+			i++;
+		}
+		x = player->location->x;
+		y = player->location->y;
+		start += PI/2 /500;
 	}
 }
