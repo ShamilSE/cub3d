@@ -4,6 +4,12 @@ t_data			*data;
 t_all			*all;
 t_player		*player;
 
+void	get_image()
+{
+	data->image = mlx_new_image(data->mlx, 1200, 800);
+	data->address = mlx_get_data_addr(data->image, &data->bits_per_pixel, &data->line_length, &data->endian);
+}
+
 void	player_ini()
 {
 	player->location->x = 200;
@@ -12,45 +18,20 @@ void	player_ini()
 	player->pdx = (float)cos((double)player->direction) * 5;
 	player->pdy = (float)sin((double)player->direction) * 5;
 	throw_ray();
-	my_mlx_pixel_put(all->data, (int)all->player->location->x, (int)all->player->location->y, 0x000000);
 	mlx_put_image_to_window(all->data->mlx, all->data->window, all->data->image, 0, 0);
 }
 
 int	key_press(int keycode)
 {
-	my_mlx_pixel_put(all->data, (int)all->player->location->x, (int)all->player->location->y, 0);
+//	my_mlx_pixel_put(all->data, (int)all->player->location->x, (int)all->player->location->y, 0);
 //	ft_printf("keycode: %d\n", keycode);
 	if (keycode == 53)
 		exit(0);
-// w
-	else if (keycode == 13)
-	{
-		mlx_destroy_image(all->data->mlx, all->data->image);
-		move_forward();
-	}
-//	s
-	else if (keycode == 1)
-	{
-		mlx_destroy_image(all->data->mlx, all->data->image);
-		move_backward();
-	}
-//	a
-	else if (keycode == 0)
-	{
-		mlx_destroy_image(all->data->mlx, all->data->image);
-		look_left();
-	}
-//	d
-	else if (keycode == 2)
-	{
-		mlx_destroy_image(all->data->mlx, all->data->image);
-		move_right();
-	}
-	data->image = mlx_new_image(data->mlx, 1200, 800);
-	data->address = mlx_get_data_addr(data->image, &data->bits_per_pixel, &data->line_length, &data->endian);
+	else if (keycode == 13 || keycode == 1 || keycode == 0 || keycode == 2)
+		move_player(keycode);
+	get_image();
 	draw_map();
 	throw_ray();
-	my_mlx_pixel_put(all->data, (int)all->player->location->x, (int)all->player->location->y, 0x000000);
 	mlx_put_image_to_window(all->data->mlx, all->data->window, all->data->image, 0, 0);
 	return (0);
 }
@@ -70,8 +51,7 @@ int main(int argc, char **argv)
 	}
 	data->mlx = mlx_init();
 	data->window = mlx_new_window(data->mlx, 1200, 800, "Shamil");
-	data->image = mlx_new_image(data->mlx, 1200, 800);
-	data->address = mlx_get_data_addr(data->image, &data->bits_per_pixel, &data->line_length, &data->endian);
+	get_image();
 	mlx_put_image_to_window(data->mlx, data->window, data->image, 0, 0);
 	all->data = data;
 	all->player = player;

@@ -53,10 +53,7 @@ void			my_mlx_line_put(t_point *start, t_point *end, t_data *data);
 /*
  * moving
  */
-int				move_forward();
-void			move_backward();
-void			look_left();
-void			move_right();
+void	move_player(int keycode);
 /*
  * map and player drawing
  */
@@ -64,6 +61,11 @@ void			draw_map();
 void			draw_block(int size, t_point *point, int color);
 char			**parse_map(char *str);
 void			throw_ray();
+
+/*
+ * rerender image
+ */
+void	get_image();
 
 /*
  * global variables

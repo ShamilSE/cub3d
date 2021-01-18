@@ -6,7 +6,6 @@
 
 void	throw_ray()
 {
-	int		i;
 	float	x;
 	float	y;
 	float	start;
@@ -16,7 +15,6 @@ void	throw_ray()
 	end = player->direction + PI / 4;
 	x = player->location->x;
 	y = player->location->y;
-	i = 0;
 	while (start <= end)
 	{
 		while (all->map[(int) (y / SCALE)][(int) (x / SCALE)] != '1')
@@ -24,7 +22,6 @@ void	throw_ray()
 			x += cosf(start);
 			y += sinf(start);
 			my_mlx_pixel_put(all->data, (int)x, (int)y, 0xFF0000);
-			i++;
 		}
 		x = player->location->x;
 		y = player->location->y;
