@@ -14,7 +14,7 @@ void	player_ini()
 {
 	player->location->x = 200;
 	player->location->y = 200;
-	player->direction = PI;
+	player->direction = PI / 3;
 	player->pdx = (float)cos((double)player->direction) * 5;
 	player->pdy = (float)sin((double)player->direction) * 5;
 	throw_ray();
@@ -38,6 +38,8 @@ int	key_press(int keycode)
 
 int main(int argc, char **argv)
 {
+	rays_count = 500;
+	h = 1200;
 	data = malloc(sizeof(t_data));
 	all = malloc(sizeof(t_all));
 	player = malloc(sizeof(t_player));

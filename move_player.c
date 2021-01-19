@@ -35,7 +35,10 @@ void	move_player(int keycode)
 {
 // w
 	if (keycode == 13)
+	{
+
 		move_forward();
+	}
 //	s
 	else if (keycode == 1)
 		move_backward();

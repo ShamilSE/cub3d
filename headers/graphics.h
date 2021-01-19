@@ -6,7 +6,7 @@
 # define CUB3D_GRAPHICS_H
 
 #define BUFFER_SIZE 1
-#define SCALE 80
+#define SCALE 100
 
 #include "mlx.h"
 #include "libft.h"
@@ -74,6 +74,8 @@ t_data			*data;
 t_all			*all;
 t_player		*player;
 t_point			*player_location;
+int				rays_count;
+int				h;
 #define PI 3.1415926f
 
 # endif //CUB3D_GRAPHICS_H
