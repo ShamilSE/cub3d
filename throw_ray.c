@@ -12,6 +12,11 @@ void	draw_wall(float ray_length, int x_view, float start)
 	int		ca;
 
 	ca = player->direction - start;
+	if (ca < 0)
+		ca += 2 * PI;
+	if (ca > 2 * PI)
+		ca -= 2 * PI;
+	ray_length = ray_length * cos(ca);
 	wall_height = (int)((float)h * SCALE / ray_length);
 	if (wall_height > h)
 		wall_height = h;
