@@ -39,7 +39,7 @@ int	key_press(int keycode)
 int main(int argc, char **argv)
 {
 	rays_count = 500;
-	h = 1200;
+	h = 800;
 	data = malloc(sizeof(t_data));
 	all = malloc(sizeof(t_all));
 	player = malloc(sizeof(t_player));

@@ -4,15 +4,20 @@
 
 #include "headers/graphics.h"
 
-void	draw_wall(float ray_length, int x_view)
+void	draw_wall(float ray_length, int x_view, float start)
 {
 	int		wall_height;
 	int		wall_start;
 	int		wall_end;
+	int		ca;
 
+	ca = player->direction - start;
 	wall_height = (int)((float)h * SCALE / ray_length);
-	wall_start = -wall_height / 2 + h / 2;
-	wall_end = wall_height / 2 + h / 2;
+	if (wall_height > h)
+		wall_height = h;
+
+	wall_start = -wall_height / 3 + h / 2;
+	wall_end = wall_height / 3 + h / 2;
 	if(wall_start < 0)
 		wall_start = 0;
 	if(wall_end >= h)
@@ -30,7 +35,7 @@ void	throw_ray()
 	float	ray_length;
 	int		x_view;
 
-	x_view = 100;
+	x_view = 0;
 	ray_length = 0;
 	start = player->direction - PI / 4;
 	end = player->direction + PI / 4;
@@ -49,7 +54,7 @@ void	throw_ray()
 		x = player->location->x;
 		y = player->location->y;
 		start += PI / 2 / (float)rays_count;
-		draw_wall(ray_length, x_view);
+		draw_wall(ray_length, x_view, start);
 		x_view++;
 	}
 }

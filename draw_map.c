@@ -10,17 +10,15 @@ void	draw_block(int size, t_point *point, int color) {
 	y_reminder = point->y;
 	size_reminder = size;
 	x_reminder = point->x;
-	while (size > 0)
+	while (size-- > 0)
 	{
-		while (size_reminder > 0)
+		while (size_reminder-- > 0)
 		{
 //			my_mlx_pixel_put(all->data, point->x, point->y, color);
 			point->x++;
-			size_reminder--;
 		}
 		size_reminder = size_reminder2;
 		point->x = x_reminder;
-		size--;
 		point->y++;
 	}
 	point->x += size_reminder2;
