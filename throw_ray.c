@@ -9,16 +9,16 @@ void	draw_wall(float ray_length, int x_view, float start)
 	int		wall_height;
 	int		wall_start;
 	int		wall_end;
-	int		ca;
+	float	ca;
 
 	ca = player->direction - start;
 	if (ca < 0)
 		ca += 2 * PI;
 	if (ca > 2 * PI)
 		ca -= 2 * PI;
-	ray_length = ray_length * cos(ca);
+	ray_length = ray_length * cosf(ca);
 	wall_height = (int)((float)h * SCALE / ray_length);
-	if (wall_height > h)
+	if ((float)wall_height > h)
 		wall_height = h;
 
 	wall_start = -wall_height / 3 + h / 2;
@@ -58,7 +58,7 @@ void	throw_ray()
 		}
 		x = player->location->x;
 		y = player->location->y;
-		start += PI / 2 / (float)rays_count;
+		start += PI / 2 / h;
 		draw_wall(ray_length, x_view, start);
 		x_view++;
 	}
