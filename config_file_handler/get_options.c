@@ -8,7 +8,7 @@ int		name_checker(char *name, char *chars)
 {
 	while (*name)
 	{
-		if (name == chars)
+		if (*name == *chars)
 		{
 			while (*chars++ == *name++)
 				if (*name == '\0' || *chars == '\0')
@@ -25,16 +25,28 @@ void	get_options(char *config)
 {
 	int		fd;
 	char	*line;
+	int		i;
 
-	if (name_checker(config, ".cub"))
+	if (!(name_checker(config, ".cub")))
 	{
-		printf("correct\n");
+		ft_printf("file extension isn't right\n");
+		exit(1);
 	}
 	fd = open(config, O_RDONLY);
-//	while (get_next_line(fd, &line))
-//	{
-//
-//	}
+	get_next_line(fd, &line);
+	ft_printf("%s\n", line);
+	while ((i = get_next_line(fd, &line)))
+	{
+		ft_printf("%s\n", line);
+		free(line);
+	}
+	if (ft_strchr(line, '\n'))
+	{
+		ft_printf("you need to delete '\n' character from last string\n");
+		exit(1);
+	}
+	ft_printf("%s\n", line);
+	free(line);
 }
 
 int main(){
