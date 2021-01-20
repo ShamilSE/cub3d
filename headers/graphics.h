@@ -86,6 +86,7 @@ t_data			*data;
 t_all			*all;
 t_player		*player;
 t_point			*player_location;
+t_config		*config_info;
 int				rays_count;
 float 				h;
 #define PI 3.1415926f
