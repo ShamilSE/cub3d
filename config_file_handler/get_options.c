@@ -40,9 +40,9 @@ void	get_options(char *config)
 		ft_printf("%s\n", line);
 		free(line);
 	}
-	if (ft_strchr(line, '\n'))
+	if (!(ft_strchr(line, '1')))
 	{
-		ft_printf("you need to delete '\n' character from last string\n");
+		ft_printf("you need to delete '\\n' character from last string\n");
 		exit(1);
 	}
 	ft_printf("%s\n", line);
