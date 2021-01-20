@@ -47,6 +47,18 @@ typedef struct	s_all {
 	char		**map;
 }				t_all;
 
+typedef struct	s_config {
+	int			width;
+	int			height;
+	char		*floor;
+	char		*celling;
+	char		*north;
+	char		*south;
+	char		*west;
+	char		*east;
+	char		*sprite;
+}				t_config;
+
 void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void			my_mlx_line_put(t_point *start, t_point *end, t_data *data);
 
