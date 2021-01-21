@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 	while (all->map[i++])
-		ft_printf("%s\n", all->map);
+		ft_printf("%s\n", all->map[i]);
 	data->mlx = mlx_init();
 	data->window = mlx_new_window(data->mlx, 1200, 800, "Shamil");
 	get_image();
