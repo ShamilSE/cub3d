@@ -86,4 +86,4 @@ int				rays_count;
 float 				h;
 #define PI 3.1415926f
 
-# endif //CUB3D_GRAPHICS_H
+#endif

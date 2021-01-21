@@ -122,19 +122,6 @@ void	first_char(char *line)
 		get_filepath(line);
 }
 
-size_t	count_map_strings(char *str)
-{
-	int		fd;
-	size_t	map_length;
-	char	*line;
-
-	map_length = 1;
-	fd = open(str, O_RDONLY);
-	while (get_next_line(fd, &line) > 0)
-		map_length++;
-	return (map_length);
-}
-
 char	**error_handle(char *filename)
 {
 	int		fd;
