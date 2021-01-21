@@ -2,6 +2,12 @@
 
 t_config *config;
 
+void	throw_error()
+{
+	ft_printf("\nError\n");
+	exit(1);
+}
+
 int		name_checker(char *name, char *chars)
 {
 	while (*name)
@@ -43,13 +49,10 @@ void	get_color(int *direction, char *line)
 	int	i;
 
 	i = 0;
-	while (!(ft_isdigit(*line)) || )
+	while (!(ft_isdigit(*line)) || *line == '-')
 	{
 		if (*line == '-')
-		{
-			ft_printf("Error\ncolors must be in range: 0 - 255\n");
-			exit(1);
-		}
+			throw_error();
 		line++;
 	}
 	while (i < 3)
@@ -63,18 +66,16 @@ void	get_color(int *direction, char *line)
 		}
 		i++;
 		while (!(ft_isdigit(*line)))
+		{
+			if (*line == ' ')
+				throw_error();
 			line++;
+		}
 	}
 	i = 0;
 	while (i++ < 3)
 		if (direction[i] < 0 || direction[i] > 255)
-		{
-			ft_printf("Error\ncolors must be in range: 0 - 255\n");
-			exit(1);
-		}
-	i = 0;
-	while (i < 3)
-		ft_printf("%d\n", direction[i++]);
+			throw_error();
 }
 
 void	get_filepath(char *line)
@@ -110,10 +111,7 @@ void	first_char(char *line)
 {
 	config_init();
 	if (*line == ' ')
-	{
-		ft_printf("Error\nno spaces at the start of a line!\n");
-		exit(1);
-	}
+		throw_error();
 	if (*line == 'R')
 		get_resolution(line);
 	else if (*line == 'F')
@@ -131,30 +129,18 @@ void	error_handle(char *filename)
 	int		i;
 
 	if (!(name_checker(filename, ".cub")))
-	{
-		ft_printf("Error\nfile extension isn't right\n");
-		exit(1);
-	}
+		throw_error();
 	if ((fd = open(filename, O_RDONLY)) < 0)
-	{
-		ft_printf("Eroor\nthere is no such file like %s\n", filename);
-		exit(1);
-	}
+		throw_error();
 	while ((i = get_next_line(fd, &line)))
 	{
 		first_char(line);
 		if (line[ft_strlen(line) - 1] == ' ')
-		{
-			ft_printf("Error\nno spaces at the end of a line\n");
-			exit(1);
-		}
+			throw_error();
 		free(line);
 	}
 	if (!(ft_strchr(line, '1')))
-	{
-		ft_printf("Error\nyou need to delete '\\n' character from last string\n");
-		exit(1);
-	}
+		throw_error();
 	free(line);
 }
 
