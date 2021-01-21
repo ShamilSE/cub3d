@@ -122,11 +122,26 @@ void	first_char(char *line)
 		get_filepath(line);
 }
 
+size_t	count_map_strings(char *str)
+{
+	int		fd;
+	size_t	map_length;
+	char	*line;
+
+	map_length = 1;
+	fd = open(str, O_RDONLY);
+	while (get_next_line(fd, &line) > 0)
+		map_length++;
+	return (map_length);
+}
+
 void	error_handle(char *filename)
 {
 	int		fd;
 	char	*line;
 	int		i;
+	int		j;
+	char	**map;
 
 	if (!(name_checker(filename, ".cub")))
 		throw_error();
@@ -135,6 +150,8 @@ void	error_handle(char *filename)
 	while ((i = get_next_line(fd, &line)))
 	{
 		first_char(line);
+		if (*line == '1')
+			break;
 		if (line[ft_strlen(line) - 1] == ' ')
 			throw_error();
 		free(line);

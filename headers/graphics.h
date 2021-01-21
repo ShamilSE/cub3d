@@ -71,13 +71,18 @@ void	move_player(int keycode);
  */
 void			draw_map();
 void			draw_block(int size, t_point *point, int color);
-char			**parse_map(char *str);
+char			**parse_map(int fd);
 void			throw_ray();
 
 /*
  * rerender image
  */
 void	get_image();
+
+/*
+ * errors
+ */
+void	map_handle();
 
 /*
  * global variables
