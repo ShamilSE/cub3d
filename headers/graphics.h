@@ -1,7 +1,3 @@
-//
-// Created by Shamil on 06.01.2021.
-//
-
 #ifndef CUB3D_GRAPHICS_H
 # define CUB3D_GRAPHICS_H
 
@@ -71,18 +67,12 @@ void	move_player(int keycode);
  */
 void			draw_map();
 void			draw_block(int size, t_point *point, int color);
-char			**parse_map(int fd);
 void			throw_ray();
 
-/*
- * rerender image
- */
-void	get_image();
 
-/*
- * errors
- */
-void	map_handle();
+void	get_image();
+char	**error_handle(char *filename);
+char	**parse_map(char *filename);
 
 /*
  * global variables

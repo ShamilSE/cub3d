@@ -38,6 +38,7 @@ int	key_press(int keycode)
 
 int main(int argc, char **argv)
 {
+	int i = 0;
 	rays_count = 500;
 	h = 800;
 	data = malloc(sizeof(t_data));
@@ -45,12 +46,14 @@ int main(int argc, char **argv)
 	player = malloc(sizeof(t_player));
 	player_location = malloc(sizeof(t_point));
 	if (argc == 2)
-		all->map = parse_map(argv[1]);
+		all->map = error_handle(argv[1]);
 	else
 	{
 		ft_printf("you need to put map as second argument\n");
 		exit(1);
 	}
+	while (all->map[i++])
+		ft_printf("%s\n", all->map);
 	data->mlx = mlx_init();
 	data->window = mlx_new_window(data->mlx, 1200, 800, "Shamil");
 	get_image();

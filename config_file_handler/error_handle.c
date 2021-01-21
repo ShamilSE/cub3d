@@ -135,12 +135,11 @@ size_t	count_map_strings(char *str)
 	return (map_length);
 }
 
-void	error_handle(char *filename)
+char	**error_handle(char *filename)
 {
 	int		fd;
 	char	*line;
 	int		i;
-	int		j;
 	char	**map;
 
 	if (!(name_checker(filename, ".cub")))
@@ -156,11 +155,9 @@ void	error_handle(char *filename)
 			throw_error();
 		free(line);
 	}
+	map = parse_map(filename);
 	if (!(ft_strchr(line, '1')))
 		throw_error();
 	free(line);
-}
-
-int main(void){
-	error_handle("map.cub");
+	return (map);
 }
