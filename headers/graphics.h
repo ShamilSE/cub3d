@@ -50,8 +50,8 @@ typedef struct	s_all {
 typedef struct	s_config {
 	int			width;
 	int			height;
-	char		*floor;
-	char		*celling;
+	int			floor[3];
+	int			celling[3];
 	char		*north;
 	char		*south;
 	char		*west;
