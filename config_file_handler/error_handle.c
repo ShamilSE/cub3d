@@ -38,32 +38,43 @@ void	get_resolution(char *line)
 	}
 }
 
-void	get_color_helper(int *direction, char *line)
+void	get_color(int *direction, char *line)
 {
 	int	i;
 
 	i = 0;
-		while (!(ft_isdigit(*line)))
-			line++;
-		while (i < 3)
+	while (!(ft_isdigit(*line)) || )
+	{
+		if (*line == '-')
 		{
-			direction[i] = *line -48;
-			line++;
-			while (ft_isdigit(*line))
-			{
-				direction[i] = (direction[i] * 10) + (*line - 48);
-				line++;
-			}
-			i++;
+			ft_printf("Error\ncolors must be in range: 0 - 255\n");
+			exit(1);
+		}
+		line++;
+	}
+	while (i < 3)
+	{
+		direction[i] = *line -48;
+		line++;
+		while (ft_isdigit(*line))
+		{
+			direction[i] = (direction[i] * 10) + (*line - 48);
 			line++;
 		}
-
-}
-
-void	get_color(char *line)
-{
-	ft_printf("%s\n", line);
-	*line == 'F' ? get_color_helper(config->floor, line) : get_color_helper(config->celling, line);
+		i++;
+		while (!(ft_isdigit(*line)))
+			line++;
+	}
+	i = 0;
+	while (i++ < 3)
+		if (direction[i] < 0 || direction[i] > 255)
+		{
+			ft_printf("Error\ncolors must be in range: 0 - 255\n");
+			exit(1);
+		}
+	i = 0;
+	while (i < 3)
+		ft_printf("%d\n", direction[i++]);
 }
 
 void	get_filepath(char *line)
@@ -90,14 +101,9 @@ void	get_filepath(char *line)
 
 void	config_init()
 {
-	int	i;
-
-	i = 0;
 	config = malloc(sizeof(t_config));
 	config->width = 0;
 	config->height = 0;
-//	while (i < 3)
-//		config->floor[i++] = 0;
 }
 
 void	first_char(char *line)
@@ -110,8 +116,10 @@ void	first_char(char *line)
 	}
 	if (*line == 'R')
 		get_resolution(line);
-	else if (*line == 'F' || *line == 'C')
-		get_color(line);
+	else if (*line == 'F')
+		get_color(config->floor, line);
+	else if (*line == 'C')
+		get_color(config->celling, line);
 	else if (*line == 'N' || *line == 'S' || *line == 'W' || *line == 'E')
 		get_filepath(line);
 }
