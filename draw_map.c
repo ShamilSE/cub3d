@@ -39,12 +39,12 @@ void	draw_map()
 	j = 0;
 	while (all->map[i])
 	{
-		while (all->map[i][j]) {
-			if (all->map[i][j] == '1') {
+		while (all->map[i][j])
+		{
+			if (all->map[i][j] == '1')
 				draw_block(size, &point, 0x800080);
-			} else if (all->map[i][j] == '0') {
+			else if (all->map[i][j] == '0')
 				draw_block(size, &point, 0xFFFFFF);
-			}
 			j++;
 		}
 		j = 0;

@@ -1,7 +1,3 @@
-//
-// Created by Mussels Ismene on 1/13/21.
-//
-
 #include "../headers/graphics.h"
 
 size_t	count_map_strings(char *str)
@@ -13,25 +9,31 @@ size_t	count_map_strings(char *str)
 	map_length = 1;
 	fd = open(str, O_RDONLY);
 	while (get_next_line(fd, &line) > 0)
-		map_length++;
+	{
+		if (*line == '1')
+			map_length++;
+	}
 	return (map_length);
 }
 
-char	**parse_map(char *str)
+char	**parse_map(char *filename)
 {
 	char	**map;
 	int		i;
 	int		fd;
 	char	*line;
 
-	fd =  open(str, O_RDONLY);
+	fd =  open(filename, O_RDONLY);
 	i = 0;
-	map = malloc(sizeof(char *) * (count_map_strings(str) + 1));
+	map = malloc(sizeof(char *) * (count_map_strings(filename) + 1));
 	while (get_next_line(fd, &line) > 0)
 	{
-		map[i] = ft_strdup(line);
-		free(line);
-		i++;
+		if (*line == '1')
+		{
+			map[i] = ft_strdup(line);
+			free(line);
+			i++;
+		}
 	}
 	map[i] = ft_strdup(line);
 	free(line);
