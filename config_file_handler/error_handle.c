@@ -148,12 +148,3 @@ char	**error_handle(char *filename)
 	free(line);
 	return (map);
 }
-
-//int main()
-//{
-//	int i = 0;
-//	char **map;
-//	map = error_handle("map.cub");
-//	while (map[i++])
-//		ft_printf("%s\n", map[i]);
-//}
