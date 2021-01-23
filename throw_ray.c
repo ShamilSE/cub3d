@@ -62,14 +62,14 @@ void	throw_ray()
 		ray_length = 0;
 		while (1)
 		{
-			if (all->map[(int) (y / SCALE)][(int) (x + cosf(start) / SCALE)] != '1')
+//			if (all->map[(int) (y / SCALE)][(int) (x + cosf(start) / SCALE)] != '1')
 				x += cosf(start);
 			if (all->map[(int) (y / SCALE)][(int) (x / SCALE)] == '1')
 			{
 				flag = 'S';
 				break ;
 			}
-			if (all->map[(int) (y + sinf(start) / SCALE)][(int) (x / SCALE)] != '1')
+//			if (all->map[(int) (y + sinf(start) / SCALE)][(int) (x / SCALE)] != '1')
 				y += sinf(start);
 			if (all->map[(int) (y / SCALE)][(int) (x / SCALE)] == '1')
 			{
