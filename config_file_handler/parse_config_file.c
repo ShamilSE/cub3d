@@ -135,9 +135,8 @@ char	**parse_config_file(char *filename)
 
 	if (!(name_checker(filename, ".cub")))
 		throw_error("config file must have '.cub' extension");
-	if ((fd = open(filename, O_RDONLY)) < 0)
-		ft_printf("1\n");
-//		throw_error("invalid filename\n");
+	if ((fd = open("map.cub", O_RDONLY)) < 0)
+		throw_error("invalid filename\n");
 	while ((i = get_next_line(fd, &line)))
 	{
 		first_char(line);

@@ -1,1 +1,1 @@
-![](ray_casting.gif)
+![](additional/ray_casting.gif)

@@ -18,7 +18,6 @@ typedef struct	s_texture
 	void		*image;
 	int			width;
 	int			height;
-	void		*mlx;
 	int			*colours;
 	int			bpp;
 	int			size_line;
@@ -45,8 +44,6 @@ typedef struct	s_player {
 	float		pdx;
 	float		pdy;
 	t_point		*location;
-	float		start;
-	float		end;
 }				t_player;
 
 typedef struct	s_all {
@@ -68,36 +65,39 @@ typedef struct	s_config {
 	char		*sprite;
 }				t_config;
 
-void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void			my_mlx_line_put(t_point *start, t_point *end, t_data *data);
-
 /*
- * moving
- */
-void	move_player(int keycode);
-/*
- * map and player drawing
- */
+* map and player drawing
+*/
 void			draw_map();
 void			draw_block(int size, t_point *point, int color);
-void			throw_ray();
+void			ray_cast();
 
 
-void	get_image();
-char	**parse_config_file(char *filename);
-char	**parse_map(char *filename);
-void	get_texture();
+void			move_player(int keycode);
+void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void			get_image();
+char			**parse_map(char *filename);
+void			get_texture();
+char			**parse_config_file(char *filename);
 
 /*
- * global variables
- */
+* mlx_main_loop
+*/
+void	mlx_main_loop();
+
+
+/*
+* global variables
+*/
 t_data			*data;
 t_all			*all;
 t_player		*player;
 t_point			*player_location;
 t_config		*config_info;
 int				rays_count;
-float 				h;
+int				screen_height;
+int				screen_width;
+
 #define PI 3.1415926f
 
 #endif
