@@ -10,13 +10,11 @@ void	draw_wall(float ray_length, int x_view, float start, char flag)
 	int		wall_start;
 	int		wall_end;
 	float	ca;
-	int		x;
 	int		i;
 	int		wall_color;
 
 	wall_color = flag == 'S' ? 0x0000FF : 0xFF0000;
 	i = 0;
-	x = 0;
 	ca = player->direction - start;
 	if (ca < 0)
 		ca += 2 * PI;
@@ -31,14 +29,15 @@ void	draw_wall(float ray_length, int x_view, float start, char flag)
 	if(wall_start < 0)
 		wall_start = 0;
 	if(wall_end >= (int)h)
-		wall_end = h - 1;
+		wall_end = (int)h - 1;
 	while (i < wall_start)
 		my_mlx_pixel_put(all->data, x_view, i++, 0xFFFF00);
 	while (wall_start < wall_end)
 		my_mlx_pixel_put(all->data, x_view, wall_start++, wall_color);
-	i = (int)h;
-	while (i > wall_end)
+	i = (int)h - 1;
+	while (i >= wall_end)
 		my_mlx_pixel_put(all->data, x_view, i--, 0xFFC0CB);
+//	ft_printf("here\n");
 }
 
 void	throw_ray()
@@ -62,15 +61,13 @@ void	throw_ray()
 		ray_length = 0;
 		while (1)
 		{
-//			if (all->map[(int) (y / SCALE)][(int) (x + cosf(start) / SCALE)] != '1')
-				x += cosf(start);
+			x += cosf(start);
 			if (all->map[(int) (y / SCALE)][(int) (x / SCALE)] == '1')
 			{
 				flag = 'S';
 				break ;
 			}
-//			if (all->map[(int) (y + sinf(start) / SCALE)][(int) (x / SCALE)] != '1')
-				y += sinf(start);
+			y += sinf(start);
 			if (all->map[(int) (y / SCALE)][(int) (x / SCALE)] == '1')
 			{
 				flag = 'N';

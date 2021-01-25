@@ -52,7 +52,8 @@ void	get_color(int *direction, char *line)
 	while (!(ft_isdigit(*line)) || *line == '-')
 	{
 		if (*line == '-')
-			throw_error("colors must be in range: 0 - 255\n");
+			ft_printf("5\n");
+//			throw_error("colors must be in range: 0 - 255\n");
 		line++;
 	}
 	while (i < 3)
@@ -68,14 +69,16 @@ void	get_color(int *direction, char *line)
 		while (!(ft_isdigit(*line)))
 		{
 			if (*line == ' ')
-				throw_error("delete spaces between color values");
+				ft_printf("5\n");
+//				throw_error("delete spaces between color values");
 			line++;
 		}
 	}
 	i = 0;
 	while (i++ < 3)
 		if (direction[i] < 0 || direction[i] > 255)
-			throw_error("colors must be in range: 0 - 255\n");
+			ft_printf("6\n");
+//			throw_error("colors must be in range: 0 - 255\n");
 }
 
 void	get_filepath(char *line)
@@ -111,7 +114,8 @@ void	first_char(char *line)
 {
 	config_init();
 	if (*line == ' ')
-		throw_error("delete spaces before string\n");
+		ft_printf("4\n");
+//		throw_error("delete spaces before string\n");
 	if (*line == 'R')
 		get_resolution(line);
 	else if (*line == 'F')
@@ -132,19 +136,22 @@ char	**error_handle(char *filename)
 	if (!(name_checker(filename, ".cub")))
 		throw_error("config file must have '.cub' extension");
 	if ((fd = open(filename, O_RDONLY)) < 0)
-		throw_error("invalid filename\n");
+		ft_printf("1\n");
+//		throw_error("invalid filename\n");
 	while ((i = get_next_line(fd, &line)))
 	{
 		first_char(line);
 		if (*line == '1')
 			break;
 		if (line[ft_strlen(line) - 1] == ' ')
-			throw_error("delete spaces after string\n");
+			ft_printf("2\n");
+//			throw_error("delete spaces after string\n");
 		free(line);
 	}
 	map = parse_map(filename);
 	if (!(ft_strchr(line, '1')))
-		throw_error("1");
+		ft_printf("3\n");
+//		throw_error("1");
 	free(line);
 	return (map);
 }

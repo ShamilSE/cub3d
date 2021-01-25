@@ -1,3 +1,5 @@
 cmake-build-debug
 .idea
 cub3d
+.vscode 
+cub3d.dSYM 

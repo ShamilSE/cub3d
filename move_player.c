@@ -6,15 +6,15 @@
 
 int	move_forward()
 {
-	player->location->x += player->pdx;
-	player->location->y += player->pdy;
+	player->location->x += player->pdx * 5;
+	player->location->y += player->pdy * 5;
 	return 1;
 }
 
 void	move_backward()
 {
-	player->location->x -= player->pdx;
-	player->location->y -= player->pdy;
+	player->location->x -= player->pdx * 5;
+	player->location->y -= player->pdy * 5;
 }
 
 void	look_left()
@@ -34,16 +34,25 @@ void	look_right()
 void	move_player(int keycode)
 {
 // w
-	if (keycode == 13)
+	if (keycode == 13){
+		if (all->map[(int)((player->location->y + (player->pdy * 5)) / SCALE)][(int)((player->location->x + (player->pdx * 5)) / SCALE)] == '1')
+			return ;
 		move_forward();
+	}
+	else
+	{
 //	s
-	else if (keycode == 1)
-		move_backward();
+		if (keycode == 1) {
+			if (all->map[(int)((player->location->y - (player->pdy * 5)) / SCALE)][(int)((player->location->x - (player->pdx * 5)) / SCALE)] == '1')
+				return ;
+			move_backward();
+		}
 //	a
-	else if (keycode == 0)
-		look_left();
+		if (keycode == 0)
+			look_left();
 //	d
-	else if (keycode == 2)
-		look_right();
+		if (keycode == 2)
+			look_right();
+	}
 	mlx_destroy_image(all->data->mlx, all->data->image);
 }

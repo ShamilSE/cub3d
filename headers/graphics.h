@@ -73,6 +73,7 @@ void			throw_ray();
 void	get_image();
 char	**error_handle(char *filename);
 char	**parse_map(char *filename);
+void	texture_parser();
 
 /*
  * global variables

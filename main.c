@@ -12,8 +12,8 @@ void	get_image()
 
 void	player_ini()
 {
-	player->location->x = 200;
-	player->location->y = 200;
+	player->location->x = 500;
+	player->location->y = 500;
 	player->direction = PI / 3;
 	player->pdx = (float)cos((double)player->direction) * 5;
 	player->pdy = (float)sin((double)player->direction) * 5;
@@ -54,6 +54,7 @@ int main(int argc, char **argv)
 	}
 	while (all->map[i])
 		ft_printf("%s\n", all->map[i++]);
+	texture_parser();
 	data->mlx = mlx_init();
 	data->window = mlx_new_window(data->mlx, 1200, 800, "Shamil");
 	get_image();
