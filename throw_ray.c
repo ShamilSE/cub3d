@@ -30,13 +30,13 @@ void	draw_wall(float ray_length, int x_view, float start, char flag)
 		wall_start = 0;
 	if(wall_end >= (int)h)
 		wall_end = (int)h - 1;
-	while (i < wall_start)
-		my_mlx_pixel_put(all->data, x_view, i++, 0xFFFF00);
-	while (wall_start < wall_end)
-		my_mlx_pixel_put(all->data, x_view, wall_start++, wall_color);
-	i = (int)h - 1;
-	while (i >= wall_end)
-		my_mlx_pixel_put(all->data, x_view, i--, 0xFFC0CB);
+//	while (i < wall_start)
+//		my_mlx_pixel_put(all->data, x_view, i++, 0xFFFF00);
+//	while (wall_start < wall_end)
+//		my_mlx_pixel_put(all->data, x_view, wall_start++, wall_color);
+//	i = (int)h - 1;
+//	while (i >= wall_end)
+//		my_mlx_pixel_put(all->data, x_view, i--, 0xFFC0CB);
 //	ft_printf("here\n");
 }
 

@@ -54,16 +54,14 @@ int main(int argc, char **argv)
 		ft_printf("you need to put map as second argument\n");
 		exit(1);
 	}
-	while (all->map[i])
-		ft_printf("%s\n", all->map[i++]);
 	data->mlx = mlx_init();
 	data->window = mlx_new_window(data->mlx, 1200, 800, "Shamil");
-//	get_image();
-	get_texture();
+	get_image();
 	mlx_put_image_to_window(data->mlx, data->window, data->image, 0, 0);
 	all->data = data;
 	all->player = player;
 	all->player->location = player_location;
+	get_texture();
 	draw_map();
 	player_ini();
 	mlx_hook(data->window, 2, (1L<<0), &key_press, all);
