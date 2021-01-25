@@ -38,7 +38,9 @@ int	key_press(int keycode)
 
 int main(int argc, char **argv)
 {
-	int i = 0;
+	int		i = 0;
+	void	*texture_img;
+
 	rays_count = 500;
 	h = 800;
 	data = malloc(sizeof(t_data));
@@ -54,11 +56,12 @@ int main(int argc, char **argv)
 	}
 	while (all->map[i])
 		ft_printf("%s\n", all->map[i++]);
-	texture_parser();
+	texture_img = texture_parser();
 	data->mlx = mlx_init();
 	data->window = mlx_new_window(data->mlx, 1200, 800, "Shamil");
 	get_image();
 	mlx_put_image_to_window(data->mlx, data->window, data->image, 0, 0);
+	texture_parser();
 	all->data = data;
 	all->player = player;
 	all->player->location = player_location;

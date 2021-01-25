@@ -13,6 +13,11 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
+typedef struct	s_image
+{
+	void		*image;
+}				t_image;
+
 typedef struct	s_data {
 	void		*image;
 	void		*window;
@@ -73,7 +78,7 @@ void			throw_ray();
 void	get_image();
 char	**error_handle(char *filename);
 char	**parse_map(char *filename);
-void	texture_parser();
+void	*texture_parser();
 
 /*
  * global variables
