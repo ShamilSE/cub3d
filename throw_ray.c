@@ -4,18 +4,36 @@
 
 #include "headers/graphics.h"
 
-void	draw_wall(float ray_length, int x_view, float start, char flag)
+void	draw_wall(int wall_start, int wall_end, int x_view, int texture_height, int ray_length)
+{
+//	double	step = 1.0 * texture_height / ray_length;
+//	int		texture_position = (wall_start - (int)h / 2 + ray_length) * (int)step;
+//	int		color;
+	while (wall_start < wall_end)
+		my_mlx_pixel_put(all->data, x_view, wall_start++, all->texture->colours[0]);
+//	step = 1.0 * texture_height / ray_length;
+//	for (int y = wall_start; y < wall_end; y++)
+//	{
+//		int x = (int)texture_position & (texture_height - 1);
+//		texture_position += (int)step;
+//		color = all->texture[]
+//	}
+}
+
+void	draw_space(float ray_length, int x_view, float start, char flag)
 {
 	int		wall_height;
 	int		wall_start;
 	int		wall_end;
 	float	ca;
 	int		i;
-	int		wall_color;
+	int		texture_height;
 
-	wall_color = flag == 'S' ? 0x0000FF : 0xFF0000;
+
+	texture_height = 64;
 	i = 0;
 	ca = player->direction - start;
+
 	if (ca < 0)
 		ca += 2 * PI;
 	if (ca > 2 * PI)
@@ -32,8 +50,7 @@ void	draw_wall(float ray_length, int x_view, float start, char flag)
 		wall_end = (int)h - 1;
 	while (i < wall_start)
 		my_mlx_pixel_put(all->data, x_view, i++, 0xFFFF00);
-	while (wall_start < wall_end)
-		my_mlx_pixel_put(all->data, x_view, wall_start++, wall_color);
+	draw_wall(wall_start, wall_end, x_view,texture_height, ray_length);
 	i = (int)h - 1;
 	while (i >= wall_end)
 		my_mlx_pixel_put(all->data, x_view, i--, 0xFFC0CB);
@@ -79,7 +96,7 @@ void	throw_ray()
 		x = player->location->x;
 		y = player->location->y;
 		start += PI / 3 / 1200;
-		draw_wall(ray_length, x_view, start, flag);
+		draw_space(ray_length, x_view, start, flag);
 		x_view++;
 	}
 }
