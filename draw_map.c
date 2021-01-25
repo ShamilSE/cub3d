@@ -1,5 +1,5 @@
 #include "headers/graphics.h"
-
+//comment
 void	draw_block(int size, t_point *point, int color) {
 	float	size_reminder;
 	float	size_reminder2;
