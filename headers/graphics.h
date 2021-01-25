@@ -13,10 +13,17 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-typedef struct	s_image
+typedef struct	s_texture
 {
 	void		*image;
-}				t_image;
+	int			width;
+	int			height;
+	void		*mlx;
+	int			*colours;
+	int			bpp;
+	int			size_line;
+	int			endian;
+}				t_texture;
 
 typedef struct	s_data {
 	void		*image;
@@ -76,9 +83,9 @@ void			throw_ray();
 
 
 void	get_image();
-char	**error_handle(char *filename);
+char	**parse_config_file(char *filename);
 char	**parse_map(char *filename);
-void	*texture_parser();
+void	*get_texture();
 
 /*
  * global variables

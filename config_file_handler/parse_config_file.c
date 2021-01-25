@@ -126,7 +126,7 @@ void	first_char(char *line)
 		get_filepath(line);
 }
 
-char	**error_handle(char *filename)
+char	**parse_config_file(char *filename)
 {
 	int		fd;
 	char	*line;

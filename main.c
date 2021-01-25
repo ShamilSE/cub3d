@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 	player = malloc(sizeof(t_player));
 	player_location = malloc(sizeof(t_point));
 	if (argc == 2)
-		all->map = error_handle(argv[1]);
+		all->map = parse_config_file(argv[1]);
 	else
 	{
 		ft_printf("you need to put map as second argument\n");
@@ -56,12 +56,11 @@ int main(int argc, char **argv)
 	}
 	while (all->map[i])
 		ft_printf("%s\n", all->map[i++]);
-	texture_img = texture_parser();
 	data->mlx = mlx_init();
 	data->window = mlx_new_window(data->mlx, 1200, 800, "Shamil");
-	get_image();
+//	get_image();
+	get_texture();
 	mlx_put_image_to_window(data->mlx, data->window, data->image, 0, 0);
-	texture_parser();
 	all->data = data;
 	all->player = player;
 	all->player->location = player_location;
