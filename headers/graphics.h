@@ -52,6 +52,7 @@ typedef struct	s_player {
 typedef struct	s_all {
 	t_data		*data;
 	t_player	*player;
+	t_texture	*texture;
 	char		**map;
 }				t_all;
 
@@ -85,7 +86,7 @@ void			throw_ray();
 void	get_image();
 char	**parse_config_file(char *filename);
 char	**parse_map(char *filename);
-void	*get_texture();
+void	get_texture();
 
 /*
  * global variables
