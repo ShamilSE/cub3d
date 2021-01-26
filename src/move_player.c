@@ -13,6 +13,17 @@ void	move_backward()
 	player->location->y -= player->pdy * 5;
 }
 
+void	move_left()
+{
+	player->location->x += (float)sin((double)player->direction) * 5;;
+	player->location->y -= (float)cos((double)player->direction) * 5;
+}
+
+void	move_right()
+{
+
+}
+
 void	look_left()
 {
 	player->direction -= 0.1f;
