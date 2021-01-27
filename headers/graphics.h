@@ -2,7 +2,7 @@
 # define CUB3D_GRAPHICS_H
 
 #define BUFFER_SIZE 1
-#define SCALE 200
+#define SCALE 60
 
 #include "mlx.h"
 #include "libft.h"
@@ -95,9 +95,9 @@ t_player		*player;
 t_point			*player_location;
 t_config		*config_info;
 int				rays_count;
-int				screen_height;
-int				screen_width;
 
+#define screen_height 800
+#define screen_width 1200
 #define PI 3.1415926f
 
 #endif
