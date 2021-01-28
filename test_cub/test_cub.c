@@ -254,8 +254,9 @@ void	calc(t_info *info)
 	// WALL CASTING
 	for(int x = 0; x < width; x++)
 	{
-		//calculate ray position and direction
+		//calculate ray position
 		double cameraX = 2 * x / (double)width - 1; //x-coordinate in camera space
+		//ray direction
 		double rayDirX = info->dirX + info->planeX * cameraX;
 		double rayDirY = info->dirY + info->planeY * cameraX;
 		//which box of the map we're in
@@ -265,9 +266,9 @@ void	calc(t_info *info)
 		double sideDistX;
 		double sideDistY;
 		//length of ray from one x or y-side to next x or y-side
-		double deltaDistX = fabs(1 / rayDirX);
-		double deltaDistY = fabs(1 / rayDirY);
-		double perpWallDist;
+		double deltaDistX = sqrt(1 +(rayDirY * rayDirY) / (rayDirX * rayDirX));
+		double deltaDistY = sqrt(1 +(rayDirX * rayDirX) / (rayDirY * rayDirY));
+		double ray_length;
 		//what direction to step in x or y-direction (either +1 or -1)
 		int stepX;
 		int stepY;
@@ -300,24 +301,24 @@ void	calc(t_info *info)
 			//jump to next map square, OR in x-direction, OR in y-direction
 			if(sideDistX < sideDistY)
 			{
-			sideDistX += deltaDistX;
-			mapX += stepX;
-			side = 0;
+				sideDistX += deltaDistX;
+				mapX += stepX;
+				side = 0;
 			}
 			else
 			{
-			sideDistY += deltaDistY;
-			mapY += stepY;
-			side = 1;
+				sideDistY += deltaDistY;
+				mapY += stepY;
+				side = 1;
 			}
 			//Check if ray has hit a wall
 			if(worldMap[mapX][mapY] > 0) hit = 1;
 		}
 		//Calculate distance of perpendicular ray (Euclidean distance will give fisheye effect!)
-		if(side == 0) perpWallDist = (mapX - info->posX + (1 - stepX) / 2) / rayDirX;
-		else          perpWallDist = (mapY - info->posY + (1 - stepY) / 2) / rayDirY;
+		if(side == 0) ray_length = (mapX - info->posX + (1 - stepX) / 2) / rayDirX;
+		else ray_length = (mapY - info->posY + (1 - stepY) / 2) / rayDirY;
 		//Calculate height of line to draw on screen
-		int lineHeight = (int)(height / perpWallDist);
+		int lineHeight = (int)(height / ray_length);
 		//calculate lowest and highest pixel to fill in current stripe
 		int drawStart = -lineHeight / 2 + height / 2;
 		if(drawStart < 0) drawStart = 0;
@@ -327,8 +328,8 @@ void	calc(t_info *info)
 		int texNum = worldMap[mapX][mapY] - 1; //1 subtracted from it so that texture 0 can be used!
 		//calculate value of wallX
 		double wallX; //where exactly the wall was hit
-		if (side == 0) wallX = info->posY + perpWallDist * rayDirY;
-		else           wallX = info->posX + perpWallDist * rayDirX;
+		if (side == 0) wallX = info->posY + ray_length * rayDirY;
+		else           wallX = info->posX + ray_length * rayDirX;
 		wallX -= floor((wallX));
 		//x coordinate on the texture
 		int texX = (int)(wallX * (double)texWidth);
@@ -351,7 +352,7 @@ void	calc(t_info *info)
 		}
 
 		//SET THE ZBUFFER FOR THE SPRITE CASTING
-		info->zBuffer[x] = perpWallDist; //perpendicular distance is used
+		info->zBuffer[x] = ray_length; //perpendicular distance is used
 	}
 
 	//SPRITE CASTING
@@ -522,17 +523,17 @@ void	load_texture(t_info *info)
 {
 	t_img	img;
 
-	load_image(info, info->texture[0], "/Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/eagle.xpm", &img);
-	load_image(info, info->texture[1], "/Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/redbrick.xpm", &img);
-	load_image(info, info->texture[2], "/Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/purplestone.xpm", &img);
-	load_image(info, info->texture[3], "/Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/greystone.xpm", &img);
-	load_image(info, info->texture[4], "/Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/bluestone.xpm", &img);
-	load_image(info, info->texture[5], "/Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/mossy.xpm", &img);
-	load_image(info, info->texture[6], "/Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/wood.xpm", &img);
-	load_image(info, info->texture[7], "/Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/colorstone.xpm", &img);
-	load_image(info, info->texture[8], "/Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/barrel.xpm", &img);
-	load_image(info, info->texture[9], "/Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/pillar.xpm", &img);
-	load_image(info, info->texture[10], "/Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/greenlight.xpm", &img);
+	load_image(info, info->texture[0], "/Users/mismene/Desktop/CLionProjects/cub3d/test_cub/textures/eagle.xpm", &img);
+	load_image(info, info->texture[1], "/Users/mismene/Desktop/CLionProjects/cub3d/test_cub/textures/redbrick.xpm", &img);
+	load_image(info, info->texture[2], "/Users/mismene/Desktop/CLionProjects/cub3d/test_cub/textures/purplestone.xpm", &img);
+	load_image(info, info->texture[3], "/Users/mismene/Desktop/CLionProjects/cub3d/test_cub/textures/greystone.xpm", &img);
+	load_image(info, info->texture[4], "/Users/mismene/Desktop/CLionProjects/cub3d/test_cub/textures/bluestone.xpm", &img);
+	load_image(info, info->texture[5], "/Users/mismene/Desktop/CLionProjects/cub3d/test_cub/textures/mossy.xpm", &img);
+	load_image(info, info->texture[6], "/Users/mismene/Desktop/CLionProjects/cub3d/test_cub/textures/wood.xpm", &img);
+	load_image(info, info->texture[7], "/Users/mismene/Desktop/CLionProjects/cub3d/test_cub/textures/colorstone.xpm", &img);
+	load_image(info, info->texture[8], "/Users/mismene/Desktop/CLionProjects/cub3d/test_cub/textures/barrel.xpm", &img);
+	load_image(info, info->texture[9], "/Users/mismene/Desktop/CLionProjects/cub3d/test_cub/textures/pillar.xpm", &img);
+	load_image(info, info->texture[10], "/Users/mismene/Desktop/CLionProjects/cub3d/test_cub/textures/greenlight.xpm", &img);
 }
 
 

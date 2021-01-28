@@ -122,7 +122,7 @@ void	first_char(char *line)
 		get_filepath(line);
 }
 
-char	**parse_config_file(char *filename)
+void	parse_config_file(char *filename)
 {
 	int		fd;
 	char	*line;
@@ -146,7 +146,7 @@ char	**parse_config_file(char *filename)
 	if (!(ft_strchr(line, '1')))
 		throw_error("1");
 	free(line);
-	return (map);
+	config_info->map = map;
 }
 
 int main()
