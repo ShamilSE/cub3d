@@ -17,7 +17,7 @@
 //typedef struct	s_img
 //{
 //	void	*img;
-//	int		*data;
+//	int		*player;
 //
 //	int		size_l;
 //	int		bpp;
@@ -181,7 +181,7 @@
 //	{
 //		for (int x = 0; x < width; x++)
 //		{
-//			info->img.data[y * width + x] = info->buf[y][x];
+//			info->img.player[y * width + x] = info->buf[y][x];
 //		}
 //	}
 //	mlx_put_image_to_window(info->mlx, info->win, info->img.img, 0, 0);
@@ -494,12 +494,12 @@
 //void	load_image(t_info *info, int *texture, char *path, t_img *img)
 //{
 //	img->img = mlx_xpm_file_to_image(info->mlx, path, &img->img_width, &img->img_height);
-//	img->data = (int *)mlx_get_data_addr(img->img, &img->bpp, &img->size_l, &img->endian);
+//	img->player = (int *)mlx_get_data_addr(img->img, &img->bpp, &img->size_l, &img->endian);
 //	for (int y = 0; y < img->img_height; y++)
 //	{
 //		for (int x = 0; x < img->img_width; x++)
 //		{
-//			texture[img->img_width * y + x] = img->data[img->img_width * y + x];
+//			texture[img->img_width * y + x] = img->player[img->img_width * y + x];
 //		}
 //	}
 //	mlx_destroy_image(info->mlx, img->img);
@@ -571,7 +571,7 @@
 //	info.win = mlx_new_window(info.mlx, width, height, "mlx");
 //
 //	info.img.img = mlx_new_image(info.mlx, width, height);
-//	info.img.data = (int *)mlx_get_data_addr(info.img.img, &info.img.bpp, &info.img.size_l, &info.img.endian);
+//	info.img.player = (int *)mlx_get_data_addr(info.img.img, &info.img.bpp, &info.img.size_l, &info.img.endian);
 //
 //	mlx_loop_hook(info.mlx, &main_loop, &info);
 //	mlx_hook(info.win, X_EVENT_KEY_PRESS, 0, &key_press, &info);

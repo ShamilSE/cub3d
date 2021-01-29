@@ -26,17 +26,19 @@ typedef struct	s_texture
 	int			endian;
 }				t_texture;
 
-typedef struct	s_mlx {
+typedef struct	s_data {
 	void		*image;
+	int			image_width;
+	int			image_height;
 	void		*window;
 	void		*mlx;
 	void		*address;
 	int			bits_per_pixel;
 	int			line_length;
 	int			endian;
-}				t_mlx;
+}				t_data;
 
-typedef struct	s_data {
+typedef struct	s_player {
 	double		position_x;
 	double		position_y;
 	double		direction_x;
@@ -45,8 +47,7 @@ typedef struct	s_data {
 	double		plane_y;
 	double		move_speed;
 	double		rotation_speed;
-	t_mlx		*mlx;
-}				t_data;
+}				t_player;
 
 typedef struct	s_config {
 	int			s_width;
@@ -74,8 +75,8 @@ void	main_engine_loop();
 /*
 ** global scope
 */
+t_player		*player;
 t_data			*data;
-t_mlx			*mlx;
 t_config		*config;
 t_texture		*texture;
 

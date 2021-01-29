@@ -14,7 +14,7 @@
 //	{
 //		while (size_reminder-- > 0)
 //		{
-////			my_mlx_pixel_put(all->data, point->x, point->y, color);
+////			my_mlx_pixel_put(all->player, point->x, point->y, color);
 //			point->x++;
 //		}
 //		size_reminder = size_reminder2;
@@ -52,5 +52,5 @@
 //		point.x = 10;
 //		i++;
 //	}
-//	mlx_put_image_to_window(all->data->mlx, all->data->window, all->data->image, 0, 0);
+//	mlx_put_image_to_window(all->player->mlx, all->player->window, all->player->image, 0, 0);
 //}
