@@ -1,11 +1,6 @@
 #ifndef CUB3D_GRAPHICS_H
 # define CUB3D_GRAPHICS_H
 
-#define BUFFER_SIZE 1
-#define SCALE 60
-#define mapWidth 24
-#define mapHeight 24
-
 #include "mlx.h"
 #include "libft.h"
 #include "ft_printf.h"
@@ -14,6 +9,8 @@
 #include <math.h>
 #include <stdlib.h>
 #include <fcntl.h>
+
+#define BUFFER_SIZE 32
 
 typedef struct	s_texture
 {
@@ -69,8 +66,7 @@ char			**parse_map(char *filename);
 void			get_texture();
 void			parse_config_file(char *filename);
 void			throw_error(char *error_message);
-
-void	main_engine_loop();
+void			ray_casting();
 
 /*
 ** global scope

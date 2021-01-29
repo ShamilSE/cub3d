@@ -17,6 +17,7 @@ void	key_hook(int keycode)
 		exit(0);
 	if (keycode == 1 || keycode == 0 || keycode == 13 || keycode == 2 || keycode == 123 || keycode == 124)
 		move_player(keycode);
+	ray_casting();
 }
 
 void	mlx_initialization()

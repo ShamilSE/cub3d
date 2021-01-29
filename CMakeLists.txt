@@ -4,9 +4,9 @@ project(cub3d C)
 set(CMAKE_C_STANDARD 99)
 
 add_executable(cub
-        src/main.c
+#        src/main.c
 #        test_cub/move_player.c
-#        test_cub/test_cub.c
+        test_cub/test_cub.c
         src/my_mlx_pixel_put.c
         src/move_player.c
         get_next_line/get_next_line.c
