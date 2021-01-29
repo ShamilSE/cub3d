@@ -1,5 +1,6 @@
 #include "../headers/graphics.h"
 
+<<<<<<< HEAD
 t_data			*data;
 t_mlx			*mlx;
 
@@ -42,4 +43,23 @@ int		main(int argc, char **argv)
 		printf("%s\n", config->map[x]);
 	}
 	mlx_loop(mlx->mlx);
+=======
+t_data	*data;
+t_mlx	*mlx;
+
+void	init()
+{
+	data = malloc(sizeof(t_data));
+	mlx = malloc(sizeof(t_mlx));
+}
+
+int		main(int argc, char **argv)
+{
+	init();
+	if (argc == 2)
+		parse_config_file(argv[1]);
+	else
+		throw_error("you need to put map as second argument\n");
+	mlx_main_loop();
+>>>>>>> f946e95b166abcb49454c5dd6231930b98c61352
 }

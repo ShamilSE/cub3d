@@ -26,7 +26,6 @@ typedef struct	s_texture
 	int			endian;
 }				t_texture;
 
-
 typedef struct	s_mlx {
 	void		*image;
 	void		*window;
@@ -62,13 +61,6 @@ typedef struct	s_config {
 	char		*sprite;
 }				t_config;
 
-/*
-* map and player drawing
-*/
-void			draw_map();
-void			ray_casting();
-
-
 void			move_player(int keycode);
 void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void			get_image();
@@ -81,15 +73,5 @@ void			throw_error(char *error_message);
 * main_engine_loop
 */
 void	main_engine_loop();
-
-
-/*
-* global variables
-*/
-t_data			*data;
-t_mlx			*mlx;
-t_config		*config;
-int				rays_count;
-#define PI 3.1415926f
 
 #endif
