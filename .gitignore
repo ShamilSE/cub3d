@@ -3,3 +3,4 @@ cmake-build-debug
 cub3d
 .vscode 
 cub3d.dSYM 
+.DS_Store
