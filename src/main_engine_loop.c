@@ -12,10 +12,6 @@ void	player_ini()
 	data->position_y = 500;
 	data->direction_x = -1.0;
 	data->direction_y = 0;
-	player->pdx = (float)cos((double)player->direction) * 5;
-	player->pdy = (float)sin((double)player->direction) * 5;
-	ray_cast();
-	mlx_put_image_to_window(all->data->mlx, all->data->window, all->data->image, 0, 0);
 }
 
 int	key_press(int keycode)
@@ -26,19 +22,20 @@ int	key_press(int keycode)
 		move_player(keycode);
 	get_image();
 	draw_map();
-	ray_cast();
-	mlx_put_image_to_window(all->data->mlx, all->data->window, all->data->image, 0, 0);
+	ray_casting();
 	return (0);
 }
 
-void	mlx_main_loop()
+void	main_engine_loop()
 {
 	mlx->mlx = mlx_init();
 	mlx->window = mlx_new_window(mlx->mlx, config_info->width, config_info->height, "cub3d");
 	get_image();
 	get_texture();
-//	draw_map();
+	draw_map();
 	player_ini();
-	mlx_hook(data->window, 2, (1L<<0), &key_press, all);
-	mlx_loop(data->mlx);
+	mlx_hook(mlx->window, 2, (1L<<0), &key_press, data);
+	mlx_loop(mlx->mlx);
 }
+
+
