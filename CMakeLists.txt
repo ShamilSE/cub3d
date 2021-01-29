@@ -16,7 +16,7 @@ add_executable(cub
         config_file_handler/parse_map.c
         src/ray_casting.c
         config_file_handler/parse_config_file.c
-        src/get_texture.c
+#        src/get_texture.c
 #        src/main_engine_loop.c
         )
 target_link_libraries(cub /Users/shamil/Desktop/CLionProjects/cub3d/libraries/libftprintf.a)

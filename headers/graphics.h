@@ -63,15 +63,20 @@ typedef struct	s_config {
 
 void			move_player(int keycode);
 void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void			get_image();
+void			get_mlx_image();
 char			**parse_map(char *filename);
 void			get_texture();
 void			parse_config_file(char *filename);
 void			throw_error(char *error_message);
 
-/*
-* main_engine_loop
-*/
 void	main_engine_loop();
+
+/*
+** global scope
+*/
+t_data			*data;
+t_mlx			*mlx;
+t_config		*config;
+t_texture		*texture;
 
 #endif

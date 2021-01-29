@@ -1,18 +1,20 @@
 #include "../headers/graphics.h"
-//
-//int	move_forward()
-//{
-//	player->location->x += player->pdx * 5;
-//	player->location->y += player->pdy * 5;
-//	return 1;
-//}
-//
-//void	move_backward()
-//{
-//	player->location->x -= player->pdx * 5;
-//	player->location->y -= player->pdy * 5;
-//}
-//
+
+t_config *config;
+t_data *data;
+
+void	move_forward()
+{
+	data->position_x += data->direction_x * data->move_speed;
+	data->position_y += data->direction_y * data->move_speed;
+}
+
+void	move_backward()
+{
+	data->position_x -= data->direction_x * data->move_speed;
+	data->position_y -= data->direction_y * data->move_speed;
+}
+
 //void	move_left()
 //{
 //	player->location->x += (float)sin((double)player->direction) * 5;;
@@ -23,45 +25,52 @@
 //{
 //
 //}
-//
-//void	look_left()
-//{
-//	player->direction -= 0.1f;
-//	player->pdx = (float)cos((double)player->direction) * 5;
-//	player->pdy = (float)sin((double)player->direction) * 5;
-//}
-//
-//void	look_right()
-//{
-//	player->direction += 0.1f;
-//	player->pdx = (float)cos((double)player->direction) * 5;
-//	player->pdy = (float)sin((double)player->direction) * 5;
-//}
-//
+
+void	look_left()
+{
+	double oldDirX = data->direction_x;
+	data->direction_x = data->direction_x * cos(data->rotation_speed) - data->direction_y * sin(data->rotation_speed);
+	data->direction_y = oldDirX * sin(data->rotation_speed) + data->direction_y * cos(data->rotation_speed);
+	double oldPlaneX = data->plane_x;
+	data->plane_x = data->plane_x * cos(data->rotation_speed) - data->plane_y * sin(data->rotation_speed);
+	data->plane_y = oldPlaneX * sin(data->rotation_speed) + data->plane_y * cos(data->rotation_speed);
+}
+
+void	look_right()
+{
+	double oldDirX = data->direction_x;
+	data->direction_x = data->direction_x * cos(-data->rotation_speed) - data->direction_y * sin(-data->rotation_speed);
+	data->direction_y = oldDirX * sin(-data->rotation_speed) + data->direction_y * cos(-data->rotation_speed);
+	double oldPlaneX = data->plane_x;
+	data->plane_x = data->plane_x * cos(-data->rotation_speed) - data->plane_y * sin(-data->rotation_speed);
+	data->plane_y = oldPlaneX * sin(-data->rotation_speed) + data->plane_y * cos(-data->rotation_speed);
+}
+
 void	move_player(int keycode)
 {
-	printf("move_player()\n");
-//	if (keycode == 13)
+//	for (int i = 0; config->map[i]; ++i)
 //	{
-//		if (!worldMap[(int)(info->posX + info->dirX * info->moveSpeed)][(int)(info->posY)])
-//			info->posX += info->dirX * info->moveSpeed;
-//		if (!worldMap[(int)(info->posX)][(int)(info->posY + info->dirY * info->moveSpeed)])
-//			info->posY += info->dirY * info->moveSpeed;
-//			return ;
-//		move_forward();
+//		printf("%s\n", config->map[i]);
 //	}
-//	else
-//	{
-//		if (keycode == 1)
-//		{
-//			if (all->map[(int)((player->location->y - (player->pdy * 5)) / SCALE)][(int)((player->location->x - (player->pdx * 5)) / SCALE)] == '1')
-//				return ;
-//			move_backward();
-//		}
-//		if (keycode == 0)
-//			look_left();
-//		if (keycode == 2)
-//			look_right();
-//	}
-//	mlx_destroy_image(all->data->mlx, all->data->image);
+	if (keycode == 13)
+	{
+		if ((config->map[(int)(data->position_x + data->direction_x * data->move_speed)][(int)(data->position_y)] == '1')
+		|| (config->map[(int)(data->position_x)][(int)(data->position_y + data->direction_y * data->move_speed)] == '1'))
+			return ;
+		move_forward();
+	}
+	if (keycode == 1)
+	{
+		if (!config->map[(int)(data->position_x)][(int)(data->position_y - data->direction_y * data->move_speed)] ||
+				(!config->map[(int)(data->position_x - data->direction_x * data->move_speed)][(int)(data->position_y)]))
+			return ;
+		move_backward();
+	}
+	if (keycode == 123)
+		look_left();
+	if (keycode == 124)
+		look_right();
+	printf("data->position_y: %f\n", data->position_y);
+	printf("data->position_x: %f\n", data->position_x);
+	puts("\n");
 }

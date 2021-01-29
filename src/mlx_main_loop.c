@@ -1,11 +1,5 @@
 #include "../headers/graphics.h"
 
-void	get_image()
-{
-	mlx->image = mlx_new_image(mlx->mlx, config_info->width, config_info->height);
-	mlx->address = mlx_get_data_addr(mlx->image, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
-}
-
 void	player_ini()
 {
 	data->position_x = 500;
