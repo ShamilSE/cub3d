@@ -48,6 +48,11 @@ void	get_texture(char *filename)
 												&data->bits_per_pixel, &data->line_length, &data->endian);
 }
 
+void	texture_to_structure()
+{
+
+}
+
 int		main(int argc, char **argv)
 {
 	parse_config_file(argv[1]);

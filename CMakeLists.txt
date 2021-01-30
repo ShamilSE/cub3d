@@ -7,6 +7,7 @@ add_executable(cub
 #        src/main.c
 #        test_cub/move_player.c
         test_cub/test_cub.c
+
         src/my_mlx_pixel_put.c
         src/move_player.c
         get_next_line/get_next_line.c
@@ -14,7 +15,7 @@ add_executable(cub
         config_file_handler/map.cub
         src/draw_map.c
         config_file_handler/parse_map.c
-        src/ray_casting.c
+#        src/ray_casting.c
         config_file_handler/parse_config_file.c
 #        src/get_texture.c
 #        src/main_engine_loop.c
