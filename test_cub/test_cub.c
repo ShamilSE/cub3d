@@ -245,13 +245,13 @@ int	main(void)
 	data->dirY = 0;
 	data->planeX = 0;
 	data->planeY = 0.66;
-	data->moveSpeed = 0.05;
-	data->rotSpeed = 0.05;
+	data->moveSpeed = 0.1;
+	data->rotSpeed = 0.1;
 
 	data->image = mlx_new_image(data->mlx, width, height);
 	data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
 	data->win = mlx_new_window(data->mlx, width, height, "mlx");
-	get_texture();
+//	get_texture();
 	calc();
 	mlx_hook(data->win, X_EVENT_KEY_PRESS, 0, &key_press, &data);
 	mlx_loop(data->mlx);
