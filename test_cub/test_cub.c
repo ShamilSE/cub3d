@@ -228,6 +228,12 @@ int	key_press(int key)
 	return (0);
 }
 
+void	get_texture()
+{
+	data->colours = (int *)mlx_get_data_addr(mlx_xpm_file_to_image
+			(data->mlx, "wood.xpm", &data->i_width, &data->i_height), &data->bpp, &data->size, &data->endian);
+}
+
 int	main(void)
 {
 	data = malloc(sizeof(t_data));
@@ -245,6 +251,7 @@ int	main(void)
 	data->image = mlx_new_image(data->mlx, width, height);
 	data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
 	data->win = mlx_new_window(data->mlx, width, height, "mlx");
+	get_texture();
 	calc();
 	mlx_hook(data->win, X_EVENT_KEY_PRESS, 0, &key_press, &data);
 	mlx_loop(data->mlx);

@@ -35,6 +35,9 @@ typedef struct	s_data
 	int		size;
 	double	moveSpeed;
 	double	rotSpeed;
+	int		*colours;
+	int		i_width;
+	int		i_height;
 }				t_data;
 
 t_data *data;
