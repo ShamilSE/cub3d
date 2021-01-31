@@ -20,7 +20,7 @@ add_executable(cub
 #        src/get_texture.c
 #        src/main_engine_loop.c
         )
-target_link_libraries(cub /Users/shamil/Desktop/CLionProjects/cub3d/libraries/libftprintf.a)
-target_link_libraries(cub /Users/shamil/Desktop/CLionProjects/cub3d/libraries/libmlx.a)
+target_link_libraries(cub /Users/mismene/Desktop/CLionProjects/cub3d/libraries/libftprintf.a)
+target_link_libraries(cub /Users/mismene/Desktop/CLionProjects/cub3d/libraries/libmlx.a)
 target_link_libraries(cub "-framework OpenGL")
 target_link_libraries(cub "-framework AppKit")

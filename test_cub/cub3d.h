@@ -3,7 +3,6 @@
 
 #include "mlx/mlx.h"
 #include "key_macos.h"
-#include "cub3d.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -19,19 +18,7 @@
 #define height 480
 #define numSprites 19
 
-typedef struct	s_img
-{
-	void	*img;
-	int		*data;
-
-	int		size_l;
-	int		bpp;
-	int		endian;
-	int		img_width;
-	int		img_height;
-}				t_img;
-
-typedef struct	s_info
+typedef struct	s_data
 {
 	double posX;
 	double posY;
@@ -41,20 +28,15 @@ typedef struct	s_info
 	double planeY;
 	void	*mlx;
 	void	*win;
-	int		key_a;
-	int		key_w;
-	int		key_s;
-	int		key_d;
-	int		key_esc;
-	t_img	*img;
-	int		buf[height][width];
-	double	zBuffer[width];
-	int		**texture;
+	void	*image;
+	char	*addr;
+	int		bpp;
+	int		endian;
+	int		size;
 	double	moveSpeed;
 	double	rotSpeed;
-}				t_info;
+}				t_data;
 
-t_img *img;
-t_info *info;
+t_data *data;
 
 #endif

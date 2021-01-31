@@ -56,10 +56,11 @@ void	texture_to_structure()
 int		main(int argc, char **argv)
 {
 	parse_config_file(argv[1]);
-	player_initialization();
-	mlx_initialization();
-	get_mlx_image();
-	get_texture("/Users/shamil/Desktop/CLionProjects/cub3d/src/wood.xpm");
-	mlx_hook(data->window, 2, (1L << 02), (int (*)()) key_hook, &player);
+	start();
+//	player_initialization();
+//	mlx_initialization();
+//	get_mlx_image();
+//	get_texture("/Users/shamil/Desktop/CLionProjects/cub3d/src/wood.xpm");
+//	mlx_hook(data->window, 2, (1L << 02), (int (*)()) key_hook, &player);
 	mlx_loop(data->mlx);
 }
