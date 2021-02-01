@@ -59,7 +59,11 @@ void	verLine(int x, int y1, int y2, int color)
 		my_mlx_pixel_put(data, x, y, color);
 		y++;
 	}
-	mlx_put_image_to_window(data->mlx, data->win, data->image, 0, 0);
+}
+
+void	draw_celling()
+{
+	printf("draw celling\n");
 }
 
 void	calc()
@@ -162,10 +166,11 @@ void	calc()
 		if (side == 1)
 			color = color / 2;
 
+//		draw_celling();
 		verLine(x, drawStart, drawEnd, color);
-
 		x++;
 	}
+	mlx_put_image_to_window(data->mlx, data->win, data->image, 0, 0);
 }
 
 int	key_press(int key)
