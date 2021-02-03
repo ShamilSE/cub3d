@@ -89,7 +89,7 @@ void	get_filepath(char *line)
 	c = *line;
 	line++;
 	c2 = *line;
-	while (*line != '.')
+	while (*line != '/')
 		line++;
 	if (c == 'N') {
 		config->north = ft_strdup(line);
@@ -154,9 +154,3 @@ void	parse_config_file(char *filename)
 //		throw_error("1");
 	free(line);
 }
-
-//int main()
-//{
-//	config_init();
-//	parse_config_file("map.cub");
-//}

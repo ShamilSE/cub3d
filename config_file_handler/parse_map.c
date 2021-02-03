@@ -1,5 +1,11 @@
 #include "../headers/graphics.h"
 
+void	check_map_line(char *line)
+{
+	if (ft_strchr(line, ' '))
+		throw_error("extra symbols in map");
+}
+
 size_t	count_map_strings(char *str)
 {
 	int		fd;
@@ -30,6 +36,7 @@ char	**parse_map(char *filename)
 	{
 		if (*line == '1')
 		{
+			check_map_line(line);
 			map[i] = ft_strdup(line);
 			free(line);
 			i++;

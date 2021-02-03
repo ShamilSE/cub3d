@@ -1,6 +1,6 @@
 #include "mlx/mlx.h"
 #include "key_macos.h"
-//#include "../headers/graphics.h"
+#include "../headers/graphics.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -19,7 +19,6 @@ t_texture *texture2;
 t_texture *texture3;
 t_texture *texture4;
 t_texture *texture5;
-
 
 int	worldMap[24][24] = {
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -286,7 +285,7 @@ void	get_textures()
 	int g_width;
 	int g_height;
 
-	texture1->image = mlx_xpm_file_to_image(data->mlx, "/Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/bluestone.xpm", &g_width, &g_height);
+	texture1->image = mlx_xpm_file_to_image(data->mlx, config->north, &g_width, &g_height);
 	texture1->address = mlx_get_data_addr(texture1->image, &texture1->bpp, &texture1->size, &texture1->endian);
 	texture2->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
 	texture3->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
@@ -294,8 +293,12 @@ void	get_textures()
 	texture5->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
+	if (argc != 2)
+		throw_error("put second argument to continue");
+	else
+		parse_config_file(argv[1]);
 	data = malloc(sizeof(t_data));
 	texture1 = malloc(sizeof(t_texture));
 	texture2 = malloc(sizeof(t_texture));

@@ -5,7 +5,6 @@ set(CMAKE_C_STANDARD 99)
 
 add_executable(cub
 #        src/main.c
-        test_cub/move_player.c
         test_cub/test_cub.c
 
         src/my_mlx_pixel_put.c
