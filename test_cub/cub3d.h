@@ -40,6 +40,16 @@ typedef struct	s_data
 	int		i_height;
 }				t_data;
 
+typedef struct	s_texture
+{
+	void		*image;
+	char		*address;
+	int			bpp;
+	int			size;
+	int			endian;
+}				t_texture;
+
 t_data *data;
+t_texture *texture;
 
 #endif
