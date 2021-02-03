@@ -1,8 +1,6 @@
 NAME = cub3d
 
-SRC = my_mlx_pixel_put.c main.c get_next_line/get_next_line.c\
-	get_next_line/get_next_line_utils.c move_player.c draw_map.c config_file_handler/parse_map.c ray_cast.c\
-	config_file_handler/parse_config_file.c get_texture.c mlx_main_loop.c
+SRC = test_cub/test_cub.c
 
 MLXFLAGS = -framework OpenGL -framework AppKit
 

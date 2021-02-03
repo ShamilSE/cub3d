@@ -10,8 +10,8 @@
 #define X_EVENT_KEY_EXIT	17
 #define mapWidth 24
 #define mapHeight 24
-#define width 640
-#define height 480
+#define width 1280
+#define height 720
 
 t_data *data;
 t_texture *texture1;
@@ -96,6 +96,8 @@ void	draw_floor(int draw_end, int x_view)
 
 void	calc()
 {
+	data->image = mlx_new_image(data->mlx, width, height);
+	data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
 	int	x;
 
 	x = 0;
@@ -113,8 +115,8 @@ void	calc()
 		double sideDistY;
 
 		//length of ray from one x or y-side to next x or y-side
-		double deltaDistX = fabs(1 / rayDirX);
-		double deltaDistY = fabs(1 / rayDirY);
+		double deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
+		double deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
 		double perpWallDist;
 
 		//what direction to step in x or y-direction (either +1 or -1)
@@ -161,7 +163,8 @@ void	calc()
 				side = 1;
 			}
 			//Check if ray has hit a wall
-			if (worldMap[mapX][mapY] > 0) hit = 1;
+			if (worldMap[mapX][mapY] > 0)
+				hit = 1;
 		}
 		if (side == 0)
 			perpWallDist = (mapX - data->posX + (1 - stepX) / 2) / rayDirX;
@@ -178,21 +181,6 @@ void	calc()
 		int drawEnd = lineHeight / 2 + height / 2;
 		if(drawEnd >= height)
 			drawEnd = height - 1;
-
-		int	color;
-		if (worldMap[mapY][mapX] == 1)
-			color = 0xFF0000;
-		else if (worldMap[mapY][mapX] == 2)
-			color = 0x00FF00;
-		else if (worldMap[mapY][mapX] == 3)
-			color = 0x0000FF;
-		else if (worldMap[mapY][mapX] == 4)
-			color = 0xFFFFFF;
-		else
-			color = 0xFFFF00;
-
-		if (side == 1)
-			color = color / 2;
 		int y = 0;
 		double	wallX;
 		if (side == 0)
@@ -298,7 +286,7 @@ void	get_textures()
 	int g_width;
 	int g_height;
 
-	texture1->image = mlx_xpm_file_to_image(data->mlx, "/Users/shamil/Desktop/CLionProjects/cub3d/test_cub/wood.xpm", &g_width, &g_height);
+	texture1->image = mlx_xpm_file_to_image(data->mlx, "/Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/bluestone.xpm", &g_width, &g_height);
 	texture1->address = mlx_get_data_addr(texture1->image, &texture1->bpp, &texture1->size, &texture1->endian);
 	texture2->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
 	texture3->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
@@ -323,8 +311,6 @@ int	main(void)
 	data->planeY = 0.66;
 	data->moveSpeed = 0.1;
 	data->rotSpeed = 0.1;
-	data->image = mlx_new_image(data->mlx, width, height);
-	data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
 	data->win = mlx_new_window(data->mlx, width, height, "mlx");
 	get_textures();
 	calc();
