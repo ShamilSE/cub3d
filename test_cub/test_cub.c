@@ -65,7 +65,7 @@ void	verLine(int x, int y1, int y2)
 	y = y1;
 	while (y <= y2)
 	{
-		my_mlx_pixel_put(data, x, y,0x23FDDD);
+		my_mlx_pixel_put(data, x, y,get_pixel(x, y, texture1));
 		y++;
 	}
 }
@@ -193,10 +193,31 @@ void	calc()
 
 		if (side == 1)
 			color = color / 2;
-
-		draw_celling(drawStart, x);
-		verLine(x, drawStart, drawEnd);
-		draw_floor(drawEnd, x);
+		int y = 0;
+		double	wallX;
+		if (side == 0)
+			wallX = data->posX + perpWallDist * rayDirY;
+		else
+			wallX = data->posY + perpWallDist * rayDirX;
+		wallX -= floor((wallX));
+		int		text_x = (int)(wallX * (double)texWidth);
+		if (side == 0 && rayDirX > 0)
+			text_x = texWidth - text_x - 1;
+		if (side == 1 && rayDirY < 0)
+			text_x = texWidth - text_x - 1;
+		double	step = 1.0 * texHeight / lineHeight;
+		double	texture_position = (drawStart - (double)height / 2 + (double)lineHeight / 2) * step;
+		while (y < height)
+		{
+			if (y >= drawStart && y <= drawEnd) {
+				int text_y = (int)texture_position & (texHeight - 1);
+				texture_position += step;
+				my_mlx_pixel_put(data, x, y, get_pixel(text_x, text_y, texture1));
+			}
+			y++;
+		}
+			draw_celling(drawStart, x);
+			draw_floor(drawEnd, x);
 		x++;
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->image, 0, 0);
@@ -277,7 +298,8 @@ void	get_textures()
 	int g_width;
 	int g_height;
 
-	texture1->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
+	texture1->image = mlx_xpm_file_to_image(data->mlx, "/Users/shamil/Desktop/CLionProjects/cub3d/test_cub/wood.xpm", &g_width, &g_height);
+	texture1->address = mlx_get_data_addr(texture1->image, &texture1->bpp, &texture1->size, &texture1->endian);
 	texture2->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
 	texture3->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
 	texture4->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);

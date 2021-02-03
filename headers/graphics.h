@@ -17,7 +17,6 @@ typedef struct	s_texture
 	void		*image;
 	int			width;
 	int			height;
-	int			*colours;
 	int			bpp;
 	int			size_line;
 	int			endian;
