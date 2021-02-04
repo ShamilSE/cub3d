@@ -279,8 +279,8 @@ int	main(int argc, char **argv)
 	texture4 = malloc(sizeof(t_texture));
 	texture5 = malloc(sizeof(t_texture));
 	data->mlx = mlx_init();
-	data->posX = 12;
-	data->posY = 5;
+	data->posX = 2;
+	data->posY = 2;
 	data->dirX = -1;
 	data->dirY = 0;
 	data->planeX = 0;

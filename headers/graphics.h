@@ -14,6 +14,7 @@
 
 
 typedef struct	s_config {
+	char		*filename;
 	int			s_width;
 	int			s_height;
 	char		**map;
