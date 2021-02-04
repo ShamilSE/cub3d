@@ -20,33 +20,6 @@ t_texture *texture3;
 t_texture *texture4;
 t_texture *texture5;
 
-int	worldMap[24][24] = {
-		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-		{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-		{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-};
-
 unsigned int	get_pixel(int x, int y, t_texture *t);
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
@@ -162,7 +135,7 @@ void	calc()
 				side = 1;
 			}
 			//Check if ray has hit a wall
-			if (worldMap[mapX][mapY] > 0)
+			if (config->map[mapX][mapY] == '1')
 				hit = 1;
 		}
 		if (side == 0)
@@ -215,9 +188,9 @@ int	key_press(int key)
 	if (key == K_W)
 	{
 		mlx_destroy_image(data->mlx, data->image);
-		if (!worldMap[(int)(data->posX + data->dirX * data->moveSpeed)][(int)(data->posY)])
+		if (config->map[(int)(data->posX + data->dirX * data->moveSpeed)][(int)(data->posY)] == '0')
 			data->posX += data->dirX * data->moveSpeed;
-		if (!worldMap[(int)(data->posX)][(int)(data->posY + data->dirY * data->moveSpeed)])
+		if (config->map[(int)(data->posX)][(int)(data->posY + data->dirY * data->moveSpeed)] == '0')
 			data->posY += data->dirY * data->moveSpeed;
 		data->image = mlx_new_image(data->mlx, width, height);
 		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
@@ -227,9 +200,9 @@ int	key_press(int key)
 	if (key == K_S)
 	{
 		mlx_destroy_image(data->mlx, data->image);
-		if (!worldMap[(int)(data->posX - data->dirX * data->moveSpeed)][(int)(data->posY)])
+		if (config->map[(int)(data->posX - data->dirX * data->moveSpeed)][(int)(data->posY)] == '0')
 			data->posX -= data->dirX * data->moveSpeed;
-		if (!worldMap[(int)(data->posX)][(int)(data->posY - data->dirY * data->moveSpeed)])
+		if (config->map[(int)(data->posX)][(int)(data->posY - data->dirY * data->moveSpeed)] == '0')
 			data->posY -= data->dirY * data->moveSpeed;
 		data->image = mlx_new_image(data->mlx, width, height);
 		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
@@ -296,7 +269,7 @@ void	get_textures()
 int	main(int argc, char **argv)
 {
 	if (argc != 2)
-		throw_error("put second argument to continue");
+		throw_error("put second argument");
 	else
 		parse_config_file(argv[1]);
 	data = malloc(sizeof(t_data));
