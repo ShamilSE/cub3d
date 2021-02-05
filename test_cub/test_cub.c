@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "cub3d.h"
-#define X_EVENT_KEY_PRESS	2
 #define X_EVENT_KEY_EXIT	17
 #define mapWidth 24
 #define mapHeight 24
@@ -169,10 +168,27 @@ void	calc()
 		double	texture_position = (drawStart - (double)height / 2 + (double)lineHeight / 2) * step;
 		while (y < height)
 		{
-			if (y >= drawStart && y <= drawEnd) {
+			if (y >= drawStart && y <= drawEnd)
+			{
+				if (side == 0)
+				{
+					if (stepX > 0)
+					{
+						my_mlx_pixel_put(data, x, y, 0xAAEEFF);
+					} else {
+						my_mlx_pixel_put(data, x, y, 0x1233AB);
+					}
+				} else {
+					if (stepY > 0)
+					{
+						my_mlx_pixel_put(data, x, y, 0xEEAABB);
+					} else {
+						my_mlx_pixel_put(data, x, y, 0x122349);
+					}
+				}
 				int text_y = (int)texture_position & (texHeight - 1);
 				texture_position += step;
-				my_mlx_pixel_put(data, x, y, get_pixel(text_x, text_y, texture1));
+//				my_mlx_pixel_put(data, x, y, get_pixel(text_x, text_y, texture1));
 			}
 			y++;
 		}
@@ -266,6 +282,12 @@ void	get_textures()
 	texture5->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
 }
 
+int	close_window(t_data *data)
+{
+	exit(0);
+	return 0;
+}
+
 int	main(int argc, char **argv)
 {
 	if (argc != 2)
@@ -290,6 +312,7 @@ int	main(int argc, char **argv)
 	data->win = mlx_new_window(data->mlx, width, height, "mlx");
 	get_textures();
 	calc();
-	mlx_hook(data->win, X_EVENT_KEY_PRESS, 0, &key_press, &data);
+	mlx_hook(data->win, 2, 1L<<0, &key_press, &data);
+	mlx_hook(data->win, 17, 1L<<0, &close_window, &data);
 	mlx_loop(data->mlx);
 }
