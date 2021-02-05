@@ -29,18 +29,6 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void	verLine(int x, int y1, int y2)
-{
-	int	y;
-
-	y = y1;
-	while (y <= y2)
-	{
-		my_mlx_pixel_put(data, x, y,get_pixel(x, y, texture1));
-		y++;
-	}
-}
-
 void	draw_celling(int draw_start, int x_view)
 {
 	int		i;
@@ -227,20 +215,31 @@ int	key_press(int key)
 	//rotate to the right
 	if (key == K_D)
 	{
+		printf("go right\n");
 		mlx_destroy_image(data->mlx, data->image);
-		//both camera direction and camera plane must be rotated
-		double oldDirX = data->dirX;
-		data->dirX = data->dirX * cos(-data->rotSpeed) - data->dirY * sin(-data->rotSpeed);
-		data->dirY = oldDirX * sin(-data->rotSpeed) + data->dirY * cos(-data->rotSpeed);
-		double oldPlaneX = data->planeX;
-		data->planeX = data->planeX * cos(-data->rotSpeed) - data->planeY * sin(-data->rotSpeed);
-		data->planeY = oldPlaneX * sin(-data->rotSpeed) + data->planeY * cos(-data->rotSpeed);
+		if (config->map[(int)(data->posX + data->dirY * data->moveSpeed)][(int)(data->posY)] == '0')
+			data->posX += data->dirY * data->moveSpeed;
+		if (config->map[(int)(data->posX)][(int)(data->posY - data->dirX * data->moveSpeed)] == '0')
+			data->posY -= data->dirX * data->moveSpeed;
 		data->image = mlx_new_image(data->mlx, width, height);
 		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
 		calc();
 	}
 	//rotate to the left
 	if (key == K_A)
+	{
+		printf("go left\n");
+		printf("go right\n");
+		mlx_destroy_image(data->mlx, data->image);
+		if (config->map[(int)(data->posX - data->dirY * data->moveSpeed)][(int)(data->posY)] == '0')
+			data->posX -= data->dirY * data->moveSpeed;
+		if (config->map[(int)(data->posX)][(int)(data->posY + data->dirX * data->moveSpeed)] == '0')
+			data->posY += data->dirX * data->moveSpeed;
+		data->image = mlx_new_image(data->mlx, width, height);
+		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
+		calc();
+	}
+	if (key == 123)
 	{
 		mlx_destroy_image(data->mlx, data->image);
 		//both camera direction and camera plane must be rotated
@@ -250,6 +249,20 @@ int	key_press(int key)
 		double oldPlaneX = data->planeX;
 		data->planeX = data->planeX * cos(data->rotSpeed) - data->planeY * sin(data->rotSpeed);
 		data->planeY = oldPlaneX * sin(data->rotSpeed) + data->planeY * cos(data->rotSpeed);
+		data->image = mlx_new_image(data->mlx, width, height);
+		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
+		calc();
+	}
+	if (key == 124)
+	{
+		mlx_destroy_image(data->mlx, data->image);
+		//both camera direction and camera plane must be rotated
+		double oldDirX = data->dirX;
+		data->dirX = data->dirX * cos(-data->rotSpeed) - data->dirY * sin(-data->rotSpeed);
+		data->dirY = oldDirX * sin(-data->rotSpeed) + data->dirY * cos(-data->rotSpeed);
+		double oldPlaneX = data->planeX;
+		data->planeX = data->planeX * cos(-data->rotSpeed) - data->planeY * sin(-data->rotSpeed);
+		data->planeY = oldPlaneX * sin(-data->rotSpeed) + data->planeY * cos(-data->rotSpeed);
 		data->image = mlx_new_image(data->mlx, width, height);
 		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
 		calc();
