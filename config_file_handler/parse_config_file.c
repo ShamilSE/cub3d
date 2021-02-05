@@ -134,6 +134,7 @@ void	parse_config_file(char *filename)
 	char	**map;
 
 	config_init();
+	config->filename = ft_strdup(filename);
 	if (!(name_checker(filename, ".cub")))
 		throw_error("config file must have '.cub' extension");
 	if ((fd = open("map.cub", O_RDONLY)) < 0)

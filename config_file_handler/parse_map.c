@@ -17,7 +17,7 @@ int		is_map_valid(char **map)
 
 	i = 0;
 	j = 0;
-	map_strings_len = 6;
+	map_strings_len = count_map_strings(config->filename);
 	while (map[i])
 	{
 		while (map[i][j])
@@ -73,7 +73,7 @@ size_t	count_map_strings(char *str)
 	fd = open(str, O_RDONLY);
 	while (get_next_line(fd, &line) > 0)
 	{
-		if (*line == '1')
+		if (*line == '1' || *line == ' ')
 			map_length++;
 	}
 	return (map_length);

@@ -27,13 +27,10 @@ typedef struct	s_config {
 	char		*sprite;
 }				t_config;
 
-void			move_player(int keycode);
-void			get_mlx_image();
 char			**parse_map(char *filename);
-void			get_texture();
 void			parse_config_file(char *filename);
 void			throw_error(char *error_message);
-void			ray_casting();
+size_t			count_map_strings(char *str);
 
 t_config *config;
 
