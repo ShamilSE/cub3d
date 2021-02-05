@@ -7,6 +7,26 @@ void	check_map_line(char *line)
 		throw_error("extra symbols in map");
 }
 
+void	is_map_string_valid(const char *line)
+{
+	char	valid_map_chars[8] = " 012NEWS";
+	int i = 0;
+	int j = 0;
+
+	while (line[i])
+	{
+		while (valid_map_chars[j])
+		{
+			if (line[i] == valid_map_chars[j])
+				return ;
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	throw_error("map is not valid");
+}
+
 int		is_map_valid(char **map)
 {
 	int	i;
@@ -91,8 +111,11 @@ char	**parse_map(char *filename)
 	map = malloc(sizeof(char *) * (count_map_strings(filename) + 1));
 	while (get_next_line(fd, &line) > 0)
 	{
-		if (*line == '1')
+		if (*line != '1')
+			continue ;
+		else
 		{
+			is_map_string_valid(line);
 			check_map_line(line);
 			map[i] = ft_strdup(line);
 			free(line);
