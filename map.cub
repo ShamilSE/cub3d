@@ -1,0 +1,19 @@
+R 300 300
+
+NO /Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/colorstone.xpm
+SO /Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/colorstone.xpm
+WE /Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/colorstone.xpm
+EA /Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/colorstone.xpm
+
+S /Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/colorstone.xpm
+F 255,1,1
+C 1,1,1
+
+11111111111
+10S000000001
+10000111111
+100001
+11110111
+  1100001
+11000111
+111111
