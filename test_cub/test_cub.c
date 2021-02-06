@@ -15,9 +15,9 @@
 t_data *data;
 t_texture *texture_north;
 t_texture *texture_south;
-t_texture *texture3;
-t_texture *texture4;
-t_texture *texture5;
+t_texture *texture_west;
+t_texture *texture_east;
+t_texture *sprite;
 
 unsigned int	get_pixel(int x, int y, t_texture *t);
 
@@ -286,17 +286,19 @@ void	get_textures()
 
 	texture_north = malloc(sizeof(t_texture));
 	texture_south = malloc(sizeof(t_texture));
-	texture3 = malloc(sizeof(t_texture));
-	texture4 = malloc(sizeof(t_texture));
-	texture5 = malloc(sizeof(t_texture));
+	texture_west = malloc(sizeof(t_texture));
+	texture_east = malloc(sizeof(t_texture));
+	sprite = malloc(sizeof(t_texture));
 	if (!(texture_north->image = mlx_xpm_file_to_image(data->mlx, config->north, &g_width, &g_height)))
 		throw_error("invalid texture path");
 	if (!(texture_south->image = mlx_xpm_file_to_image(data->mlx, config->south, &g_width, &g_height)))
 		throw_error("invalid texture path");;
-	if (!(texture3->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height)))
+	if (!(texture_west->image = mlx_xpm_file_to_image(data->mlx, config->west, &g_width, &g_height)))
 		throw_error("invalid texture path");
-	texture4->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
-	texture5->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
+	if (!(texture_east->image = mlx_xpm_file_to_image(data->mlx, config->east, &g_width, &g_height)))
+		throw_error("invalid texture path");
+	if (!(sprite->image = mlx_xpm_file_to_image(data->mlx, config->sprite, &g_width, &g_height)))
+		throw_error("invalid sprite path");
 	texture_north->address = mlx_get_data_addr(texture_north->image, &texture_north->bpp, &texture_north->size, &texture_north->endian);
 }
 
