@@ -114,8 +114,8 @@ void	config_init()
 void	first_char(char *line)
 {
 	if (*line == ' ')
-		printf("2\n");
-//		throw_error("delete spaces before string\n");
+		throw_error("delete spaces before string\n");
+//		printf("2\n");
 	if (*line == 'R')
 		get_resolution(line);
 	else if (*line == 'F')

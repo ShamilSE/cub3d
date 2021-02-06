@@ -13,8 +13,8 @@
 #define height 720
 
 t_data *data;
-t_texture *texture1;
-t_texture *texture2;
+t_texture *texture_north;
+t_texture *texture_south;
 t_texture *texture3;
 t_texture *texture4;
 t_texture *texture5;
@@ -176,7 +176,7 @@ void	calc()
 				}
 				int text_y = (int)texture_position & (texHeight - 1);
 				texture_position += step;
-//				my_mlx_pixel_put(data, x, y, get_pixel(text_x, text_y, texture1));
+//				my_mlx_pixel_put(data, x, y, get_pixel(text_x, text_y, texture_north));
 			}
 			y++;
 		}
@@ -215,7 +215,6 @@ int	key_press(int key)
 	//rotate to the right
 	if (key == K_D)
 	{
-		printf("go right\n");
 		mlx_destroy_image(data->mlx, data->image);
 		if (config->map[(int)(data->posX + data->dirY * data->moveSpeed)][(int)(data->posY)] == '0')
 			data->posX += data->dirY * data->moveSpeed;
@@ -228,8 +227,6 @@ int	key_press(int key)
 	//rotate to the left
 	if (key == K_A)
 	{
-		printf("go left\n");
-		printf("go right\n");
 		mlx_destroy_image(data->mlx, data->image);
 		if (config->map[(int)(data->posX - data->dirY * data->moveSpeed)][(int)(data->posY)] == '0')
 			data->posX -= data->dirY * data->moveSpeed;
@@ -287,12 +284,20 @@ void	get_textures()
 	int g_width;
 	int g_height;
 
-	texture1->image = mlx_xpm_file_to_image(data->mlx, config->north, &g_width, &g_height);
-	texture1->address = mlx_get_data_addr(texture1->image, &texture1->bpp, &texture1->size, &texture1->endian);
-	texture2->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
-	texture3->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
+	texture_north = malloc(sizeof(t_texture));
+	texture_south = malloc(sizeof(t_texture));
+	texture3 = malloc(sizeof(t_texture));
+	texture4 = malloc(sizeof(t_texture));
+	texture5 = malloc(sizeof(t_texture));
+	if (!(texture_north->image = mlx_xpm_file_to_image(data->mlx, config->north, &g_width, &g_height)))
+		throw_error("invalid texture path");
+	if (!(texture_south->image = mlx_xpm_file_to_image(data->mlx, config->south, &g_width, &g_height)))
+		throw_error("invalid texture path");;
+	if (!(texture3->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height)))
+		throw_error("invalid texture path");
 	texture4->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
 	texture5->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
+	texture_north->address = mlx_get_data_addr(texture_north->image, &texture_north->bpp, &texture_north->size, &texture_north->endian);
 }
 
 int	close_window(t_data *data)
@@ -303,16 +308,11 @@ int	close_window(t_data *data)
 
 int	main(int argc, char **argv)
 {
+	data = malloc(sizeof(t_data));
 	if (argc != 2)
 		throw_error("put second argument");
 	else
 		parse_config_file(argv[1]);
-	data = malloc(sizeof(t_data));
-	texture1 = malloc(sizeof(t_texture));
-	texture2 = malloc(sizeof(t_texture));
-	texture3 = malloc(sizeof(t_texture));
-	texture4 = malloc(sizeof(t_texture));
-	texture5 = malloc(sizeof(t_texture));
 	data->mlx = mlx_init();
 	data->posX = 2;
 	data->posY = 2;
@@ -323,6 +323,7 @@ int	main(int argc, char **argv)
 	data->moveSpeed = 0.1;
 	data->rotSpeed = 0.1;
 	data->win = mlx_new_window(data->mlx, width, height, "mlx");
+	player_placer();
 	get_textures();
 	calc();
 	mlx_hook(data->win, 2, 1L<<0, &key_press, &data);
