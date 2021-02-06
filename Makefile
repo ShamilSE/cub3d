@@ -1,13 +1,15 @@
 NAME = cub3d
 
-SRC = test_cub/test_cub.c
+SRC = test_cub/test_cub.c\
+	config_file_handler/parse_config_file.c config_file_handler/parse_map.c\
+	get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 
-MLXFLAGS = -framework OpenGL -framework AppKit
+MLXFLAGS = -L. -lmlx -framework OpenGL -framework AppKit
 
 all: $(NAME)
 
 $(NAME): $(SRC)
-	gcc $(SRC) libraries/libftprintf.a libraries/libmlx.a $(MLXFLAGS) -o cub3d
+	gcc $(SRC) $(MLXFLAGS) libraries/libftprintf.a -o $(NAME)
 
 clean:
 	@rm -rf $(NAME)

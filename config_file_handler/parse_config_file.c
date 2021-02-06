@@ -114,8 +114,8 @@ void	config_init()
 void	first_char(char *line)
 {
 	if (*line == ' ')
-		printf("2\n");
-//		throw_error("delete spaces before string\n");
+		throw_error("delete spaces before string\n");
+//		printf("2\n");
 	if (*line == 'R')
 		get_resolution(line);
 	else if (*line == 'F')
@@ -134,6 +134,7 @@ void	parse_config_file(char *filename)
 	char	**map;
 
 	config_init();
+	config->filename = ft_strdup(filename);
 	if (!(name_checker(filename, ".cub")))
 		throw_error("config file must have '.cub' extension");
 	if ((fd = open("map.cub", O_RDONLY)) < 0)

@@ -18,22 +18,21 @@ typedef struct	s_config {
 	int			s_width;
 	int			s_height;
 	char		**map;
-	int			floor[3];
-	int			celling[3];
+	int			floor[4];
+	int			celling[4];
 	char		*north;
 	char		*south;
 	char		*west;
 	char		*east;
 	char		*sprite;
+	char		player;
 }				t_config;
 
-void			move_player(int keycode);
-void			get_mlx_image();
 char			**parse_map(char *filename);
-void			get_texture();
 void			parse_config_file(char *filename);
 void			throw_error(char *error_message);
-void			ray_casting();
+size_t			count_map_strings(char *str);
+void			player_placer();
 
 t_config *config;
 

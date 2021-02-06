@@ -1,25 +1,14 @@
-#include "mlx/mlx.h"
+#include "../headers//mlx.h"
 #include "key_macos.h"
 #include "../headers/graphics.h"
-#include <math.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include "cub3d.h"
-#define X_EVENT_KEY_EXIT	17
-#define mapWidth 24
-#define mapHeight 24
-#define width 1280
-#define height 720
 
 t_data *data;
-t_texture *texture1;
-t_texture *texture2;
-t_texture *texture3;
-t_texture *texture4;
-t_texture *texture5;
-
-unsigned int	get_pixel(int x, int y, t_texture *t);
+t_texture *texture_north;
+t_texture *texture_south;
+t_texture *texture_west;
+t_texture *texture_east;
+t_texture *sprite;
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -29,16 +18,9 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void	verLine(int x, int y1, int y2)
+int		create_rgb(int t, int r, int g, int b)
 {
-	int	y;
-
-	y = y1;
-	while (y <= y2)
-	{
-		my_mlx_pixel_put(data, x, y,get_pixel(x, y, texture1));
-		y++;
-	}
+	return(t << 24 | r << 16 | g << 8 | b);
 }
 
 void	draw_celling(int draw_start, int x_view)
@@ -48,7 +30,7 @@ void	draw_celling(int draw_start, int x_view)
 	i = 0;
 	while (i < draw_start)
 	{
-		my_mlx_pixel_put(data, x_view, i, 0xFDFDFD);
+		my_mlx_pixel_put(data, x_view, i, create_rgb(0, config->celling[0], config->celling[1], config->celling[2]));
 		i++;
 	}
 }
@@ -58,7 +40,7 @@ void	draw_floor(int draw_end, int x_view)
 	int		i;
 
 	i = draw_end;
-	while (i < height)
+	while (i < config->s_height)
 	{
 		my_mlx_pixel_put(data, x_view, i, 0xDFDFDF);
 		i++;
@@ -67,14 +49,14 @@ void	draw_floor(int draw_end, int x_view)
 
 void	calc()
 {
-	data->image = mlx_new_image(data->mlx, width, height);
+	data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
 	data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
 	int	x;
 
 	x = 0;
-	while (x < width)
+	while (x < config->s_width)
 	{
-		double cameraX = 2 * x / (double)width - 1;
+		double cameraX = 2 * x / (double)config->s_width - 1;
 		double rayDirX = data->dirX + data->planeX * cameraX;
 		double rayDirY = data->dirY + data->planeY * cameraX;
 
@@ -143,15 +125,15 @@ void	calc()
 			perpWallDist = (mapY - data->posY + (1 - stepY) / 2) / rayDirY;
 
 		//Calculate height of line to draw on screen
-		int lineHeight = (int)(height / perpWallDist);
+		int lineHeight = (int)(config->s_height / perpWallDist);
 
 		//calculate lowest and highest pixel to fill in current stripe
-		int drawStart = -lineHeight / 2 + height / 2;
+		int drawStart = -lineHeight / 2 + config->s_height / 2;
 		if(drawStart < 0)
 			drawStart = 0;
-		int drawEnd = lineHeight / 2 + height / 2;
-		if(drawEnd >= height)
-			drawEnd = height - 1;
+		int drawEnd = lineHeight / 2 + config->s_height / 2;
+		if(drawEnd >= config->s_height)
+			drawEnd = config->s_height - 1;
 		int y = 0;
 		double	wallX;
 		if (side == 0)
@@ -165,8 +147,8 @@ void	calc()
 		if (side == 1 && rayDirY < 0)
 			text_x = texWidth - text_x - 1;
 		double	step = 1.0 * texHeight / lineHeight;
-		double	texture_position = (drawStart - (double)height / 2 + (double)lineHeight / 2) * step;
-		while (y < height)
+		double	texture_position = (drawStart - (double)config->s_height / 2 + (double)lineHeight / 2) * step;
+		while (y < config->s_height)
 		{
 			if (y >= drawStart && y <= drawEnd)
 			{
@@ -188,7 +170,7 @@ void	calc()
 				}
 				int text_y = (int)texture_position & (texHeight - 1);
 				texture_position += step;
-//				my_mlx_pixel_put(data, x, y, get_pixel(text_x, text_y, texture1));
+//				my_mlx_pixel_put(data, x, y, get_pixel(text_x, text_y, texture_north));
 			}
 			y++;
 		}
@@ -208,7 +190,7 @@ int	key_press(int key)
 			data->posX += data->dirX * data->moveSpeed;
 		if (config->map[(int)(data->posX)][(int)(data->posY + data->dirY * data->moveSpeed)] == '0')
 			data->posY += data->dirY * data->moveSpeed;
-		data->image = mlx_new_image(data->mlx, width, height);
+		data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
 		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
 		calc();
 	}
@@ -220,7 +202,7 @@ int	key_press(int key)
 			data->posX -= data->dirX * data->moveSpeed;
 		if (config->map[(int)(data->posX)][(int)(data->posY - data->dirY * data->moveSpeed)] == '0')
 			data->posY -= data->dirY * data->moveSpeed;
-		data->image = mlx_new_image(data->mlx, width, height);
+		data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
 		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
 		calc();
 	}
@@ -228,19 +210,27 @@ int	key_press(int key)
 	if (key == K_D)
 	{
 		mlx_destroy_image(data->mlx, data->image);
-		//both camera direction and camera plane must be rotated
-		double oldDirX = data->dirX;
-		data->dirX = data->dirX * cos(-data->rotSpeed) - data->dirY * sin(-data->rotSpeed);
-		data->dirY = oldDirX * sin(-data->rotSpeed) + data->dirY * cos(-data->rotSpeed);
-		double oldPlaneX = data->planeX;
-		data->planeX = data->planeX * cos(-data->rotSpeed) - data->planeY * sin(-data->rotSpeed);
-		data->planeY = oldPlaneX * sin(-data->rotSpeed) + data->planeY * cos(-data->rotSpeed);
-		data->image = mlx_new_image(data->mlx, width, height);
+		if (config->map[(int)(data->posX + data->dirY * data->moveSpeed)][(int)(data->posY)] == '0')
+			data->posX += data->dirY * data->moveSpeed;
+		if (config->map[(int)(data->posX)][(int)(data->posY - data->dirX * data->moveSpeed)] == '0')
+			data->posY -= data->dirX * data->moveSpeed;
+		data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
 		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
 		calc();
 	}
 	//rotate to the left
 	if (key == K_A)
+	{
+		mlx_destroy_image(data->mlx, data->image);
+		if (config->map[(int)(data->posX - data->dirY * data->moveSpeed)][(int)(data->posY)] == '0')
+			data->posX -= data->dirY * data->moveSpeed;
+		if (config->map[(int)(data->posX)][(int)(data->posY + data->dirX * data->moveSpeed)] == '0')
+			data->posY += data->dirX * data->moveSpeed;
+		data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
+		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
+		calc();
+	}
+	if (key == 123)
 	{
 		mlx_destroy_image(data->mlx, data->image);
 		//both camera direction and camera plane must be rotated
@@ -250,7 +240,21 @@ int	key_press(int key)
 		double oldPlaneX = data->planeX;
 		data->planeX = data->planeX * cos(data->rotSpeed) - data->planeY * sin(data->rotSpeed);
 		data->planeY = oldPlaneX * sin(data->rotSpeed) + data->planeY * cos(data->rotSpeed);
-		data->image = mlx_new_image(data->mlx, width, height);
+		data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
+		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
+		calc();
+	}
+	if (key == 124)
+	{
+		mlx_destroy_image(data->mlx, data->image);
+		//both camera direction and camera plane must be rotated
+		double oldDirX = data->dirX;
+		data->dirX = data->dirX * cos(-data->rotSpeed) - data->dirY * sin(-data->rotSpeed);
+		data->dirY = oldDirX * sin(-data->rotSpeed) + data->dirY * cos(-data->rotSpeed);
+		double oldPlaneX = data->planeX;
+		data->planeX = data->planeX * cos(-data->rotSpeed) - data->planeY * sin(-data->rotSpeed);
+		data->planeY = oldPlaneX * sin(-data->rotSpeed) + data->planeY * cos(-data->rotSpeed);
+		data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
 		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
 		calc();
 	}
@@ -259,27 +263,31 @@ int	key_press(int key)
 	return (0);
 }
 
-unsigned int	get_pixel(int x, int y, t_texture *t)
-{
-	char	*dst;
-	unsigned int	color;
-
-	dst = t->address + (y * t->size + x * (t->bpp / 8));
-	color = *(unsigned int*)dst;
-	return (color);
-}
-
 void	get_textures()
 {
 	int g_width;
 	int g_height;
 
-	texture1->image = mlx_xpm_file_to_image(data->mlx, config->north, &g_width, &g_height);
-	texture1->address = mlx_get_data_addr(texture1->image, &texture1->bpp, &texture1->size, &texture1->endian);
-	texture2->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
-	texture3->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
-	texture4->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
-	texture5->image = mlx_xpm_file_to_image(data->mlx, "wood.xpm", &g_width, &g_height);
+	texture_north = malloc(sizeof(t_texture));
+	texture_south = malloc(sizeof(t_texture));
+	texture_west = malloc(sizeof(t_texture));
+	texture_east = malloc(sizeof(t_texture));
+	sprite = malloc(sizeof(t_texture));
+	if (!(texture_north->image = mlx_xpm_file_to_image(data->mlx, config->north, &g_width, &g_height)))
+		throw_error("invalid texture path");
+	if (!(texture_south->image = mlx_xpm_file_to_image(data->mlx, config->south, &g_width, &g_height)))
+		throw_error("invalid texture path");;
+	if (!(texture_west->image = mlx_xpm_file_to_image(data->mlx, config->west, &g_width, &g_height)))
+		throw_error("invalid texture path");
+	if (!(texture_east->image = mlx_xpm_file_to_image(data->mlx, config->east, &g_width, &g_height)))
+		throw_error("invalid texture path");
+	if (!(sprite->image = mlx_xpm_file_to_image(data->mlx, config->sprite, &g_width, &g_height)))
+		throw_error("invalid sprite path");
+	texture_north->address = mlx_get_data_addr(texture_north->image, &texture_north->bpp, &texture_north->size, &texture_north->endian);
+	texture_south->address = mlx_get_data_addr(texture_south->image, &texture_south->bpp, &texture_south->size, &texture_south->endian);
+	texture_west->address = mlx_get_data_addr(texture_west->image, &texture_west->bpp, &texture_west->size, &texture_west->endian);
+	texture_east->address = mlx_get_data_addr(texture_east->image, &texture_east->bpp, &texture_east->size, &texture_east->endian);
+	sprite->address = mlx_get_data_addr(sprite->image, &sprite->bpp, &sprite->size, &sprite->endian);
 }
 
 int	close_window(t_data *data)
@@ -288,28 +296,32 @@ int	close_window(t_data *data)
 	return 0;
 }
 
+void	is_screen_size_correct()
+{
+	int		mlx_size_x;
+	int		mlx_size_y;
+
+	mlx_get_screen_size(data->mlx, &mlx_size_x, &mlx_size_y);
+	if (config->s_width > mlx_size_x || config->s_height > mlx_size_y)
+		throw_error("resolution settings are incorrect");
+}
+
 int	main(int argc, char **argv)
 {
+	data = malloc(sizeof(t_data));
 	if (argc != 2)
 		throw_error("put second argument");
 	else
 		parse_config_file(argv[1]);
-	data = malloc(sizeof(t_data));
-	texture1 = malloc(sizeof(t_texture));
-	texture2 = malloc(sizeof(t_texture));
-	texture3 = malloc(sizeof(t_texture));
-	texture4 = malloc(sizeof(t_texture));
-	texture5 = malloc(sizeof(t_texture));
 	data->mlx = mlx_init();
-	data->posX = 2;
-	data->posY = 2;
 	data->dirX = -1;
 	data->dirY = 0;
 	data->planeX = 0;
 	data->planeY = 0.66;
 	data->moveSpeed = 0.1;
 	data->rotSpeed = 0.1;
-	data->win = mlx_new_window(data->mlx, width, height, "mlx");
+	data->win = mlx_new_window(data->mlx, config->s_width, config->s_height, "mlx");
+	is_screen_size_correct();
 	get_textures();
 	calc();
 	mlx_hook(data->win, 2, 1L<<0, &key_press, &data);

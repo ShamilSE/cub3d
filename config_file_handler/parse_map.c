@@ -7,28 +7,60 @@ void	check_map_line(char *line)
 		throw_error("extra symbols in map");
 }
 
+void	is_map_string_valid(const char *line)
+{
+	char	valid_map_chars[9] = " 012NEWS";
+	int i = 0;
+	int j = 0;
+
+	while (line[i])
+	{
+		while (valid_map_chars[j])
+		{
+			if (line[i] == 'N' || line[i] == 'E' || line[i] == 'W' || line[i] == 'S')
+				config->player = line[i];
+			if (line[i] == valid_map_chars[j])
+				break ;
+			j++;
+			if (ft_strlen(line) == j - 1)
+				throw_error("map is not valid");
+		}
+		j = 0;
+		i++;
+	}
+}
+
 int		is_map_valid(char **map)
 {
 	int	i;
 	int	j;
 	int	j1;
 	int	i1;
-	size_t  map_strings_len;
+	size_t	map_strings_len;
+	int		player_flag;
 
+	player_flag = 0;
 	i = 0;
 	j = 0;
-	map_strings_len = 6;
+	map_strings_len = count_map_strings(config->filename);
 	while (map[i])
 	{
 		while (map[i][j])
 		{
+			if (map[i][j] == 'N' || map[i][j] == 'E' || map[i][j] == 'W' || map[i][j] == 'S')
+			{
+				if (player_flag)
+					throw_error("several players on a map, leave only one");
+				player_flag = 1;
+				data->posX = i + 1;
+				data->posY = j + 1;
+				map[i][j] = '0';
+			}
 			if (map[i][j] == '0')
 			{
 				j1 = j;
 				while (map[i][j1] != '1')
 				{
-					size_t len;
-					len = ft_strlen(map[i]);
 					if (map[i][(ft_strlen(map[i]) - 1)] == '0')
 						throw_error("map is not valid");
 					j1++;
@@ -69,11 +101,11 @@ size_t	count_map_strings(char *str)
 	size_t	map_length;
 	char	*line;
 
-	map_length = 1;
+	map_length = 0;
 	fd = open(str, O_RDONLY);
 	while (get_next_line(fd, &line) > 0)
 	{
-		if (*line == '1')
+		if (*line == '1' || *line == ' ')
 			map_length++;
 	}
 	return (map_length);
@@ -91,8 +123,11 @@ char	**parse_map(char *filename)
 	map = malloc(sizeof(char *) * (count_map_strings(filename) + 1));
 	while (get_next_line(fd, &line) > 0)
 	{
-		if (*line == '1')
+		if (*line != '1')
+			continue ;
+		else
 		{
+			is_map_string_valid(line);
 			check_map_line(line);
 			map[i] = ft_strdup(line);
 			free(line);
@@ -101,6 +136,8 @@ char	**parse_map(char *filename)
 	}
 	map[i] = ft_strdup(line);
 	free(line);
+	if (!config->player)
+		throw_error("there is no player on a map");
 	map[i + 1] = 0x0;
 	if (!is_map_valid(map))
 		throw_error("map is not valid :)");
