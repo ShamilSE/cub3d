@@ -1,5 +1,5 @@
 R 1920 1080
-NO /Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/bluestone.xpm
+NO /Users/shamil/Desktop/CLionProjects/cub3d/test_cub/textures/colorstone.xpm
 SO ./path_to_the_south_texture
 WE ./path_to_the_west_texture
 EA ./path_to_the_east_texture
