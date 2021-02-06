@@ -43,7 +43,7 @@ typedef struct	s_data
 typedef struct	s_texture
 {
 	void		*image;
-	char		*address;
+	int		*address;
 	int			bpp;
 	int			size;
 	int			endian;
