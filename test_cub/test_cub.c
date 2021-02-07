@@ -18,6 +18,16 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
+unsigned int	get_pixel(int x, int y, t_texture *t)
+{
+	char	*dst;
+	unsigned int	color;
+
+	dst = t->address + (y * t->size + x * (t->bpp / 8));
+	color = *(unsigned int*)dst;
+	return (color);
+}
+
 int		create_rgb(int t, int r, int g, int b)
 {
 	return(t << 24 | r << 16 | g << 8 | b);
@@ -30,7 +40,7 @@ void	draw_celling(int draw_start, int x_view)
 	i = 0;
 	while (i < draw_start)
 	{
-		my_mlx_pixel_put(data, x_view, i, create_rgb(0, config->celling[0], config->celling[1], config->celling[2]));
+		my_mlx_pixel_put(data, x_view, i, 0xFF00FF);
 		i++;
 	}
 }
@@ -134,48 +144,41 @@ void	calc()
 		int drawEnd = lineHeight / 2 + config->s_height / 2;
 		if(drawEnd >= config->s_height)
 			drawEnd = config->s_height - 1;
-		int y = 0;
-		double	wallX;
+
+		// texturing calculations
+
+		// calculate value of wallX
+		double wallX;
 		if (side == 0)
-			wallX = data->posX + perpWallDist * rayDirY;
+			wallX = data->posY + perpWallDist * rayDirY;
 		else
-			wallX = data->posY + perpWallDist * rayDirX;
-		wallX -= floor((wallX));
-		int		text_x = (int)(wallX * (double)texWidth);
+			wallX = data->posX + perpWallDist * rayDirX;
+		wallX -= floor(wallX);
+
+		// x coordinate on the texture
+		int texX = (int)(wallX * (double)texWidth);
 		if (side == 0 && rayDirX > 0)
-			text_x = texWidth - text_x - 1;
+			texX = texWidth - texX - 1;
 		if (side == 1 && rayDirY < 0)
-			text_x = texWidth - text_x - 1;
-		double	step = 1.0 * texHeight / lineHeight;
-		double	texture_position = (drawStart - (double)config->s_height / 2 + (double)lineHeight / 2) * step;
+			texX = texWidth - texX - 1;
+
+		// How much to increase the texture coordinate perscreen pixel
+		double step = 1.0 * texHeight / lineHeight;
+		// Starting texture coordinate
+		double texPos = (drawStart - config->s_height / 2 + lineHeight / 2) * step;
+		int y = 0;
 		while (y < config->s_height)
 		{
-			if (y >= drawStart && y <= drawEnd)
-			{
-				if (side == 0)
-				{
-					if (stepX > 0)
-					{
-						my_mlx_pixel_put(data, x, y, 0xAAEEFF);
-					} else {
-						my_mlx_pixel_put(data, x, y, 0x1233AB);
-					}
-				} else {
-					if (stepY > 0)
-					{
-						my_mlx_pixel_put(data, x, y, 0xEEAABB);
-					} else {
-						my_mlx_pixel_put(data, x, y, 0x122349);
-					}
-				}
-				int text_y = (int)texture_position & (texHeight - 1);
-				texture_position += step;
-//				my_mlx_pixel_put(data, x, y, get_pixel(text_x, text_y, texture_north));
+			if (y >= drawStart && y <= drawEnd) {
+				int text_y = (int)texPos & (texHeight - 1);
+				int color = texture_east->address[texHeight * text_y + texX];
+				texPos += step;
+				my_mlx_pixel_put(data, x, y, color);
 			}
 			y++;
 		}
-			draw_celling(drawStart, x);
-			draw_floor(drawEnd, x);
+//		draw_celling(drawStart, x);
+//		draw_floor(drawEnd, x);
 		x++;
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->image, 0, 0);
@@ -283,11 +286,11 @@ void	get_textures()
 		throw_error("invalid texture path");
 	if (!(sprite->image = mlx_xpm_file_to_image(data->mlx, config->sprite, &g_width, &g_height)))
 		throw_error("invalid sprite path");
-	texture_north->address = mlx_get_data_addr(texture_north->image, &texture_north->bpp, &texture_north->size, &texture_north->endian);
-	texture_south->address = mlx_get_data_addr(texture_south->image, &texture_south->bpp, &texture_south->size, &texture_south->endian);
-	texture_west->address = mlx_get_data_addr(texture_west->image, &texture_west->bpp, &texture_west->size, &texture_west->endian);
-	texture_east->address = mlx_get_data_addr(texture_east->image, &texture_east->bpp, &texture_east->size, &texture_east->endian);
-	sprite->address = mlx_get_data_addr(sprite->image, &sprite->bpp, &sprite->size, &sprite->endian);
+	texture_north->address = (int *)mlx_get_data_addr(texture_north->image, &texture_north->bpp, &texture_north->size, &texture_north->endian);
+	texture_south->address = (int *)mlx_get_data_addr(texture_south->image, &texture_south->bpp, &texture_south->size, &texture_south->endian);
+	texture_west->address = (int *)mlx_get_data_addr(texture_west->image, &texture_west->bpp, &texture_west->size, &texture_west->endian);
+	texture_east->address = (int *)mlx_get_data_addr(texture_east->image, &texture_east->bpp, &texture_east->size, &texture_east->endian);
+	sprite->address = (int *)mlx_get_data_addr(sprite->image, &sprite->bpp, &sprite->size, &sprite->endian);
 }
 
 int	close_window(t_data *data)
@@ -296,15 +299,15 @@ int	close_window(t_data *data)
 	return 0;
 }
 
-void	is_screen_size_correct()
-{
-	int		mlx_size_x;
-	int		mlx_size_y;
-
-	mlx_get_screen_size(data->mlx, &mlx_size_x, &mlx_size_y);
-	if (config->s_width > mlx_size_x || config->s_height > mlx_size_y)
-		throw_error("resolution settings are incorrect");
-}
+//void	is_screen_size_correct()
+//{
+//	int		mlx_size_x;
+//	int		mlx_size_y;
+//
+//	mlx_get_screen_size(data->mlx, &mlx_size_x, &mlx_size_y);
+//	if (config->s_width > mlx_size_x || config->s_height > mlx_size_y)
+//		throw_error("resolution settings are incorrect");
+//}
 
 int	main(int argc, char **argv)
 {
@@ -321,7 +324,7 @@ int	main(int argc, char **argv)
 	data->moveSpeed = 0.1;
 	data->rotSpeed = 0.1;
 	data->win = mlx_new_window(data->mlx, config->s_width, config->s_height, "mlx");
-	is_screen_size_correct();
+//	is_screen_size_correct();
 	get_textures();
 	calc();
 	mlx_hook(data->win, 2, 1L<<0, &key_press, &data);

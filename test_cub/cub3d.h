@@ -14,8 +14,6 @@
 #define texHeight 64
 #define mapWidth 24
 #define mapHeight 24
-#define width 640
-#define height 480
 #define numSprites 19
 
 typedef struct	s_data
