@@ -18,19 +18,9 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-unsigned int	get_pixel(int x, int y, t_texture *t)
+int		create_rgb(int r, int g, int b)
 {
-	char	*dst;
-	unsigned int	color;
-
-	dst = t->address + (y * t->size + x * (t->bpp / 8));
-	color = *(unsigned int*)dst;
-	return (color);
-}
-
-int		create_rgb(int t, int r, int g, int b)
-{
-	return(t << 24 | r << 16 | g << 8 | b);
+	return(r << 16 | g << 8 | b);
 }
 
 void	draw_celling(int draw_start, int x_view)
@@ -40,7 +30,7 @@ void	draw_celling(int draw_start, int x_view)
 	i = 0;
 	while (i < draw_start)
 	{
-		my_mlx_pixel_put(data, x_view, i, 0xFF00FF);
+		my_mlx_pixel_put(data, x_view, i, create_rgb(config->celling[0], config->celling[1], config->celling[2]));
 		i++;
 	}
 }
@@ -52,7 +42,7 @@ void	draw_floor(int draw_end, int x_view)
 	i = draw_end;
 	while (i < config->s_height)
 	{
-		my_mlx_pixel_put(data, x_view, i, 0xDFDFDF);
+		my_mlx_pixel_put(data, x_view, i, create_rgb(config->floor[0], config->floor[1], config->floor[2]));
 		i++;
 	}
 }
@@ -177,8 +167,8 @@ void	calc()
 			}
 			y++;
 		}
-//		draw_celling(drawStart, x);
-//		draw_floor(drawEnd, x);
+		draw_celling(drawStart, x);
+		draw_floor(drawEnd, x);
 		x++;
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->image, 0, 0);
@@ -317,6 +307,8 @@ int	main(int argc, char **argv)
 	else
 		parse_config_file(argv[1]);
 	data->mlx = mlx_init();
+	data->posY -= 0.5;
+	data->posX -= 0.5;
 	data->dirX = -1;
 	data->dirY = 0;
 	data->planeX = 0;
