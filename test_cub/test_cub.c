@@ -47,6 +47,16 @@ void	draw_floor(int draw_end, int x_view)
 	}
 }
 
+void	turn_right()
+{
+	double oldDirX = data->dirX;
+	data->dirX = data->dirX * cos(-data->rotSpeed) - data->dirY * sin(-data->rotSpeed);
+	data->dirY = oldDirX * sin(-data->rotSpeed) + data->dirY * cos(-data->rotSpeed);
+	double oldPlaneX = data->planeX;
+	data->planeX = data->planeX * cos(-data->rotSpeed) - data->planeY * sin(-data->rotSpeed);
+	data->planeY = oldPlaneX * sin(-data->rotSpeed) + data->planeY * cos(-data->rotSpeed);
+}
+
 void	calc()
 {
 	data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
@@ -241,12 +251,7 @@ int	key_press(int key)
 	{
 		mlx_destroy_image(data->mlx, data->image);
 		//both camera direction and camera plane must be rotated
-		double oldDirX = data->dirX;
-		data->dirX = data->dirX * cos(-data->rotSpeed) - data->dirY * sin(-data->rotSpeed);
-		data->dirY = oldDirX * sin(-data->rotSpeed) + data->dirY * cos(-data->rotSpeed);
-		double oldPlaneX = data->planeX;
-		data->planeX = data->planeX * cos(-data->rotSpeed) - data->planeY * sin(-data->rotSpeed);
-		data->planeY = oldPlaneX * sin(-data->rotSpeed) + data->planeY * cos(-data->rotSpeed);
+		turn_right();
 		data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
 		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
 		calc();
@@ -299,6 +304,27 @@ int	close_window(t_data *data)
 //		throw_error("resolution settings are incorrect");
 //}
 
+void	spawn_direction()
+{
+	if (config->player == 'W')
+	{
+		for (int i = 0; i < 16; ++i) {
+			turn_right();
+		}
+	} else if (config->player == 'S')
+	{
+		for (int i = 0; i < 32; ++i) {
+			turn_right();
+		}
+	} else if (config->player == 'E')
+	{
+		for (int i = 0; i < 47; ++i) {
+			turn_right();
+		}
+	}
+}
+
+
 int	main(int argc, char **argv)
 {
 	data = malloc(sizeof(t_data));
@@ -307,14 +333,13 @@ int	main(int argc, char **argv)
 	else
 		parse_config_file(argv[1]);
 	data->mlx = mlx_init();
-	data->posY -= 0.5;
-	data->posX -= 0.5;
 	data->dirX = -1;
 	data->dirY = 0;
 	data->planeX = 0;
 	data->planeY = 0.66;
 	data->moveSpeed = 0.1;
 	data->rotSpeed = 0.1;
+	spawn_direction();
 	data->win = mlx_new_window(data->mlx, config->s_width, config->s_height, "mlx");
 //	is_screen_size_correct();
 	get_textures();
