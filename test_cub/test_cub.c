@@ -169,16 +169,33 @@ void	calc()
 		int y = 0;
 		while (y < config->s_height)
 		{
-			if (y >= drawStart && y <= drawEnd) {
+			if (y >= drawStart && y <= drawEnd)
+			{
 				int text_y = (int)texPos & (texHeight - 1);
-				int color = texture_east->address[texHeight * text_y + texX];
+				int color;
+
+				if (side == 0)
+				{
+					if (stepX > 0)
+						color = texture_east->address[texHeight * text_y + texX];
+					else
+						color = texture_north->address[texHeight * text_y + texX];
+				}
+				else
+				{
+					if (stepY > 0)
+						color = texture_south->address[texHeight * text_y + texX];
+					else
+						color = texture_west->address[texHeight * text_y + texX];
+				}
+
 				texPos += step;
 				my_mlx_pixel_put(data, x, y, color);
 			}
 			y++;
 		}
-//		draw_celling(drawStart, x);
-//		draw_floor(drawEnd, x);
+		draw_celling(drawStart, x);
+		draw_floor(drawEnd, x);
 		x++;
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->image, 0, 0);
