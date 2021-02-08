@@ -57,6 +57,55 @@ void	turn_right()
 	data->planeY = oldPlaneX * sin(-data->rotSpeed) + data->planeY * cos(-data->rotSpeed);
 }
 
+//ft_abs
+
+void	draw_srpites()
+{
+	for(int i = 0; i < numSprites; i++)
+	{
+		//translate sprite position to relative to camera
+		double spriteX = 5 - data->posX;
+		double spriteY = 3 - data->posY;
+//		double spriteX = sprite[spriteOrder[i]].x - posX;
+//		double spriteY = sprite[spriteOrder[i]].y - posY;
+
+		double invDet = 1.0 / (data->planeX * data->dirY - data->dirX * data->planeY); //required for correct matrix multiplication
+
+		double transformX = invDet * (data->dirY * spriteX - data->dirX * spriteY);
+		double transformY = invDet * (-data->planeY * spriteX + data->planeX * spriteY); //this is actually the depth inside the screen, that what Z is in 3D
+
+		int spriteScreenX = (int)((config->s_width / 2) * (1 + transformX / transformY));
+
+		//calculate height of the sprite on screen
+		int spriteHeight = abs((int)(config->s_height / (transformY))); //using 'transformY' instead of the real distance prevents fisheye
+		//calculate lowest and highest pixel to fill in current stripe
+		int drawStartY = -spriteHeight / 2 + config->s_height / 2;
+		if (drawStartY < 0) drawStartY = 0;
+		int drawEndY = spriteHeight / 2 + config->s_height / 2;
+		if (drawEndY >= config->s_height) drawEndY = config->s_height - 1;
+		//calculate width of the sprite
+		int spriteWidth = abs((int)(config->s_height / (transformY)));
+		int drawStartX = -spriteWidth / 2 + spriteScreenX;
+		if (drawStartX < 0) drawStartX = 0;
+		int drawEndX = spriteWidth / 2 + spriteScreenX;
+		if (drawEndX >= config->s_width) drawEndX = config->s_width - 1;
+		//loop through every vertical stripe of the sprite on screen
+		for (int stripe = drawStartX; stripe < drawEndX; stripe++)
+		{
+			int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * texWidth / spriteWidth) / 256;
+			if (transformY > 0 && stripe > 0 && stripe < config->s_width)// && transformY < ZBuffer[stripe])
+				for (int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
+				{
+					int d = (y) * 256 - config->s_height * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
+					int texY = ((d * texHeight) / spriteHeight) / 256;
+					int color_sprite = texture_sprite->address[texWidth * texY + texX]; //get current color from the texture
+					if (color_sprite != 0)
+						my_mlx_pixel_put(data, stripe, y, color_sprite); //paint pixel if it isn't black, black is the invisible color
+				}
+		}
+	}
+}
+
 void	calc()
 {
 	data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
@@ -198,69 +247,7 @@ void	calc()
 		draw_floor(drawEnd, x);
 		x++;
 	}
-	//SPRITE CASTING
-	//sort sprites from far to close
-//	for(int i = 0; i < numSprites; i++)
-//	{
-//		spriteOrder[i] = i;
-//		spriteDistance[i] = ((data->posX - sprite[i].x) * (data->posX - sprite[i].x) + (data->posY - sprite[i].y) * (data->posY - sprite[i].y)); //sqrt not taken, unneeded
-//	}
-//	sortSprites(spriteOrder, spriteDistance, numSprites);
-	//after sorting the sprites, do the projection and draw them
-	for(int i = 0; i < numSprites; i++)
-	{
-		//translate sprite position to relative to camera
-		double spriteX = 10;
-		double spriteY = 10;
-
-		double invDet = 1.0 / (data->planeX * data->dirY - data->dirX * data->planeY); //required for correct matrix multiplication
-
-		double transformX = invDet * (data->dirY * spriteX - data->dirX * spriteY);
-		double transformY = invDet * (-data->planeY * spriteX + data->planeX * spriteY); //this is actually the depth inside the screen, that what Z is in 3D, the distance of sprite to player, matching sqrt(spriteDistance[i])
-
-		int spriteScreenX = (int)((config->s_width / 2) * (1 + transformX / transformY));
-
-		//parameters for scaling and moving the sprites
-#define uDiv 1
-#define vDiv 1
-#define vMove 0.0
-		int vMoveScreen = (int)(vMove / transformY);
-
-		//calculate height of the sprite on screen
-		int spriteHeight = (int)fabs((config->s_height / transformY) / vDiv); //using "transformY" instead of the real distance prevents fisheye
-		//calculate lowest and highest pixel to fill in current stripe
-		int drawStartY = -spriteHeight / 2 + config->s_height / 2 + vMoveScreen;
-		if(drawStartY < 0) drawStartY = 0;
-		int drawEndY = spriteHeight / 2 + config->s_height / 2 + vMoveScreen;
-		if(drawEndY >= config->s_height) drawEndY = config->s_height - 1;
-
-		//calculate width of the sprite
-		int spriteWidth = (int)fabs((config->s_height / transformY) / uDiv);
-		int drawStartX = -spriteWidth / 2 + spriteScreenX;
-		if(drawStartX < 0) drawStartX = 0;
-		int drawEndX = spriteWidth / 2 + spriteScreenX;
-		if(drawEndX >= config->s_width) drawEndX = config->s_width - 1;
-
-		//loop through every vertical stripe of the sprite on screen
-		for(int stripe = drawStartX; stripe < drawEndX; stripe++)
-		{
-			int texX = (int)((256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * texWidth / spriteWidth) / 256);
-			//the conditions in the if are:
-			//1) it's in front of camera plane so you don't see things behind you
-			//2) it's on the screen (left)
-			//3) it's on the screen (right)
-			//4) ZBuffer, with perpendicular distance
-//			if(transformY > 0 && stripe > 0 && stripe < config->s_width && transformY < info->zBuffer[stripe])
-				for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
-				{
-					int d = (y-vMoveScreen) * 256 - config->s_height * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
-					int texY = ((d * texHeight) / spriteHeight) / 256;
-					int color_sprite = texture_sprite->address[texWidth * texY + texX]; //get current color from the texture
-//					if((color & 0x00FFFFFF) != 0) info->buf[y][stripe] = color; //paint pixel if it isn't black, black is the invisible color
-					my_mlx_pixel_put(data, stripe, y, color_sprite);
-				}
-		}
-	}
+	draw_srpites();
 	mlx_put_image_to_window(data->mlx, data->win, data->image, 0, 0);
 }
 
