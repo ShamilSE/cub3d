@@ -8,7 +8,7 @@ t_texture *texture_north;
 t_texture *texture_south;
 t_texture *texture_west;
 t_texture *texture_east;
-t_texture *sprite;
+t_texture *texture_sprite;
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -181,6 +181,69 @@ void	calc()
 		draw_floor(drawEnd, x);
 		x++;
 	}
+	//SPRITE CASTING
+	//sort sprites from far to close
+//	for(int i = 0; i < numSprites; i++)
+//	{
+//		spriteOrder[i] = i;
+//		spriteDistance[i] = ((data->posX - sprite[i].x) * (data->posX - sprite[i].x) + (data->posY - sprite[i].y) * (data->posY - sprite[i].y)); //sqrt not taken, unneeded
+//	}
+//	sortSprites(spriteOrder, spriteDistance, numSprites);
+	//after sorting the sprites, do the projection and draw them
+	for(int i = 0; i < numSprites; i++)
+	{
+		//translate sprite position to relative to camera
+		double spriteX = 10;
+		double spriteY = 10;
+
+		double invDet = 1.0 / (data->planeX * data->dirY - data->dirX * data->planeY); //required for correct matrix multiplication
+
+		double transformX = invDet * (data->dirY * spriteX - data->dirX * spriteY);
+		double transformY = invDet * (-data->planeY * spriteX + data->planeX * spriteY); //this is actually the depth inside the screen, that what Z is in 3D, the distance of sprite to player, matching sqrt(spriteDistance[i])
+
+		int spriteScreenX = (int)((config->s_width / 2) * (1 + transformX / transformY));
+
+		//parameters for scaling and moving the sprites
+#define uDiv 1
+#define vDiv 1
+#define vMove 0.0
+		int vMoveScreen = (int)(vMove / transformY);
+
+		//calculate height of the sprite on screen
+		int spriteHeight = (int)fabs((config->s_height / transformY) / vDiv); //using "transformY" instead of the real distance prevents fisheye
+		//calculate lowest and highest pixel to fill in current stripe
+		int drawStartY = -spriteHeight / 2 + config->s_height / 2 + vMoveScreen;
+		if(drawStartY < 0) drawStartY = 0;
+		int drawEndY = spriteHeight / 2 + config->s_height / 2 + vMoveScreen;
+		if(drawEndY >= config->s_height) drawEndY = config->s_height - 1;
+
+		//calculate width of the sprite
+		int spriteWidth = (int)fabs((config->s_height / transformY) / uDiv);
+		int drawStartX = -spriteWidth / 2 + spriteScreenX;
+		if(drawStartX < 0) drawStartX = 0;
+		int drawEndX = spriteWidth / 2 + spriteScreenX;
+		if(drawEndX >= config->s_width) drawEndX = config->s_width - 1;
+
+		//loop through every vertical stripe of the sprite on screen
+		for(int stripe = drawStartX; stripe < drawEndX; stripe++)
+		{
+			int texX = (int)((256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * texWidth / spriteWidth) / 256);
+			//the conditions in the if are:
+			//1) it's in front of camera plane so you don't see things behind you
+			//2) it's on the screen (left)
+			//3) it's on the screen (right)
+			//4) ZBuffer, with perpendicular distance
+//			if(transformY > 0 && stripe > 0 && stripe < config->s_width && transformY < info->zBuffer[stripe])
+				for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
+				{
+					int d = (y-vMoveScreen) * 256 - config->s_height * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
+					int texY = ((d * texHeight) / spriteHeight) / 256;
+					int color_sprite = texture_sprite->address[texWidth * texY + texX]; //get current color from the texture
+//					if((color & 0x00FFFFFF) != 0) info->buf[y][stripe] = color; //paint pixel if it isn't black, black is the invisible color
+					my_mlx_pixel_put(data, stripe, y, color_sprite);
+				}
+		}
+	}
 	mlx_put_image_to_window(data->mlx, data->win, data->image, 0, 0);
 }
 
@@ -270,7 +333,7 @@ void	get_textures()
 	texture_south = malloc(sizeof(t_texture));
 	texture_west = malloc(sizeof(t_texture));
 	texture_east = malloc(sizeof(t_texture));
-	sprite = malloc(sizeof(t_texture));
+	texture_sprite = malloc(sizeof(t_texture));
 	if (!(texture_north->image = mlx_xpm_file_to_image(data->mlx, config->north, &g_width, &g_height)))
 		throw_error("invalid texture path");
 	if (!(texture_south->image = mlx_xpm_file_to_image(data->mlx, config->south, &g_width, &g_height)))
@@ -279,13 +342,13 @@ void	get_textures()
 		throw_error("invalid texture path");
 	if (!(texture_east->image = mlx_xpm_file_to_image(data->mlx, config->east, &g_width, &g_height)))
 		throw_error("invalid texture path");
-	if (!(sprite->image = mlx_xpm_file_to_image(data->mlx, config->sprite, &g_width, &g_height)))
-		throw_error("invalid sprite path");
+	if (!(texture_sprite->image = mlx_xpm_file_to_image(data->mlx, config->sprite, &g_width, &g_height)))
+		throw_error("invalid texture_sprite path");
 	texture_north->address = (int *)mlx_get_data_addr(texture_north->image, &texture_north->bpp, &texture_north->size, &texture_north->endian);
 	texture_south->address = (int *)mlx_get_data_addr(texture_south->image, &texture_south->bpp, &texture_south->size, &texture_south->endian);
 	texture_west->address = (int *)mlx_get_data_addr(texture_west->image, &texture_west->bpp, &texture_west->size, &texture_west->endian);
 	texture_east->address = (int *)mlx_get_data_addr(texture_east->image, &texture_east->bpp, &texture_east->size, &texture_east->endian);
-	sprite->address = (int *)mlx_get_data_addr(sprite->image, &sprite->bpp, &sprite->size, &sprite->endian);
+	texture_sprite->address = (int *)mlx_get_data_addr(texture_sprite->image, &texture_sprite->bpp, &texture_sprite->size, &texture_sprite->endian);
 }
 
 int	close_window(t_data *data)
@@ -339,6 +402,7 @@ int	main(int argc, char **argv)
 	data->planeY = 0.66;
 	data->moveSpeed = 0.1;
 	data->rotSpeed = 0.1;
+
 	spawn_direction();
 	data->win = mlx_new_window(data->mlx, config->s_width, config->s_height, "mlx");
 //	is_screen_size_correct();
