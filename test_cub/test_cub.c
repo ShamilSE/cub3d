@@ -18,19 +18,9 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-unsigned int	get_pixel(int x, int y, t_texture *t)
+int		create_rgb(int r, int g, int b)
 {
-	char	*dst;
-	unsigned int	color;
-
-	dst = t->address + (y * t->size + x * (t->bpp / 8));
-	color = *(unsigned int*)dst;
-	return (color);
-}
-
-int		create_rgb(int t, int r, int g, int b)
-{
-	return(t << 24 | r << 16 | g << 8 | b);
+	return(r << 16 | g << 8 | b);
 }
 
 void	draw_celling(int draw_start, int x_view)
@@ -40,7 +30,7 @@ void	draw_celling(int draw_start, int x_view)
 	i = 0;
 	while (i < draw_start)
 	{
-		my_mlx_pixel_put(data, x_view, i, 0xFF00FF);
+		my_mlx_pixel_put(data, x_view, i, create_rgb(config->celling[0], config->celling[1], config->celling[2]));
 		i++;
 	}
 }
@@ -52,9 +42,19 @@ void	draw_floor(int draw_end, int x_view)
 	i = draw_end;
 	while (i < config->s_height)
 	{
-		my_mlx_pixel_put(data, x_view, i, 0xDFDFDF);
+		my_mlx_pixel_put(data, x_view, i, create_rgb(config->floor[0], config->floor[1], config->floor[2]));
 		i++;
 	}
+}
+
+void	turn_right()
+{
+	double oldDirX = data->dirX;
+	data->dirX = data->dirX * cos(-data->rotSpeed) - data->dirY * sin(-data->rotSpeed);
+	data->dirY = oldDirX * sin(-data->rotSpeed) + data->dirY * cos(-data->rotSpeed);
+	double oldPlaneX = data->planeX;
+	data->planeX = data->planeX * cos(-data->rotSpeed) - data->planeY * sin(-data->rotSpeed);
+	data->planeY = oldPlaneX * sin(-data->rotSpeed) + data->planeY * cos(-data->rotSpeed);
 }
 
 void	calc()
@@ -268,12 +268,7 @@ int	key_press(int key)
 	{
 		mlx_destroy_image(data->mlx, data->image);
 		//both camera direction and camera plane must be rotated
-		double oldDirX = data->dirX;
-		data->dirX = data->dirX * cos(-data->rotSpeed) - data->dirY * sin(-data->rotSpeed);
-		data->dirY = oldDirX * sin(-data->rotSpeed) + data->dirY * cos(-data->rotSpeed);
-		double oldPlaneX = data->planeX;
-		data->planeX = data->planeX * cos(-data->rotSpeed) - data->planeY * sin(-data->rotSpeed);
-		data->planeY = oldPlaneX * sin(-data->rotSpeed) + data->planeY * cos(-data->rotSpeed);
+		turn_right();
 		data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
 		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
 		calc();
@@ -326,6 +321,27 @@ int	close_window(t_data *data)
 //		throw_error("resolution settings are incorrect");
 //}
 
+void	spawn_direction()
+{
+	if (config->player == 'W')
+	{
+		for (int i = 0; i < 16; ++i) {
+			turn_right();
+		}
+	} else if (config->player == 'S')
+	{
+		for (int i = 0; i < 32; ++i) {
+			turn_right();
+		}
+	} else if (config->player == 'E')
+	{
+		for (int i = 0; i < 47; ++i) {
+			turn_right();
+		}
+	}
+}
+
+
 int	main(int argc, char **argv)
 {
 	data = malloc(sizeof(t_data));
@@ -340,6 +356,7 @@ int	main(int argc, char **argv)
 	data->planeY = 0.66;
 	data->moveSpeed = 0.1;
 	data->rotSpeed = 0.1;
+	spawn_direction();
 	data->win = mlx_new_window(data->mlx, config->s_width, config->s_height, "mlx");
 //	is_screen_size_correct();
 	get_textures();

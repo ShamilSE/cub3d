@@ -52,8 +52,8 @@ int		is_map_valid(char **map)
 				if (player_flag)
 					throw_error("several players on a map, leave only one");
 				player_flag = 1;
-				data->posX = i + 1;
-				data->posY = j + 1;
+				data->posX = i + 0.5;
+				data->posY = j + 0.5;
 				map[i][j] = '0';
 			}
 			if (map[i][j] == '0')
