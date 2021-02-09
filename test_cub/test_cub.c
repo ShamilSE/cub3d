@@ -118,26 +118,21 @@ void	calc()
 		double cameraX = 2 * x / (double)config->s_width - 1;
 		double rayDirX = data->dirX + data->planeX * cameraX;
 		double rayDirY = data->dirY + data->planeY * cameraX;
-
 		int mapX = (int)data->posX;
 		int mapY = (int)data->posY;
-
-		//length of ray from current position to next x or y-side
 		double sideDistX;
 		double sideDistY;
-
-		//length of ray from one x or y-side to next x or y-side
 		double deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
 		double deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
 		double perpWallDist;
-
-		//what direction to step in x or y-direction (either +1 or -1)
 		int stepX;
 		int stepY;
-
-		int hit = 0; //was there a wall hit?
-		int side; //was a NS or a EW wall hit?
-
+		int hit = 0;
+		int side;
+		/*
+		** if ray direction < 0 - sideDistX (length from current player position to first x-crossing) will be the ray to left side
+		** else from current to right
+		*/
 		if (rayDirX < 0)
 		{
 			stepX = -1;
@@ -158,10 +153,8 @@ void	calc()
 			stepY = 1;
 			sideDistY = (mapY + 1.0 - data->posY) * deltaDistY;
 		}
-
-		while (hit == 0)
+		while (!hit)
 		{
-			//jump to next map square, OR in x-direction, OR in y-direction
 			if (sideDistX < sideDistY)
 			{
 				sideDistX += deltaDistX;
@@ -174,7 +167,6 @@ void	calc()
 				mapY += stepY;
 				side = 1;
 			}
-			//Check if ray has hit a wall
 			if (config->map[mapX][mapY] == '1')
 				hit = 1;
 		}
@@ -395,10 +387,17 @@ void	spawn_direction()
 int	main(int argc, char **argv)
 {
 	data = malloc(sizeof(t_data));
+	sprites = malloc(sizeof(t_sprites));
+	sprites->count = 0;
 	if (argc != 2)
 		throw_error("put second argument");
 	else
 		parse_config_file(argv[1]);
+	sprites->x = malloc(sizeof(int) * sprites->count + 1);
+	sprites->y = malloc(sizeof(int) * sprites->count + 1);
+	printf("sprites->count: %d\n", sprites->count);
+	sprites->x[sprites->count] = 0;
+	sprites->y[sprites->count] = 0;
 	data->mlx = mlx_init();
 	data->dirX = -1;
 	data->dirY = 0;

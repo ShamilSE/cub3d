@@ -42,7 +42,15 @@ typedef struct	s_texture
 	int			endian;
 }				t_texture;
 
+typedef struct	s_sprites
+{
+	int			*x;
+	int			*y;
+	int			count;
+}				t_sprites;
+
 t_data *data;
 t_texture *texture;
+t_sprites	*sprites;
 
 #endif
