@@ -80,7 +80,7 @@ void	draw_srpites(int *zBuffer)
 			sprites->y[i] = sprites->y[i + 1];
 			sprites->x[i + 1] = x_tmp;
 			sprites->y[i + 1] = y_tmp;
-			i = 0;
+			i = -1;
 		}
 	}
 	for(int i = 0; i < sprites->count; i++)
@@ -420,6 +420,7 @@ int	main(int argc, char **argv)
 	for (int i = 0; i < sprites->count; ++i) {
 		printf("x-sprites: %d\n", sprites->x[i]);
 	}
+//	screenshot();
 	data->mlx = mlx_init();
 	data->dirX = -1;
 	data->dirY = 0;
