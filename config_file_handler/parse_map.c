@@ -15,6 +15,13 @@ void	is_map_string_valid(const char *line)
 
 	while (line[i])
 	{
+		if (line[i] == '2')
+			sprites->count++;
+		i++;
+	}
+	i = 0;
+	while (line[i])
+	{
 		while (valid_map_chars[j])
 		{
 			if (line[i] == 'N' || line[i] == 'E' || line[i] == 'W' || line[i] == 'S')
@@ -38,7 +45,9 @@ int		is_map_valid(char **map)
 	int	i1;
 	size_t	map_strings_len;
 	int		player_flag;
+	int	map_i;
 
+	map_i = 0;
 	player_flag = 0;
 	i = 0;
 	j = 0;
@@ -47,6 +56,12 @@ int		is_map_valid(char **map)
 	{
 		while (map[i][j])
 		{
+			if (map[i][j] == '2')
+			{
+				sprites->y[map_i] = j;
+				sprites->x[map_i] = i;
+				map_i++;
+			}
 			if (map[i][j] == 'N' || map[i][j] == 'E' || map[i][j] == 'W' || map[i][j] == 'S')
 			{
 				if (player_flag)
@@ -128,6 +143,10 @@ char	**parse_map(char *filename)
 		else
 		{
 			is_map_string_valid(line);
+			sprites->x = malloc(sizeof(int) * sprites->count + 1);
+			sprites->y = malloc(sizeof(int) * sprites->count + 1);
+			sprites->x[sprites->count] = 0;
+			sprites->y[sprites->count] = 0;
 			check_map_line(line);
 			map[i] = ft_strdup(line);
 			free(line);

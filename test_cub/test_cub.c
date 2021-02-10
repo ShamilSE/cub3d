@@ -57,15 +57,37 @@ void	turn_right()
 	data->planeY = oldPlaneX * sin(-data->rotSpeed) + data->planeY * cos(-data->rotSpeed);
 }
 
-//ft_abs
-
-void	draw_srpites()
+void	draw_srpites(int *zBuffer)
 {
-	for(int i = 0; i < numSprites; i++)
+	int spriteDistance[sprites->count];
+	for (int i = 0; i < sprites->count; ++i) {
+		spriteDistance[i] = (((int)data->posX - sprites->x[i]) * ((int)data->posX - sprites->x[i]) + ((int)data->posY - sprites->y[i]) * ((int)data->posY - sprites->y[i]));
+	}
+		int	dist_tmp;
+		int	x_tmp;
+		int	y_tmp;
+	for (int i = 0; i < sprites->count; ++i)
+	{
+
+		if (spriteDistance[i] < spriteDistance[i + 1])
+		{
+			dist_tmp = spriteDistance[i];
+			x_tmp = sprites->x[i];
+			y_tmp = sprites->y[i];
+			spriteDistance[i] = spriteDistance[i + 1];
+			spriteDistance[i + 1] = dist_tmp;
+			sprites->x[i] = sprites->x[i + 1];
+			sprites->y[i] = sprites->y[i + 1];
+			sprites->x[i + 1] = x_tmp;
+			sprites->y[i + 1] = y_tmp;
+			i = 0;
+		}
+	}
+	for(int i = 0; i < sprites->count; i++)
 	{
 		//translate sprite position to relative to camera
-		double spriteX = 5 - data->posX;
-		double spriteY = 3 - data->posY;
+		double spriteX = sprites->x[i] - data->posX;
+		double spriteY = sprites->y[i] - data->posY;
 //		double spriteX = sprite[spriteOrder[i]].x - posX;
 //		double spriteY = sprite[spriteOrder[i]].y - posY;
 
@@ -93,7 +115,7 @@ void	draw_srpites()
 		for (int stripe = drawStartX; stripe < drawEndX; stripe++)
 		{
 			int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * texWidth / spriteWidth) / 256;
-			if (transformY > 0 && stripe > 0 && stripe < config->s_width)// && transformY < ZBuffer[stripe])
+			if (transformY > 0 && stripe > 0 && stripe < config->s_width && transformY < zBuffer[stripe])
 				for (int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
 				{
 					int d = (y) * 256 - config->s_height * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
@@ -110,6 +132,7 @@ void	calc()
 {
 	data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
 	data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
+	int zBuffer[config->s_width];
 	int	x;
 
 	x = 0;
@@ -174,7 +197,7 @@ void	calc()
 			perpWallDist = (mapX - data->posX + (1 - stepX) / 2) / rayDirX;
 		else
 			perpWallDist = (mapY - data->posY + (1 - stepY) / 2) / rayDirY;
-
+		zBuffer[x] = (int)perpWallDist;
 		//Calculate height of line to draw on screen
 		int lineHeight = (int)(config->s_height / perpWallDist);
 
@@ -239,7 +262,7 @@ void	calc()
 		draw_floor(drawEnd, x);
 		x++;
 	}
-	draw_srpites();
+	draw_srpites(zBuffer);
 	mlx_put_image_to_window(data->mlx, data->win, data->image, 0, 0);
 }
 
@@ -393,11 +416,10 @@ int	main(int argc, char **argv)
 		throw_error("put second argument");
 	else
 		parse_config_file(argv[1]);
-	sprites->x = malloc(sizeof(int) * sprites->count + 1);
-	sprites->y = malloc(sizeof(int) * sprites->count + 1);
 	printf("sprites->count: %d\n", sprites->count);
-	sprites->x[sprites->count] = 0;
-	sprites->y[sprites->count] = 0;
+	for (int i = 0; i < sprites->count; ++i) {
+		printf("x-sprites: %d\n", sprites->x[i]);
+	}
 	data->mlx = mlx_init();
 	data->dirX = -1;
 	data->dirY = 0;
