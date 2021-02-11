@@ -7,7 +7,6 @@ void	screenshot()
 	int	i;
 	int	j;
 	int color;
-	short r = 0;
 
 	bmp = malloc(sizeof(t_bmp));
 	if ((fd = open("screenshot.bmp", O_CREAT | O_WRONLY | O_TRUNC, 0666)) < 0)
@@ -31,8 +30,7 @@ void	screenshot()
 
 	write(fd, bmp->file_type, 2);
 	write(fd, &bmp->file_size, 4);
-	write(fd, &r, 2);
-	write(fd, &r, 2);
+	write(fd, &bmp->reserved_bytes, 4);
 	write(fd, &bmp->data_offset, 4);
 	write(fd, &bmp->second_header_size, 4);
 	write(fd, &bmp->img_width, 4);
@@ -52,7 +50,7 @@ void	screenshot()
 		j = -1;
 		while (config->s_width > ++j)
 		{
-			color = *(int*)(data->addr + (i + data->size + j * (data->bpp / 8)));
+			color = *(int*)(data->addr + (i * data->size + j * (data->bpp / 8)));
 			write(fd, &color, 4);
 		}
 	}

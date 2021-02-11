@@ -9,6 +9,24 @@ t_texture *texture_west;
 t_texture *texture_east;
 t_texture *texture_sprite;
 
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t			i;
+	unsigned char	*str1;
+	unsigned char	*str2;
+
+	i = 0;
+	str1 = (unsigned char *)s1;
+	str2 = (unsigned char *)s2;
+	if (str1 == NULL || str2 == NULL)
+		return (1);
+	while (*(str1 + i) && *(str1 + i) == *(str2 + i) && i < n - 1)
+		i++;
+	if (n)
+		return (*(str1 + i) - *(str2 + i));
+	return (0);
+}
+
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
@@ -328,7 +346,7 @@ int	main(int argc, char **argv)
 	data = malloc(sizeof(t_data));
 	sprites = malloc(sizeof(t_sprites));
 	sprites->count = 0;
-	if (argc != 2)
+	if (argc < 2)
 		throw_error("put second argument");
 	else
 		parse_config_file(argv[1]);
@@ -344,8 +362,9 @@ int	main(int argc, char **argv)
 //	is_screen_size_correct();
 	get_textures();
 	calc();
+	if (!(ft_strncmp(argv[2], "--save", 6)))
+		screenshot();
 	mlx_hook(data->win, 2, 1L<<0, &movings, &data);
 	mlx_hook(data->win, 17, 1L<<0, &close_window, &data);
-	screenshot();
 	mlx_loop(data->mlx);
 }
