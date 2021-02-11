@@ -32,7 +32,10 @@ char			**parse_map(char *filename);
 void			parse_config_file(char *filename);
 void			throw_error(char *error_message);
 size_t			count_map_strings(char *str);
-void			player_placer();
+void			screenshot();
+int				movings(int key);
+void			calc();
+void			turn_right();
 
 t_config *config;
 

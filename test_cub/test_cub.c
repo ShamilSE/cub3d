@@ -1,5 +1,4 @@
 #include "../headers//mlx.h"
-#include "key_macos.h"
 #include "../headers/graphics.h"
 #include "cub3d.h"
 
@@ -23,7 +22,7 @@ int		create_rgb(int r, int g, int b)
 	return(r << 16 | g << 8 | b);
 }
 
-void	draw_celling(int draw_start, int x_view)
+void	draw_celling(int x_view)
 {
 	int		i;
 
@@ -35,7 +34,7 @@ void	draw_celling(int draw_start, int x_view)
 	}
 }
 
-void	draw_floor(int draw_end, int x_view)
+void	draw_floor(int x_view)
 {
 	int		i;
 
@@ -47,14 +46,42 @@ void	draw_floor(int draw_end, int x_view)
 	}
 }
 
-void	turn_right()
+void	draw_walls(int lineHeight, int texX, int x)
 {
-	double oldDirX = data->dirX;
-	data->dirX = data->dirX * cos(-data->rotSpeed) - data->dirY * sin(-data->rotSpeed);
-	data->dirY = oldDirX * sin(-data->rotSpeed) + data->dirY * cos(-data->rotSpeed);
-	double oldPlaneX = data->planeX;
-	data->planeX = data->planeX * cos(-data->rotSpeed) - data->planeY * sin(-data->rotSpeed);
-	data->planeY = oldPlaneX * sin(-data->rotSpeed) + data->planeY * cos(-data->rotSpeed);
+	int	y;
+	// How much to increase the texture coordinate perscreen pixel
+	double step = 1.0 * texHeight / lineHeight;
+	// Starting texture coordinate
+	double texPos = (draw_start - config->s_height / 2 + lineHeight / 2) * step;
+	y = 0;
+
+	while (y < config->s_height)
+	{
+		if (y >= draw_start && y <= draw_end)
+		{
+			int text_y = (int)texPos & (texHeight - 1);
+			int color;
+
+			if (side == 0)
+			{
+				if (stepX > 0)
+					color = texture_east->address[texHeight * text_y + texX];
+				else
+					color = texture_north->address[texHeight * text_y + texX];
+			}
+			else
+			{
+				if (stepY > 0)
+					color = texture_south->address[texHeight * text_y + texX];
+				else
+					color = texture_west->address[texHeight * text_y + texX];
+			}
+
+			texPos += step;
+			my_mlx_pixel_put(data, x, y, color);
+		}
+		y++;
+	}
 }
 
 void	draw_srpites(int *zBuffer)
@@ -148,10 +175,7 @@ void	calc()
 		double deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
 		double deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
 		double perpWallDist;
-		int stepX;
-		int stepY;
 		int hit = 0;
-		int side;
 		/*
 		** if ray direction < 0 - sideDistX (length from current player position to first x-crossing) will be the ray to left side
 		** else from current to right
@@ -202,12 +226,12 @@ void	calc()
 		int lineHeight = (int)(config->s_height / perpWallDist);
 
 		//calculate lowest and highest pixel to fill in current stripe
-		int drawStart = -lineHeight / 2 + config->s_height / 2;
-		if(drawStart < 0)
-			drawStart = 0;
-		int drawEnd = lineHeight / 2 + config->s_height / 2;
-		if(drawEnd >= config->s_height)
-			drawEnd = config->s_height - 1;
+		draw_start = -lineHeight / 2 + config->s_height / 2;
+		if(draw_start < 0)
+			draw_start = 0;
+		draw_end = lineHeight / 2 + config->s_height / 2;
+		if(draw_end >= config->s_height)
+			draw_end = config->s_height - 1;
 
 		// texturing calculations
 
@@ -226,121 +250,13 @@ void	calc()
 		if (side == 1 && rayDirY < 0)
 			texX = texWidth - texX - 1;
 
-		// How much to increase the texture coordinate perscreen pixel
-		double step = 1.0 * texHeight / lineHeight;
-		// Starting texture coordinate
-		double texPos = (drawStart - config->s_height / 2 + lineHeight / 2) * step;
-		int y = 0;
-		while (y < config->s_height)
-		{
-			if (y >= drawStart && y <= drawEnd)
-			{
-				int text_y = (int)texPos & (texHeight - 1);
-				int color;
-
-				if (side == 0)
-				{
-					if (stepX > 0)
-						color = texture_east->address[texHeight * text_y + texX];
-					else
-						color = texture_north->address[texHeight * text_y + texX];
-				}
-				else
-				{
-					if (stepY > 0)
-						color = texture_south->address[texHeight * text_y + texX];
-					else
-						color = texture_west->address[texHeight * text_y + texX];
-				}
-
-				texPos += step;
-				my_mlx_pixel_put(data, x, y, color);
-			}
-			y++;
-		}
-		draw_celling(drawStart, x);
-		draw_floor(drawEnd, x);
+		draw_celling(x);
+		draw_floor(x);
+		draw_walls(lineHeight,texX, x);
 		x++;
 	}
 	draw_srpites(zBuffer);
 	mlx_put_image_to_window(data->mlx, data->win, data->image, 0, 0);
-}
-
-int	key_press(int key)
-{
-	if (key == K_W)
-	{
-		mlx_destroy_image(data->mlx, data->image);
-		if (config->map[(int)(data->posX + data->dirX * data->moveSpeed)][(int)(data->posY)] == '0')
-			data->posX += data->dirX * data->moveSpeed;
-		if (config->map[(int)(data->posX)][(int)(data->posY + data->dirY * data->moveSpeed)] == '0')
-			data->posY += data->dirY * data->moveSpeed;
-		data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
-		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
-		calc();
-	}
-	//move backwards if no wall behind you
-	if (key == K_S)
-	{
-		mlx_destroy_image(data->mlx, data->image);
-		if (config->map[(int)(data->posX - data->dirX * data->moveSpeed)][(int)(data->posY)] == '0')
-			data->posX -= data->dirX * data->moveSpeed;
-		if (config->map[(int)(data->posX)][(int)(data->posY - data->dirY * data->moveSpeed)] == '0')
-			data->posY -= data->dirY * data->moveSpeed;
-		data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
-		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
-		calc();
-	}
-	//rotate to the right
-	if (key == K_D)
-	{
-		mlx_destroy_image(data->mlx, data->image);
-		if (config->map[(int)(data->posX + data->dirY * data->moveSpeed)][(int)(data->posY)] == '0')
-			data->posX += data->dirY * data->moveSpeed;
-		if (config->map[(int)(data->posX)][(int)(data->posY - data->dirX * data->moveSpeed)] == '0')
-			data->posY -= data->dirX * data->moveSpeed;
-		data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
-		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
-		calc();
-	}
-	//rotate to the left
-	if (key == K_A)
-	{
-		mlx_destroy_image(data->mlx, data->image);
-		if (config->map[(int)(data->posX - data->dirY * data->moveSpeed)][(int)(data->posY)] == '0')
-			data->posX -= data->dirY * data->moveSpeed;
-		if (config->map[(int)(data->posX)][(int)(data->posY + data->dirX * data->moveSpeed)] == '0')
-			data->posY += data->dirX * data->moveSpeed;
-		data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
-		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
-		calc();
-	}
-	if (key == 123)
-	{
-		mlx_destroy_image(data->mlx, data->image);
-		//both camera direction and camera plane must be rotated
-		double oldDirX = data->dirX;
-		data->dirX = data->dirX * cos(data->rotSpeed) - data->dirY * sin(data->rotSpeed);
-		data->dirY = oldDirX * sin(data->rotSpeed) + data->dirY * cos(data->rotSpeed);
-		double oldPlaneX = data->planeX;
-		data->planeX = data->planeX * cos(data->rotSpeed) - data->planeY * sin(data->rotSpeed);
-		data->planeY = oldPlaneX * sin(data->rotSpeed) + data->planeY * cos(data->rotSpeed);
-		data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
-		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
-		calc();
-	}
-	if (key == 124)
-	{
-		mlx_destroy_image(data->mlx, data->image);
-		//both camera direction and camera plane must be rotated
-		turn_right();
-		data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
-		data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
-		calc();
-	}
-	if (key == K_ESC)
-		exit(0);
-	return (0);
 }
 
 void	get_textures()
@@ -416,11 +332,6 @@ int	main(int argc, char **argv)
 		throw_error("put second argument");
 	else
 		parse_config_file(argv[1]);
-	printf("sprites->count: %d\n", sprites->count);
-	for (int i = 0; i < sprites->count; ++i) {
-		printf("x-sprites: %d\n", sprites->x[i]);
-	}
-//	screenshot();
 	data->mlx = mlx_init();
 	data->dirX = -1;
 	data->dirY = 0;
@@ -428,13 +339,13 @@ int	main(int argc, char **argv)
 	data->planeY = 0.66;
 	data->moveSpeed = 0.1;
 	data->rotSpeed = 0.1;
-
 	spawn_direction();
 	data->win = mlx_new_window(data->mlx, config->s_width, config->s_height, "mlx");
 //	is_screen_size_correct();
 	get_textures();
 	calc();
-	mlx_hook(data->win, 2, 1L<<0, &key_press, &data);
+	mlx_hook(data->win, 2, 1L<<0, &movings, &data);
 	mlx_hook(data->win, 17, 1L<<0, &close_window, &data);
+	screenshot();
 	mlx_loop(data->mlx);
 }
