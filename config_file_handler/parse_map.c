@@ -58,8 +58,8 @@ int		is_map_valid(char **map)
 		{
 			if (map[i][j] == '2')
 			{
-				sprites->y[map_i] = j;
-				sprites->x[map_i] = i;
+				sprites->x[map_i] = i + 0.5;
+				sprites->y[map_i] = j + 0.5;
 				map_i++;
 			}
 			if (map[i][j] == 'N' || map[i][j] == 'E' || map[i][j] == 'W' || map[i][j] == 'S')
@@ -143,8 +143,8 @@ char	**parse_map(char *filename)
 		else
 		{
 			is_map_string_valid(line);
-			sprites->x = malloc(sizeof(int) * sprites->count + 1);
-			sprites->y = malloc(sizeof(int) * sprites->count + 1);
+			sprites->x = malloc(sizeof(double) * sprites->count + 1);
+			sprites->y = malloc(sizeof(double) * sprites->count + 1);
 			sprites->x[sprites->count] = 0;
 			sprites->y[sprites->count] = 0;
 			check_map_line(line);

@@ -102,15 +102,15 @@ void	draw_walls(int lineHeight, int texX, int x)
 	}
 }
 
-void	draw_srpites(int *zBuffer)
+void	draw_srpites(double *zBuffer)
 {
-	int spriteDistance[sprites->count];
+	double spriteDistance[sprites->count];
 	for (int i = 0; i < sprites->count; ++i) {
-		spriteDistance[i] = (((int)data->posX - sprites->x[i]) * ((int)data->posX - sprites->x[i]) + ((int)data->posY - sprites->y[i]) * ((int)data->posY - sprites->y[i]));
+		spriteDistance[i] = ((data->posX - sprites->x[i]) * (data->posX - sprites->x[i]) + (data->posY - sprites->y[i]) * (data->posY - sprites->y[i]));
 	}
-		int	dist_tmp;
-		int	x_tmp;
-		int	y_tmp;
+		double	dist_tmp;
+		double	x_tmp;
+		double	y_tmp;
 	for (int i = 0; i < sprites->count; ++i)
 	{
 
@@ -133,8 +133,6 @@ void	draw_srpites(int *zBuffer)
 		//translate sprite position to relative to camera
 		double spriteX = sprites->x[i] - data->posX;
 		double spriteY = sprites->y[i] - data->posY;
-//		double spriteX = sprite[spriteOrder[i]].x - posX;
-//		double spriteY = sprite[spriteOrder[i]].y - posY;
 
 		double invDet = 1.0 / (data->planeX * data->dirY - data->dirX * data->planeY); //required for correct matrix multiplication
 
@@ -177,7 +175,7 @@ void	calc()
 {
 	data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
 	data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
-	int zBuffer[config->s_width];
+	double zBuffer[config->s_width];
 	int	x;
 
 	x = 0;
@@ -236,10 +234,10 @@ void	calc()
 				hit = 1;
 		}
 		if (side == 0)
-			perpWallDist = (mapX - data->posX + (1 - stepX) / 2) / rayDirX;
+			perpWallDist = (mapX - data->posX + (double)(1 - stepX) / 2) / rayDirX;
 		else
-			perpWallDist = (mapY - data->posY + (1 - stepY) / 2) / rayDirY;
-		zBuffer[x] = (int)perpWallDist;
+			perpWallDist = (mapY - data->posY + (double)(1 - stepY) / 2) / rayDirY;
+		zBuffer[x] = perpWallDist;
 		//Calculate height of line to draw on screen
 		int lineHeight = (int)(config->s_height / perpWallDist);
 
@@ -363,7 +361,10 @@ int	main(int argc, char **argv)
 	get_textures();
 	calc();
 	if (!(ft_strncmp(argv[2], "--save", 6)))
+	{
 		screenshot();
+		exit(0);
+	}
 	mlx_hook(data->win, 2, 1L<<0, &movings, &data);
 	mlx_hook(data->win, 17, 1L<<0, &close_window, &data);
 	mlx_loop(data->mlx);

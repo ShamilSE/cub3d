@@ -23,8 +23,8 @@ void	screenshot()
 	bmp->bpp = 32;
 	bmp->compression = 0;
 	bmp->img_size = config->s_width * config->s_height;
-	bmp->x_pixels_per_meter = 1000;
-	bmp->y_pixels_per_meter = 1000;
+	bmp->x_pixels_per_meter = 2845;
+	bmp->y_pixels_per_meter = 2845;
 	bmp->total_colors = 0;
 	bmp->important_colors = 0;
 

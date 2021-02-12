@@ -43,8 +43,8 @@ typedef struct	s_texture
 
 typedef struct	s_sprites
 {
-	int			*x;
-	int			*y;
+	double	*x;
+	double	*y;
 	int			count;
 }				t_sprites;
 
