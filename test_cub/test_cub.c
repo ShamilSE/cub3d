@@ -83,16 +83,16 @@ void	draw_walls(int lineHeight, int texX, int x)
 			if (side == 0)
 			{
 				if (stepX > 0)
-					color = texture_east->address[texHeight * text_y + texX];
+					color = texture_south->address[texHeight * text_y + texX];
 				else
 					color = texture_north->address[texHeight * text_y + texX];
 			}
 			else
 			{
 				if (stepY > 0)
-					color = texture_south->address[texHeight * text_y + texX];
-				else
 					color = texture_west->address[texHeight * text_y + texX];
+				else
+					color = texture_east->address[texHeight * text_y + texX];
 			}
 
 			texPos += step;
@@ -313,9 +313,14 @@ int	close_window(t_data *data)
 //	int		mlx_size_x;
 //	int		mlx_size_y;
 //
+//	if (config->s_width < 20 || config->s_height < 20)
+//		throw_error("the window size is too small");
 //	mlx_get_screen_size(data->mlx, &mlx_size_x, &mlx_size_y);
 //	if (config->s_width > mlx_size_x || config->s_height > mlx_size_y)
-//		throw_error("resolution settings are incorrect");
+//	{
+//		config->s_width = mlx_size_x;
+//		config->s_height = mlx_size_y;
+//	}
 //}
 
 void	spawn_direction()

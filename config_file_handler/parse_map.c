@@ -1,12 +1,6 @@
 #include "../headers/graphics.h"
 #include "../test_cub/cub3d.h"
 
-void	check_map_line(char *line)
-{
-	if (ft_strchr(line, ' '))
-		throw_error("extra symbols in map");
-}
-
 void	is_map_string_valid(const char *line)
 {
 	char	valid_map_chars[9] = " 012NEWS";
@@ -43,7 +37,6 @@ int		is_map_valid(char **map)
 	int	j;
 	int	j1;
 	int	i1;
-	size_t	map_strings_len;
 	int		player_flag;
 	int	map_i;
 
@@ -51,7 +44,6 @@ int		is_map_valid(char **map)
 	player_flag = 0;
 	i = 0;
 	j = 0;
-	map_strings_len = count_map_strings(config->filename);
 	while (map[i])
 	{
 		while (map[i][j])
@@ -76,7 +68,9 @@ int		is_map_valid(char **map)
 				j1 = j;
 				while (map[i][j1] != '1')
 				{
-					if (map[i][(ft_strlen(map[i]) - 1)] == '0')
+					if (map[i][j1] == '1')
+						continue ;
+					if (ft_strlen(map[i]) == j1 + 1)
 						throw_error("map is not valid");
 					j1++;
 				}
@@ -97,8 +91,8 @@ int		is_map_valid(char **map)
 				i1 = i;
 				while (map[i1] && map[i1][j] != '1')
 				{
-					if ((map[i1][j] != '1') && ((i1) == map_strings_len - 1))
-						throw_error("map is not valid");
+					if ((map[i1][j] != '1') && ((i1) == config->map_strings))
+						throw_error("map is not valid_");
 					i1++;
 				}
 			}
@@ -123,6 +117,9 @@ size_t	count_map_strings(char *str)
 		if (*line == '1' || *line == ' ')
 			map_length++;
 	}
+	if (*line == '1' || *line == ' ')
+		map_length++;
+	free(line);
 	return (map_length);
 }
 
@@ -132,22 +129,29 @@ char	**parse_map(char *filename)
 	int		i;
 	int		fd;
 	char	*line;
+	char	m_flag;
 
+	m_flag = 'n';
 	fd =  open(filename, O_RDONLY);
 	i = 0;
-	map = malloc(sizeof(char *) * (count_map_strings(filename) + 1));
+	config->map_strings = count_map_strings(filename);
+	map = malloc(sizeof(char *) * (config->map_strings + 1));
 	while (get_next_line(fd, &line) > 0)
 	{
-		if (*line != '1')
-			continue ;
+		if (*line != '1' && *line != ' ')
+		{
+			if (m_flag == 'y')
+				throw_error("map must contain nothing but ' 012NEWS' symbols");
+			continue;
+		}
 		else
 		{
+			m_flag = 'y';
 			is_map_string_valid(line);
 			sprites->x = malloc(sizeof(double) * sprites->count + 1);
 			sprites->y = malloc(sizeof(double) * sprites->count + 1);
 			sprites->x[sprites->count] = 0;
 			sprites->y[sprites->count] = 0;
-			check_map_line(line);
 			map[i] = ft_strdup(line);
 			free(line);
 			i++;
@@ -159,6 +163,6 @@ char	**parse_map(char *filename)
 		throw_error("there is no player on a map");
 	map[i + 1] = 0x0;
 	if (!is_map_valid(map))
-		throw_error("map is not valid :)");
+		throw_error("map is not valid");
 	return (map);
 }

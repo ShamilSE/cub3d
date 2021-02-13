@@ -5,7 +5,7 @@ t_config *config;
 void	throw_error(char *error_message)
 {
 	ft_printf("Error\n%s\n", error_message);
-	exit(1);
+	exit(0);
 }
 
 int		name_checker(char *name, char *chars)
@@ -30,6 +30,8 @@ void	get_resolution(char *line)
 	line++;
 	while (*line == ' ')
 		line++;
+	if (*line == '-')
+		throw_error("resolution must be positive");
 	while (ft_isdigit(*line))
 	{
 		config->s_width = (config->s_width * 10) + (*line - 48);
@@ -46,14 +48,15 @@ void	get_resolution(char *line)
 
 void	get_color(int *direction, char *line)
 {
-	int	i;
+	int		i;
+	char	comma;
 
 	i = 0;
+	comma = 'n';
 	while (!(ft_isdigit(*line)) || *line == '-')
 	{
 		if (*line == '-')
-			printf("2\n");
-//			throw_error("colors must be in range: 0 - 255\n");
+			throw_error("colors must be in range: 0 - 255\n");
 		line++;
 	}
 	while (i < 3)
@@ -68,17 +71,20 @@ void	get_color(int *direction, char *line)
 		i++;
 		while (line && !(ft_isdigit(*line)))
 		{
-			if (*line == ' ')
-				printf("2\n");
-//				throw_error("delete spaces between color values");
+			if (comma == 'y')
+				throw_error("suka");
+			if (*line != ',' && ft_isdigit(*line))
+				throw_error("invalid char(s) in color option");
+			else if (*line == ',')
+				comma = 'y';
 			line++;
 		}
+		comma = 'n';
 	}
 	i = 0;
 	while (i++ < 3)
 		if (direction[i] < 0 || direction[i] > 255)
-			printf("2\n");
-//			throw_error("colors must be in range: 0 - 255\n");
+			throw_error("colors must be in range: 0 - 255\n");
 }
 
 void	get_filepath(char *line)
@@ -91,17 +97,55 @@ void	get_filepath(char *line)
 	c2 = *line;
 	while (*line != '/')
 		line++;
-	if (c == 'N') {
-		config->north = ft_strdup(line);
+	if (c == 'N')
+	{
+		if (name_checker(config->north, "nothing"))
+		{
+			free(config->north);
+			config->north = ft_strdup(line);
+		}
+		else
+			throw_error("duplicate north texture option, leave only one");
 	}
-	else if (c == 'S' && c2 == 'O')
-		config->south = ft_strdup(line);
+	else if (c == 'S' && c2 == 'O') {
+		if (name_checker(config->south, "nothing"))
+		{
+			free(config->south);
+			config->south = ft_strdup(line);
+		}
+		else
+			throw_error("duplicate south texture option, leave only one");
+	}
 	else if (c == 'S')
-		config->sprite = ft_strdup(line);
+	{
+		if (name_checker(config->sprite, "nothing"))
+		{
+			free(config->sprite);
+			config->sprite = ft_strdup(line);
+		}
+		else
+			throw_error("duplicate sprite texture option, leave only one");
+	}
 	else if (c == 'W')
-		config->west = ft_strdup(line);
+	{
+		if (name_checker(config->west, "nothing"))
+		{
+			free(config->west);
+			config->west = ft_strdup(line);
+		}
+		else
+ 			throw_error("duplicate west texture option, leave only one");
+	}
 	else if (c == 'E')
-		config->east = ft_strdup(line);
+	{
+		if (name_checker(config->east, "nothing"))
+		{
+			free(config->east);
+			config->east = ft_strdup(line);
+		}
+		else
+			throw_error("duplicate east texture, leave only one");
+	}
 }
 
 void	config_init()
@@ -109,21 +153,68 @@ void	config_init()
 	config = malloc(sizeof(t_config));
 	config->s_width = 0;
 	config->s_height = 0;
+	config->floor[0] = -1933;
+	config->floor[1] = -1933;
+	config->floor[2] = -1933;
+	config->celling[0] = -1933;
+	config->celling[1] = -1933;
+	config->celling[2] = -1933;
+	config->north = ft_strdup("nothing");
+	config->east = ft_strdup("nothing");
+	config->west = ft_strdup("nothing");
+	config->south = ft_strdup("nothing");
+	config->sprite = ft_strdup("nothing");
 }
 
 void	first_char(char *line)
 {
+	char	*lp;
+	char	valid_chars[10] = " RNEWSFC1";
+
+	if (!(ft_strchr(valid_chars, line[0])))
+		throw_error("delete invalid char(s)");
+	lp = line;
 	if (*line == ' ')
-		throw_error("delete spaces before string\n");
-//		printf("2\n");
+	{
+		while (lp++)
+			if (*lp == '1')
+				break ;
+		if (lp == NULL)
+			throw_error("delete spaces before string\n");
+	}
 	if (*line == 'R')
+	{
+		if (config->s_width)
+			throw_error("duplicate resolution option, leave only one");
 		get_resolution(line);
+	}
 	else if (*line == 'F')
-		get_color(config->floor, line);
+	{
+		if (config->floor[2] == -1933)
+			get_color(config->floor, line);
+		else
+			throw_error("duplicate floor color option, leave only one");
+	}
 	else if (*line == 'C')
-		get_color(config->celling, line);
+	{
+		if (config->celling[2] == -1933)
+			get_color(config->celling, line);
+		else
+			throw_error("duplicate celling option, please only one");
+	}
 	else if (*line == 'N' || *line == 'S' || *line == 'W' || *line == 'E')
 		get_filepath(line);
+}
+
+void completeness_check()
+{
+	if (config->floor[2] == -1933 ||
+	config->celling[2] == -1933 ||
+	name_checker(config->north, "nothing") ||
+	name_checker(config->east, "nothing") ||
+	name_checker(config->west, "nothing") ||
+	name_checker(config->south, "nothing"))
+		throw_error("config isn't completed");
 }
 
 void	parse_config_file(char *filename)
@@ -144,14 +235,11 @@ void	parse_config_file(char *filename)
 		first_char(line);
 		if (*line == '1')
 			break;
-		if (line[ft_strlen(line) - 1] == ' ')
-			printf("2\n");
-//			throw_error("delete spaces after string\n");
 		free(line);
 	}
 	config->map = parse_map(filename);
 	if (!(ft_strchr(line, '1')))
-		printf("1\n");
-//		throw_error("1");
+		throw_error("1");
 	free(line);
+	completeness_check();
 }

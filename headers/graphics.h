@@ -26,6 +26,7 @@ typedef struct	s_config {
 	char		*east;
 	char		*sprite;
 	char		player;
+	unsigned int	map_strings;
 }				t_config;
 
 char			**parse_map(char *filename);
