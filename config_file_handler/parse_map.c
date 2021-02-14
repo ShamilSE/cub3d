@@ -23,7 +23,7 @@ void	is_map_string_valid(const char *line)
 			if (line[i] == valid_map_chars[j])
 				break ;
 			j++;
-			if (ft_strlen(line) == j - 1)
+			if (j == 7)
 				throw_error("map is not valid");
 		}
 		j = 0;
@@ -71,21 +71,21 @@ int		is_map_valid(char **map)
 					if (map[i][j1] == '1')
 						continue ;
 					if (ft_strlen(map[i]) == j1 + 1)
-						throw_error("map is not valid");
+						throw_error("map is not valid3");
 					j1++;
 				}
 				j1 = j;
 				while (map[i][j1] != '1')
 				{
 					if (j1 == 0)
-						throw_error("map is not valid");
+						throw_error("map is not valid2");
 					j1--;
 				}
 				i1 = i;
 				while (map[i1][j] != '1')
 				{
 					if (i1 == 0)
-						throw_error("map is not valid");
+						throw_error("map is not valid1");
 					i1--;
 				}
 				i1 = i;
@@ -157,6 +157,7 @@ char	**parse_map(char *filename)
 			i++;
 		}
 	}
+	is_map_string_valid(line);
 	map[i] = ft_strdup(line);
 	free(line);
 	if (!config->player)

@@ -294,7 +294,7 @@ void	get_textures()
 	if (!(texture_east->image = mlx_xpm_file_to_image(data->mlx, config->east, &g_width, &g_height)))
 		throw_error("invalid texture path");
 	if (!(texture_sprite->image = mlx_xpm_file_to_image(data->mlx, config->sprite, &g_width, &g_height)))
-		throw_error("invalid texture_sprite path");
+		throw_error("invalid sprite path");
 	texture_north->address = (int *)mlx_get_data_addr(texture_north->image, &texture_north->bpp, &texture_north->size, &texture_north->endian);
 	texture_south->address = (int *)mlx_get_data_addr(texture_south->image, &texture_south->bpp, &texture_south->size, &texture_south->endian);
 	texture_west->address = (int *)mlx_get_data_addr(texture_west->image, &texture_west->bpp, &texture_west->size, &texture_west->endian);
@@ -308,6 +308,16 @@ int	close_window(t_data *data)
 	return 0;
 }
 
+//void	scale_reso()
+//{
+//	int		mlx_size_x;
+//	int		mlx_size_y;
+//
+//	mlx_get_screen_size(data->mlx, &mlx_size_x, &mlx_size_y);
+//	config->s_width = mlx_size_x;
+//	config->s_height = mlx_size_y;
+//}
+
 //void	is_screen_size_correct()
 //{
 //	int		mlx_size_x;
@@ -317,10 +327,7 @@ int	close_window(t_data *data)
 //		throw_error("the window size is too small");
 //	mlx_get_screen_size(data->mlx, &mlx_size_x, &mlx_size_y);
 //	if (config->s_width > mlx_size_x || config->s_height > mlx_size_y)
-//	{
-//		config->s_width = mlx_size_x;
-//		config->s_height = mlx_size_y;
-//	}
+//		scale_reso();
 //}
 
 void	spawn_direction()

@@ -37,6 +37,7 @@ void			screenshot();
 int				movings(int key);
 void			calc();
 void			turn_right();
+void			scale_reso();
 
 t_config *config;
 

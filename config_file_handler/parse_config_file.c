@@ -27,6 +27,23 @@ int		name_checker(char *name, char *chars)
 
 void	get_resolution(char *line)
 {
+	char	*c_line;
+	int		counter;
+
+	counter = 0;
+	c_line = line;
+	if (!(ft_isdigit(line[ft_strlen(line) - 1])))
+		throw_error("unexpected symbols in resolution option");
+	while (*c_line != 0)
+	{
+		if (ft_isdigit(*c_line))
+			counter++;
+		if (*c_line == ' ')
+			counter = 0;
+//		if (counter > 4)
+//			scale_reso();
+		c_line++;
+	}
 	line++;
 	while (*line == ' ')
 		line++;
@@ -37,8 +54,12 @@ void	get_resolution(char *line)
 		config->s_width = (config->s_width * 10) + (*line - 48);
 		line++;
 	}
-	while (*line == ' ')
+	while (!(ft_isdigit(*line)))
+	{
+		if (*line == '-')
+			throw_error("resolution must be positive");
 		line++;
+	}
 	while (ft_isdigit(*line))
 	{
 		config->s_height = (config->s_height * 10) + (*line - 48);
@@ -53,6 +74,8 @@ void	get_color(int *direction, char *line)
 
 	i = 0;
 	comma = 'n';
+	if (!(ft_isdigit(line[ft_strlen(line) - 1])))
+		throw_error("unexpected symbols in resolution option");
 	while (!(ft_isdigit(*line)) || *line == '-')
 	{
 		if (*line == '-')
@@ -72,7 +95,7 @@ void	get_color(int *direction, char *line)
 		while (line && !(ft_isdigit(*line)))
 		{
 			if (comma == 'y')
-				throw_error("suka");
+				throw_error("unexpected char(s) detected");
 			if (*line != ',' && ft_isdigit(*line))
 				throw_error("invalid char(s) in color option");
 			else if (*line == ',')
@@ -82,19 +105,28 @@ void	get_color(int *direction, char *line)
 		comma = 'n';
 	}
 	i = 0;
-	while (i++ < 3)
+	while (i < 3)
+	{
 		if (direction[i] < 0 || direction[i] > 255)
 			throw_error("colors must be in range: 0 - 255\n");
+		i++;
+	}
 }
 
 void	get_filepath(char *line)
 {
 	char	c;
 	char	c2;
+	char	c3;
 
 	c = *line;
 	line++;
 	c2 = *line;
+	c3 = *(line + 1);
+	if (c3 != ' ' && c3 != '/')
+		throw_error("invalid option");
+	if (c2 != ' ' && c == 'S' && c2 != 'O')
+		throw_error("invalid option");
 	while (*line != '/')
 		line++;
 	if (c == 'N')
@@ -107,7 +139,8 @@ void	get_filepath(char *line)
 		else
 			throw_error("duplicate north texture option, leave only one");
 	}
-	else if (c == 'S' && c2 == 'O') {
+	else if (c == 'S' && c2 == 'O')
+	{
 		if (name_checker(config->south, "nothing"))
 		{
 			free(config->south);
@@ -146,6 +179,8 @@ void	get_filepath(char *line)
 		else
 			throw_error("duplicate east texture, leave only one");
 	}
+	else
+		throw_error("invalid option");
 }
 
 void	config_init()
