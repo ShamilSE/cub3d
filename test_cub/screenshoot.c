@@ -54,6 +54,7 @@ void	screenshot()
 			write(fd, &color, 4);
 		}
 	}
+	ft_printf("cheese\n");
 	close(fd);
 	free(bmp);
 }
