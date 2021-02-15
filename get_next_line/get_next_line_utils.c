@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/graphics.h"
+#include "../src/cub3d.h"
 
 size_t	ft_strlen(const char *s)
 {

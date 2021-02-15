@@ -1,5 +1,4 @@
-#include "../headers/graphics.h"
-#include "../test_cub/cub3d.h"
+#include "../src/cub3d.h"
 
 void	screenshot()
 {
@@ -28,7 +27,6 @@ void	screenshot()
 	bmp->y_pixels_per_meter = 2845;
 	bmp->total_colors = 0;
 	bmp->important_colors = 0;
-
 	write(fd, bmp->file_type, 2);
 	write(fd, &bmp->file_size, 4);
 	write(fd, &bmp->reserved_bytes, 4);
@@ -44,7 +42,6 @@ void	screenshot()
 	write(fd, &bmp->y_pixels_per_meter, 4);
 	write(fd, &bmp->total_colors, 4);
 	write(fd, &bmp->important_colors, 4);
-
 	i = config->s_height;
 	while (--i >= 0)
 	{
@@ -55,7 +52,7 @@ void	screenshot()
 			write(fd, &color, 4);
 		}
 	}
-	printf("cheese\n");
+	ft_printf("cheese\n");
 	close(fd);
 	free(bmp);
 }

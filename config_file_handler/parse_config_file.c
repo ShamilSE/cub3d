@@ -1,10 +1,10 @@
-#include "../headers/graphics.h"
+#include "../src/cub3d.h"
 
 t_config *config;
 
 void	throw_error(char *error_message)
 {
-	printf("Error\n%s\n", error_message);
+	ft_printf("Error\n%s\n", error_message);
 	exit(0);
 }
 
@@ -40,8 +40,8 @@ void	get_resolution(char *line)
 			counter++;
 		if (*c_line == ' ')
 			counter = 0;
-//		if (counter > 4)
-//			scale_reso();
+		if (counter > 4)
+			scale_reso();
 		c_line++;
 	}
 	line++;
