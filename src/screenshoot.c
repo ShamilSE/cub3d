@@ -1,16 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   screenshoot.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mismene <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/15 19:55:55 by mismene           #+#    #+#             */
+/*   Updated: 2021/02/15 19:55:58 by mismene          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../src/cub3d.h"
 
-void	screenshot()
+void	init_headers(void)
 {
-	int	fd;
-	int	i;
-	int	j;
-	int color;
-
-	if (!(bmp = malloc(sizeof(t_bmp))))
-		throw_error("no memory");
-	if ((fd = open("screenshot.bmp", O_CREAT | O_WRONLY | O_TRUNC, 0666)) < 0)
-		throw_error("can't create screenshot");
 	bmp->file_type[0] = 'B';
 	bmp->file_type[1] = 'M';
 	bmp->file_size = (config->s_width * config->s_height * 4) + 54;
@@ -27,6 +30,10 @@ void	screenshot()
 	bmp->y_pixels_per_meter = 2845;
 	bmp->total_colors = 0;
 	bmp->important_colors = 0;
+}
+
+void	write_headers(void)
+{
 	write(fd, bmp->file_type, 2);
 	write(fd, &bmp->file_size, 4);
 	write(fd, &bmp->reserved_bytes, 4);
@@ -42,13 +49,29 @@ void	screenshot()
 	write(fd, &bmp->y_pixels_per_meter, 4);
 	write(fd, &bmp->total_colors, 4);
 	write(fd, &bmp->important_colors, 4);
+}
+
+void	screenshot(void)
+{
+	int	fd;
+	int	i;
+	int	j;
+	int	color;
+
+	if (!(bmp = malloc(sizeof(t_bmp))))
+		throw_error("no memory");
+	if ((fd = open("screenshot.bmp", O_CREAT | O_WRONLY | O_TRUNC, 0666)) < 0)
+		throw_error("can't create screenshot");
+	init_headers();
+	write_headers();
 	i = config->s_height;
 	while (--i >= 0)
 	{
 		j = -1;
 		while (config->s_width > ++j)
 		{
-			color = *(int*)(data->addr + (i * data->size + j * (data->bpp / 8)));
+			color = *(int*)(data->addr +
+					(i * data->size + j * (data->bpp / 8)));
 			write(fd, &color, 4);
 		}
 	}

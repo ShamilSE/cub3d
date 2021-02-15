@@ -1,87 +1,84 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   movings.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mismene <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/15 19:30:50 by mismene           #+#    #+#             */
+/*   Updated: 2021/02/15 19:30:53 by mismene          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-void	turn_right()
-{
-	double oldDirX = data->dirX;
-	data->dirX = data->dirX * cos(-data->rotSpeed) - data->dirY * sin(-data->rotSpeed);
-	data->dirY = oldDirX * sin(-data->rotSpeed) + data->dirY * cos(-data->rotSpeed);
-	double oldPlaneX = data->planeX;
-	data->planeX = data->planeX * cos(-data->rotSpeed) - data->planeY * sin(-data->rotSpeed);
-	data->planeY = oldPlaneX * sin(-data->rotSpeed) + data->planeY * cos(-data->rotSpeed);
-}
-
-void	move_forward()
+void	move_left(void)
 {
 	mlx_destroy_image(data->mlx, data->image);
-	if (config->map[(int)(data->posX + data->dirX * data->moveSpeed)][(int)(data->posY)] == '0')
-		data->posX += data->dirX * data->moveSpeed;
-	if (config->map[(int)(data->posX)][(int)(data->posY + data->dirY * data->moveSpeed)] == '0')
-		data->posY += data->dirY * data->moveSpeed;
-	data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
-	data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
-	calc();
-}
-
-void	move_backward()
-{
-	mlx_destroy_image(data->mlx, data->image);
-	if (config->map[(int)(data->posX - data->dirX * data->moveSpeed)][(int)(data->posY)] == '0')
-		data->posX -= data->dirX * data->moveSpeed;
-	if (config->map[(int)(data->posX)][(int)(data->posY - data->dirY * data->moveSpeed)] == '0')
-		data->posY -= data->dirY * data->moveSpeed;
-	data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
-	data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
-	calc();
-}
-
-void	move_left()
-{
-	mlx_destroy_image(data->mlx, data->image);
-	if (config->map[(int)(data->posX - data->dirY * data->moveSpeed)][(int)(data->posY)] == '0')
+	if (config->map[(int)(data->posX - data->dirY *
+	data->moveSpeed)][(int)(data->posY)] == '0')
 		data->posX -= data->dirY * data->moveSpeed;
-	if (config->map[(int)(data->posX)][(int)(data->posY + data->dirX * data->moveSpeed)] == '0')
+	if (config->map[(int)(data->posX)][(int)(data->posY +
+	data->dirX * data->moveSpeed)] == '0')
 		data->posY += data->dirX * data->moveSpeed;
-	data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
-	data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
+	data->image = mlx_new_image(data->mlx,
+			config->s_width, config->s_height);
+	data->addr = mlx_get_data_addr(data->image,
+			&data->bpp, &data->size, &data->endian);
 	calc();
 }
 
-void	move_right()
+void	move_right(void)
 {
 	mlx_destroy_image(data->mlx, data->image);
-	if (config->map[(int)(data->posX + data->dirY * data->moveSpeed)][(int)(data->posY)] == '0')
+	if (config->map[(int)(data->posX + data->dirY *
+	data->moveSpeed)][(int)(data->posY)] == '0')
 		data->posX += data->dirY * data->moveSpeed;
-	if (config->map[(int)(data->posX)][(int)(data->posY - data->dirX * data->moveSpeed)] == '0')
+	if (config->map[(int)(data->posX)][(int)(data->posY -
+	data->dirX * data->moveSpeed)] == '0')
 		data->posY -= data->dirX * data->moveSpeed;
-	data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
-	data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
+	data->image = mlx_new_image(data->mlx,
+			config->s_width, config->s_height);
+	data->addr = mlx_get_data_addr(data->image,
+			&data->bpp, &data->size, &data->endian);
 	calc();
 }
 
-void	look_left()
+void	look_left(void)
 {
+	double	old_dir_x;
+	double	old_plane_x;
+
+	old_dir_x = data->dirX;
+	old_plane_x = data->planeX;
 	mlx_destroy_image(data->mlx, data->image);
-	double oldDirX = data->dirX;
-	data->dirX = data->dirX * cos(data->rotSpeed) - data->dirY * sin(data->rotSpeed);
-	data->dirY = oldDirX * sin(data->rotSpeed) + data->dirY * cos(data->rotSpeed);
-	double oldPlaneX = data->planeX;
-	data->planeX = data->planeX * cos(data->rotSpeed) - data->planeY * sin(data->rotSpeed);
-	data->planeY = oldPlaneX * sin(data->rotSpeed) + data->planeY * cos(data->rotSpeed);
-	data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
-	data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
+	data->dirX = data->dirX * cos(data->rotSpeed) -
+			data->dirY * sin(data->rotSpeed);
+	data->dirY = old_dir_x * sin(data->rotSpeed) +
+			data->dirY * cos(data->rotSpeed);
+	data->planeX = data->planeX * cos(data->rotSpeed) -
+			data->planeY * sin(data->rotSpeed);
+	data->planeY = old_plane_x * sin(data->rotSpeed) +
+			data->planeY * cos(data->rotSpeed);
+	data->image = mlx_new_image(data->mlx,
+			config->s_width, config->s_height);
+	data->addr = mlx_get_data_addr(data->image,
+			&data->bpp, &data->size, &data->endian);
 	calc();
 }
 
-void	look_right()
+void	look_right(void)
 {
 	mlx_destroy_image(data->mlx, data->image);
 	turn_right();
-	data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
-	data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
+	data->image = mlx_new_image(data->mlx,
+			config->s_width, config->s_height);
+	data->addr = mlx_get_data_addr(data->image,
+			&data->bpp, &data->size, &data->endian);
 	calc();
 }
 
-int	movings(int key)
+int		movings(int key)
 {
 	if (key == K_W)
 		move_forward();
