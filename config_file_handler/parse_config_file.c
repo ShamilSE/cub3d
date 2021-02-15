@@ -135,6 +135,8 @@ void	get_filepath(char *line)
 		{
 			free(config->north);
 			config->north = ft_strdup(line);
+			if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) && !(*(line + ft_strlen(line))))
+				throw_error("invalid texture extension");
 		}
 		else
 			throw_error("duplicate north texture option, leave only one");
@@ -145,6 +147,8 @@ void	get_filepath(char *line)
 		{
 			free(config->south);
 			config->south = ft_strdup(line);
+			if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) && !(*(line + ft_strlen(line))))
+				throw_error("invalid texture extension");
 		}
 		else
 			throw_error("duplicate south texture option, leave only one");
@@ -155,6 +159,8 @@ void	get_filepath(char *line)
 		{
 			free(config->sprite);
 			config->sprite = ft_strdup(line);
+			if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) && !(*(line + ft_strlen(line))))
+				throw_error("invalid sprite extension");
 		}
 		else
 			throw_error("duplicate sprite texture option, leave only one");
@@ -165,6 +171,8 @@ void	get_filepath(char *line)
 		{
 			free(config->west);
 			config->west = ft_strdup(line);
+			if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) && !(*(line + ft_strlen(line))))
+				throw_error("invalid texture extension");
 		}
 		else
  			throw_error("duplicate west texture option, leave only one");
@@ -175,6 +183,8 @@ void	get_filepath(char *line)
 		{
 			free(config->east);
 			config->east = ft_strdup(line);
+			if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) && !(*(line + ft_strlen(line))))
+				throw_error("invalid texture extension");
 		}
 		else
 			throw_error("duplicate east texture, leave only one");

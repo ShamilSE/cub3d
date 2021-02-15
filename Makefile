@@ -9,13 +9,18 @@ MLXFLAGS = -L. -lmlx -framework OpenGL -framework AppKit
 
 all: $(NAME)
 
+COMPILE_MLX:
+
 $(NAME): $(SRC)
+	make -C mlx
+	cp mlx/libmlx.dylib .
 	gcc $(SRC) $(MLXFLAGS) libraries/libftprintf.a -o $(NAME)
 
 clean:
-	@rm -rf $(NAME)
+	rm -rf libmlx.dylib
+	rm -rf $(NAME)
 
 fclean: clean
-	@rm -rf $(MLX) $(LIBFT)
+	rm -rf $(NAME)
 
 re: fclean all

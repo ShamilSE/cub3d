@@ -334,9 +334,10 @@ void	spawn_direction()
 {
 	if (config->player == 'W')
 	{
-		for (int i = 0; i < 16; ++i) {
+		for (int i = 0; i < 47; ++i) {
 			turn_right();
 		}
+
 	} else if (config->player == 'S')
 	{
 		for (int i = 0; i < 32; ++i) {
@@ -344,12 +345,22 @@ void	spawn_direction()
 		}
 	} else if (config->player == 'E')
 	{
-		for (int i = 0; i < 47; ++i) {
+		for (int i = 0; i < 16; ++i) {
 			turn_right();
 		}
 	}
 }
 
+void	data_ini()
+{
+	data->mlx = mlx_init();
+	data->dirX = -1;
+	data->dirY = 0;
+	data->planeX = 0;
+	data->planeY = 0.66;
+	data->moveSpeed = 0.1;
+	data->rotSpeed = 0.1;
+}
 
 int	main(int argc, char **argv)
 {
@@ -362,18 +373,6 @@ int	main(int argc, char **argv)
 		parse_config_file(argv[1]);
 	if (argc > 3)
 		throw_error("too many arguments");
-	data->mlx = mlx_init();
-	data->dirX = -1;
-	data->dirY = 0;
-	data->planeX = 0;
-	data->planeY = 0.66;
-	data->moveSpeed = 0.1;
-	data->rotSpeed = 0.1;
-	spawn_direction();
-	data->win = mlx_new_window(data->mlx, config->s_width, config->s_height, "mlx");
-//	is_screen_size_correct();
-	get_textures();
-	calc();
 	if (!(ft_strncmp(argv[2], "--save", 6)) && ft_strlen(argv[2]) == 6)
 	{
 		screenshot();
@@ -381,6 +380,12 @@ int	main(int argc, char **argv)
 	}
 	else if ((ft_strncmp(argv[2], "--save", 6) || ft_strlen(argv[2]) != 6) && argc == 3)
 		throw_error("unexpected second argument, need --save");
+	data_ini();
+	spawn_direction();
+	data->win = mlx_new_window(data->mlx, config->s_width, config->s_height, "mlx");
+//	is_screen_size_correct();
+	get_textures();
+	calc();
 	mlx_hook(data->win, 2, 1L<<0, &movings, &data);
 	mlx_hook(data->win, 17, 1L<<0, &close_window, &data);
 	mlx_loop(data->mlx);
