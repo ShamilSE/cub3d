@@ -1,4 +1,3 @@
-#include "../headers/graphics.h"
 #include "../src/cub3d.h"
 
 void	is_map_string_valid(const char *line)

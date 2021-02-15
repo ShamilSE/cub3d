@@ -89,6 +89,14 @@ typedef struct	s_config {
 	unsigned int	map_strings;
 }				t_config;
 
+typedef struct	s_calc_vars {
+	int			draw_start;
+	int			draw_end;
+	int			side;
+	int			stepX;
+	int			stepY;
+}				t_calc_vars;
+
 char			**parse_map(char *filename);
 void			parse_config_file(char *filename);
 void			throw_error(char *error_message);
@@ -110,10 +118,6 @@ t_texture	*texture;
 t_sprites	*sprites;
 t_bmp		*bmp;
 t_config	*config;
-int			draw_start;
-int			draw_end;
-int			side;
-int			stepX;
-int			stepY;
+t_calc_vars	*t_calc;
 
 #endif

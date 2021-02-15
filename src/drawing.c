@@ -17,6 +17,7 @@ t_texture	*texture_south;
 t_texture	*texture_west;
 t_texture	*texture_east;
 t_texture	*texture_sprite;
+t_calc_vars	*t_calc;
 
 int		create_rgb(int r, int g, int b)
 {
@@ -28,7 +29,7 @@ void	draw_celling(int x_view)
 	int		i;
 
 	i = 0;
-	while (i < draw_start)
+	while (i < t_calc->draw_start)
 	{
 		my_mlx_pixel_put(data, x_view, i, create_rgb(config->celling[0],
 													 config->celling[1], config->celling[2]));
@@ -40,7 +41,7 @@ void	draw_floor(int x_view)
 {
 	int		i;
 
-	i = draw_end;
+	i = t_calc->draw_end;
 	while (i < config->s_height)
 	{
 		my_mlx_pixel_put(data, x_view, i, create_rgb(config->floor[0],
@@ -56,24 +57,24 @@ void	draw_walls(int lineHeight, int texX, int x)
 	double	texPos;
 
 	step = 1.0 * texHeight / lineHeight;
-	texPos = (draw_start - config->s_height / 2 + lineHeight / 2) * step;
+	texPos = (t_calc->draw_start - config->s_height / 2 + lineHeight / 2) * step;
 	y = 0;
 	while (y < config->s_height)
 	{
-		if (y >= draw_start && y <= draw_end)
+		if (y >= t_calc->draw_start && y <= t_calc->draw_end)
 		{
 			int text_y = (int)texPos & (texHeight - 1);
 			int color;
-			if (side == 0)
+			if (t_calc->side == 0)
 			{
-				if (stepX > 0)
+				if (t_calc->stepX > 0)
 					color = texture_south->address[texHeight * text_y + texX];
 				else
 					color = texture_north->address[texHeight * text_y + texX];
 			}
 			else
 			{
-				if (stepY > 0)
+				if (t_calc->stepY > 0)
 					color = texture_west->address[texHeight * text_y + texX];
 				else
 					color = texture_east->address[texHeight * text_y + texX];

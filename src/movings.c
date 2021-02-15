@@ -1,4 +1,3 @@
-#include "../headers/graphics.h"
 #include "cub3d.h"
 
 void	turn_right()

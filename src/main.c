@@ -19,6 +19,7 @@ t_texture	*texture_south;
 t_texture	*texture_west;
 t_texture	*texture_east;
 t_texture	*texture_sprite;
+t_calc_vars	*t_calc;
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
@@ -65,22 +66,22 @@ void	calc()
 		*/
 		if (rayDirX < 0)
 		{
-			stepX = -1;
+			t_calc->stepX = -1;
 			sideDistX = (data->posX - mapX) * deltaDistX;
 		}
 		else
 		{
-			stepX = 1;
+			t_calc->stepX = 1;
 			sideDistX = (mapX + 1.0 - data->posX) * deltaDistX;
 		}
 		if (rayDirY < 0)
 		{
-			stepY = -1;
+			t_calc->stepY = -1;
 			sideDistY = (data->posY - mapY) * deltaDistY;
 		}
 		else
 		{
-			stepY = 1;
+			t_calc->stepY = 1;
 			sideDistY = (mapY + 1.0 - data->posY) * deltaDistY;
 		}
 		while (!hit)
@@ -88,40 +89,40 @@ void	calc()
 			if (sideDistX < sideDistY)
 			{
 				sideDistX += deltaDistX;
-				mapX += stepX;
-				side = 0;
+				mapX += t_calc->stepX;
+				t_calc->side = 0;
 			}
 			else
 			{
 				sideDistY += deltaDistY;
-				mapY += stepY;
-				side = 1;
+				mapY += t_calc->stepY;
+				t_calc->side = 1;
 			}
 			if (config->map[mapX][mapY] == '1')
 				hit = 1;
 		}
-		if (side == 0)
-			perpWallDist = (mapX - data->posX + (double)(1 - stepX) / 2) / rayDirX;
+		if (t_calc->side == 0)
+			perpWallDist = (mapX - data->posX + (double)(1 - t_calc->stepX) / 2) / rayDirX;
 		else
-			perpWallDist = (mapY - data->posY + (double)(1 - stepY) / 2) / rayDirY;
+			perpWallDist = (mapY - data->posY + (double)(1 - t_calc->stepY) / 2) / rayDirY;
 		zBuffer[x] = perpWallDist;
 		int lineHeight = (int)(config->s_height / perpWallDist);
-		draw_start = -lineHeight / 2 + config->s_height / 2;
-		if(draw_start < 0)
-			draw_start = 0;
-		draw_end = lineHeight / 2 + config->s_height / 2;
-		if(draw_end >= config->s_height)
-			draw_end = config->s_height - 1;
+		t_calc->draw_start = -lineHeight / 2 + config->s_height / 2;
+		if(t_calc->draw_start < 0)
+			t_calc->draw_start = 0;
+		t_calc->draw_end = lineHeight / 2 + config->s_height / 2;
+		if(t_calc->draw_end >= config->s_height)
+			t_calc->draw_end = config->s_height - 1;
 		double wallX;
-		if (side == 0)
+		if (t_calc->side == 0)
 			wallX = data->posY + perpWallDist * rayDirY;
 		else
 			wallX = data->posX + perpWallDist * rayDirX;
 		wallX -= floor(wallX);
 		int texX = (int)(wallX * (double)texWidth);
-		if (side == 0 && rayDirX > 0)
+		if (t_calc->side == 0 && rayDirX > 0)
 			texX = texWidth - texX - 1;
-		if (side == 1 && rayDirY < 0)
+		if (t_calc->side == 1 && rayDirY < 0)
 			texX = texWidth - texX - 1;
 		draw_celling(x);
 		draw_floor(x);
@@ -224,12 +225,19 @@ void	data_ini()
 	data->rotSpeed = 0.1;
 }
 
-int	main(int argc, char **argv)
+void	allocation()
 {
 	if (!(data = malloc(sizeof(t_data))))
 		throw_error("no memory");
 	if (!(sprites = malloc(sizeof(t_sprites))))
 		throw_error("no memory");
+	if (!(t_calc = malloc(sizeof(t_calc_vars))))
+		throw_error("no memory");
+}
+
+int	main(int argc, char **argv)
+{
+	allocation();
 	sprites->count = 0;
 	if (argc < 2)
 		throw_error("put second argument");
