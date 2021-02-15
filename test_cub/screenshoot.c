@@ -8,7 +8,8 @@ void	screenshot()
 	int	j;
 	int color;
 
-	bmp = malloc(sizeof(t_bmp));
+	if (!(bmp = malloc(sizeof(t_bmp))))
+		throw_error("no memory");
 	if ((fd = open("screenshot.bmp", O_CREAT | O_WRONLY | O_TRUNC, 0666)) < 0)
 		throw_error("can't create screenshot");
 	bmp->file_type[0] = 'B';
@@ -54,7 +55,7 @@ void	screenshot()
 			write(fd, &color, 4);
 		}
 	}
-	ft_printf("cheese\n");
+	printf("cheese\n");
 	close(fd);
 	free(bmp);
 }

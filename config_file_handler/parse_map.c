@@ -4,8 +4,8 @@
 void	is_map_string_valid(const char *line)
 {
 	char	valid_map_chars[9] = " 012NEWS";
-	int i = 0;
-	int j = 0;
+	int		i = 0;
+	int		j = 0;
 
 	while (line[i])
 	{
@@ -116,6 +116,7 @@ size_t	count_map_strings(char *str)
 	{
 		if (*line == '1' || *line == ' ')
 			map_length++;
+		free(line);
 	}
 	if (*line == '1' || *line == ' ')
 		map_length++;
@@ -135,27 +136,31 @@ char	**parse_map(char *filename)
 	fd =  open(filename, O_RDONLY);
 	i = 0;
 	config->map_strings = count_map_strings(filename);
-	map = malloc(sizeof(char *) * (config->map_strings + 1));
+	if (!(map = malloc(sizeof(char *) * (config->map_strings + 1))))
+		throw_error("no memory");
 	while (get_next_line(fd, &line) > 0)
 	{
 		if (*line != '1' && *line != ' ')
 		{
 			if (m_flag == 'y')
 				throw_error("map must contain nothing but ' 012NEWS' symbols");
+			free(line);
 			continue;
 		}
 		else
 		{
 			m_flag = 'y';
 			is_map_string_valid(line);
-			sprites->x = malloc(sizeof(double) * sprites->count + 1);
-			sprites->y = malloc(sizeof(double) * sprites->count + 1);
+			if (!(sprites->x = malloc(sizeof(double) * sprites->count + 1)))
+				throw_error("no memory");
+			if (!(sprites->y = malloc(sizeof(double) * sprites->count + 1)))
+				throw_error("no memory");
 			sprites->x[sprites->count] = 0;
 			sprites->y[sprites->count] = 0;
 			map[i] = ft_strdup(line);
-			free(line);
 			i++;
 		}
+		free(line);
 	}
 	is_map_string_valid(line);
 	map[i] = ft_strdup(line);

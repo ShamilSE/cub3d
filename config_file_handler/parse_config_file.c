@@ -4,7 +4,7 @@ t_config *config;
 
 void	throw_error(char *error_message)
 {
-	ft_printf("Error\n%s\n", error_message);
+	printf("Error\n%s\n", error_message);
 	exit(0);
 }
 
@@ -195,7 +195,8 @@ void	get_filepath(char *line)
 
 void	config_init()
 {
-	config = malloc(sizeof(t_config));
+	if (!(config = malloc(sizeof(t_config))))
+		throw_error("no memory");
 	config->s_width = 0;
 	config->s_height = 0;
 	config->floor[0] = -1933;

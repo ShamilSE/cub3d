@@ -280,11 +280,16 @@ void	get_textures()
 	int g_width;
 	int g_height;
 
-	texture_north = malloc(sizeof(t_texture));
-	texture_south = malloc(sizeof(t_texture));
-	texture_west = malloc(sizeof(t_texture));
-	texture_east = malloc(sizeof(t_texture));
-	texture_sprite = malloc(sizeof(t_texture));
+	if (!(texture_north = malloc(sizeof(t_texture))))
+		throw_error("no memory");
+	if (!(texture_south = malloc(sizeof(t_texture))))
+		throw_error("no memory");
+	if (!(texture_west = malloc(sizeof(t_texture))))
+		throw_error("no memory");
+	if (!(texture_east = malloc(sizeof(t_texture))))
+		throw_error("no memory");
+	if (!(texture_sprite = malloc(sizeof(t_texture))))
+		throw_error("no memory");
 	if (!(texture_north->image = mlx_xpm_file_to_image(data->mlx, config->north, &g_width, &g_height)))
 		throw_error("invalid texture path");
 	if (!(texture_south->image = mlx_xpm_file_to_image(data->mlx, config->south, &g_width, &g_height)))
@@ -364,8 +369,10 @@ void	data_ini()
 
 int	main(int argc, char **argv)
 {
-	data = malloc(sizeof(t_data));
-	sprites = malloc(sizeof(t_sprites));
+	if (!(data = malloc(sizeof(t_data))))
+		throw_error("no memory");
+	if (!(sprites = malloc(sizeof(t_sprites))))
+		throw_error("no memory");
 	sprites->count = 0;
 	if (argc < 2)
 		throw_error("put second argument");
