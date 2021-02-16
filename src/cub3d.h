@@ -159,8 +159,11 @@ void	data_ini();
 void	allocation();
 int		mlx_get_screen_size(void *mlx_ptr, int *sizex, int *sizey);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
-int	close_window(t_data *data);
+int		close_window(t_data *data);
 void	get_textures();
+void	loop_of_mlx(void);
+void	prepare_to_draw_helper(void);
+int		prepare_to_draw(double *z_buffer, int line_height);
 
 t_data		*data;
 t_texture	*texture;

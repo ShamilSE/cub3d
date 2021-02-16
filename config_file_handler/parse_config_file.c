@@ -1,7 +1,5 @@
 #include "../src/cub3d.h"
 
-t_config *config;
-
 void	throw_error(char *error_message)
 {
 	ft_printf("Error\n%s\n", error_message);
@@ -25,26 +23,8 @@ int		name_checker(char *name, char *chars)
 	return (0);
 }
 
-void	get_resolution(char *line)
+void	is_resolution_correct(char *line)
 {
-	char	*c_line;
-	int		counter;
-
-	counter = 0;
-	c_line = line;
-	if (!(ft_isdigit(line[ft_strlen(line) - 1])))
-		throw_error("unexpected symbols in resolution option");
-	while (*c_line != 0)
-	{
-		if (ft_isdigit(*c_line))
-			counter++;
-		if (*c_line == ' ')
-			counter = 0;
-		if (counter > 4)
-			scale_reso();
-		c_line++;
-	}
-	line++;
 	while (*line == ' ')
 		line++;
 	if (*line == '-')
@@ -67,23 +47,38 @@ void	get_resolution(char *line)
 	}
 }
 
-void	get_color(int *direction, char *line)
+void	get_resolution(char *line)
 {
-	int		i;
+	char	*c_line;
+	int		counter;
+
+	counter = 0;
+	c_line = line;
+	if (!(ft_isdigit(line[ft_strlen(line) - 1])))
+		throw_error("unexpected symbols in resolution option");
+	while (*c_line != 0)
+	{
+		if (ft_isdigit(*c_line))
+			counter++;
+		if (*c_line == ' ')
+			counter = 0;
+		if (counter > 4)
+			scale_reso();
+		c_line++;
+	}
+	line++;
+	is_resolution_correct(line);
+}
+
+void	fill_color_in_arr(int *direction, char *line)
+{
+	int	i;
 	char	comma;
 	int		comma_counter;
 
-	i = 0;
 	comma = 'n';
 	comma_counter = 0;
-	if (!(ft_isdigit(line[ft_strlen(line) - 1])))
-		throw_error("unexpected symbols in resolution option");
-	while (!(ft_isdigit(*line)) || *line == '-')
-	{
-		if (*line == '-')
-			throw_error("colors must be in range: 0 - 255\n");
-		line++;
-	}
+	i = 0;
 	while (i < 3)
 	{
 		direction[i] = *line - 48;
@@ -110,6 +105,21 @@ void	get_color(int *direction, char *line)
 		comma = 'n';
 		i++;
 	}
+}
+
+void	get_color(int *direction, char *line)
+{
+	int		i;
+
+	if (!(ft_isdigit(line[ft_strlen(line) - 1])))
+		throw_error("unexpected symbols in resolution option");
+	while (!(ft_isdigit(*line)) || *line == '-')
+	{
+		if (*line == '-')
+			throw_error("colors must be in range: 0 - 255\n");
+		line++;
+	}
+	fill_color_in_arr(direction, line);
 	i = 0;
 	while (i < 3)
 	{

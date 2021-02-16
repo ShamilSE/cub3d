@@ -139,6 +139,7 @@ char	**parse_map(char *filename)
 	char	*line;
 	char	m_flag;
 
+	sprites->count = 0;
 	m_flag = 'n';
 	fd =  open(filename, O_RDONLY);
 	i = 0;
