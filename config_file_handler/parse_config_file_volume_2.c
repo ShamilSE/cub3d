@@ -93,7 +93,8 @@ void	copy_north_str(char *line)
 	{
 		free(config->north);
 		config->north = ft_strdup(line);
-		if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) && !(*(line + ft_strlen(line))))
+		if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) &&
+		!(*(line + ft_strlen(line))))
 			throw_error("invalid texture extension");
 	}
 	else
@@ -106,7 +107,8 @@ void	copy_south_str(char *line)
 	{
 		free(config->south);
 		config->south = ft_strdup(line);
-		if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) && !(*(line + ft_strlen(line))))
+		if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) &&
+		!(*(line + ft_strlen(line))))
 			throw_error("invalid texture extension");
 	}
 	else

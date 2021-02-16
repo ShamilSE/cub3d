@@ -2,10 +2,11 @@
 
 void	is_map_string_valid(const char *line)
 {
-	char	valid_map_chars[9] = " 012NEWS";
+	char	*valid_map_chars;
 	int		i = 0;
 	int		j = 0;
 
+	valid_map_chars = ft_strdup(" 012NEWS");
 	while (line[i])
 	{
 		if (line[i] == '2')
@@ -27,6 +28,49 @@ void	is_map_string_valid(const char *line)
 		}
 		j = 0;
 		i++;
+	}
+	free(valid_map_chars);
+}
+
+void	is_map_valid_helper(char **map, int *i, int *j, int *i1, int *j1)
+{
+	if (map[*i][*j] == '0' || map[*i][*j] == '2')
+	{
+		if (*i > 0 && *i < config->map_strings - 1)
+		{
+			if (*j > ft_strlen(map[*i - 1]) || *j > ft_strlen(map[*i + 1]))
+				throw_error("map is not valid");
+		}
+		*j1 = *j;
+		while (map[*i][*j1] != '1')
+		{
+			if (map[*i][*j1] == '1')
+				continue ;
+			if (ft_strlen(map[*i]) == *j1 + 1)
+				throw_error("map is not valid");
+			(*j1)++;
+		}
+		*j1 = *j;
+		while (map[*i][*j1] != '1')
+		{
+			if (*j1 == 0)
+				throw_error("map is not valid");
+			(*j1)--;
+		}
+		*i1 = *i;
+		while (map[*i1][*j] != '1')
+		{
+			if (*i1 == 0)
+				throw_error("map is not valid");
+			(*i1)--;
+		}
+		*i1 = *i;
+		while (map[*i1] && map[*i1][*j] != '1')
+		{
+			if ((map[*i1][*j] != '1') && ((*i1) == config->map_strings - 1))
+				throw_error("map is not valid");
+			(*i1)++;
+		}
 	}
 }
 
@@ -62,44 +106,7 @@ int		is_map_valid(char **map)
 				data->posY = j + 0.5;
 				map[i][j] = '0';
 			}
-			if (map[i][j] == '0' || map[i][j] == '2')
-			{
-				if (i > 0 && i < config->map_strings - 1)
-				{
-					if (j > ft_strlen(map[i - 1]) || j > ft_strlen(map[i + 1]))
-						throw_error("map is not valid");
-				}
-				j1 = j;
-				while (map[i][j1] != '1')
-				{
-					if (map[i][j1] == '1')
-						continue ;
-					if (ft_strlen(map[i]) == j1 + 1)
-						throw_error("map is not valid");
-					j1++;
-				}
-				j1 = j;
-				while (map[i][j1] != '1')
-				{
-					if (j1 == 0)
-						throw_error("map is not valid");
-					j1--;
-				}
-				i1 = i;
-				while (map[i1][j] != '1')
-				{
-					if (i1 == 0)
-						throw_error("map is not valid");
-					i1--;
-				}
-				i1 = i;
-				while (map[i1] && map[i1][j] != '1')
-				{
-					if ((map[i1][j] != '1') && ((i1) == config->map_strings - 1))
-						throw_error("map is not valid");
-					i1++;
-				}
-			}
+			is_map_valid_helper(map, &i, &j, &i1, &j1);
 			j++;
 		}
 		j = 0;
@@ -144,8 +151,6 @@ char	**parse_map(char *filename)
 	if (!(map = malloc(sizeof(char *) * (config->map_strings + 1)))) {
 		throw_error("no memory");
 	}
-//	while (1) {}
-	// leaks after this comment
 	while (get_next_line(fd, &line) > 0)
 	{
 		if (*line != '1' && *line != ' ')
@@ -168,7 +173,6 @@ char	**parse_map(char *filename)
 	is_map_string_valid(line);
 	map[i] = ft_strdup(line);
 	free(line);
-//	leaks before this comment
 			if (!(sprites->x = malloc(sizeof(double) * sprites->count + 1))) {
 				throw_error("no memory");
 			}

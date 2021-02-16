@@ -60,8 +60,9 @@ void	config_router(char *line)
 void	first_char(char *line)
 {
 	char	*lp;
-	char	valid_chars[10] = " RNEWSFC1";
+	char	*valid_chars;
 
+	valid_chars = ft_strdup(" RNEWSFC1");
 	if (!(ft_strchr(valid_chars, line[0])))
 		throw_error("delete invalid char(s)");
 	lp = line;
@@ -74,9 +75,10 @@ void	first_char(char *line)
 			throw_error("delete spaces before string\n");
 	}
 	config_router(line);
+	free(valid_chars);
 }
 
-void completeness_check()
+void	completeness_check(void)
 {
 	if (config->floor[2] == -1933 ||
 	config->celling[2] == -1933 ||
