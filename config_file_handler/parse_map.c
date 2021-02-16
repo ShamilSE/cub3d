@@ -22,10 +22,7 @@ void	is_map_string_valid(const char *line)
 			if (line[i] == valid_map_chars[j])
 				break ;
 			if (j == 7)
-			{
-				printf("%s\n", line);
-				throw_error("map is not valid7");
-			}
+				throw_error("map is not valid");
 			j++;
 		}
 		j = 0;
@@ -70,7 +67,7 @@ int		is_map_valid(char **map)
 				if (i > 0 && i < config->map_strings - 1)
 				{
 					if (j > ft_strlen(map[i - 1]) || j > ft_strlen(map[i + 1]))
-						throw_error("map is not valid5");
+						throw_error("map is not valid");
 				}
 				j1 = j;
 				while (map[i][j1] != '1')
@@ -78,28 +75,28 @@ int		is_map_valid(char **map)
 					if (map[i][j1] == '1')
 						continue ;
 					if (ft_strlen(map[i]) == j1 + 1)
-						throw_error("map is not valid4");
+						throw_error("map is not valid");
 					j1++;
 				}
 				j1 = j;
 				while (map[i][j1] != '1')
 				{
 					if (j1 == 0)
-						throw_error("map is not valid3");
+						throw_error("map is not valid");
 					j1--;
 				}
 				i1 = i;
 				while (map[i1][j] != '1')
 				{
 					if (i1 == 0)
-						throw_error("map is not valid2");
+						throw_error("map is not valid");
 					i1--;
 				}
 				i1 = i;
 				while (map[i1] && map[i1][j] != '1')
 				{
 					if ((map[i1][j] != '1') && ((i1) == config->map_strings - 1))
-						throw_error("map is not valid1");
+						throw_error("map is not valid");
 					i1++;
 				}
 			}

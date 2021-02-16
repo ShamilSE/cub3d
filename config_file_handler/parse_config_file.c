@@ -1,215 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_config_file.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mismene <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/16 22:46:18 by mismene           #+#    #+#             */
+/*   Updated: 2021/02/16 22:46:35 by mismene          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../src/cub3d.h"
 
-void	throw_error(char *error_message)
-{
-	ft_printf("Error\n%s\n", error_message);
-	exit(0);
-}
-
-int		name_checker(char *name, char *chars)
-{
-	while (*name)
-	{
-		if (*name == *chars)
-		{
-			while (*chars++ == *name++)
-				if (*name == '\0' || *chars == '\0')
-					break ;
-			if (*chars == '\0' && *name == '\0')
-				return (1);
-		}
-		name++;
-	}
-	return (0);
-}
-
-void	is_resolution_correct(char *line)
-{
-	while (*line == ' ')
-		line++;
-	if (*line == '-')
-		throw_error("resolution must be positive");
-	while (ft_isdigit(*line))
-	{
-		config->s_width = (config->s_width * 10) + (*line - 48);
-		line++;
-	}
-	while (!(ft_isdigit(*line)))
-	{
-		if (*line == '-')
-			throw_error("resolution must be positive");
-		line++;
-	}
-	while (ft_isdigit(*line))
-	{
-		config->s_height = (config->s_height * 10) + (*line - 48);
-		line++;
-	}
-}
-
-void	get_resolution(char *line)
-{
-	char	*c_line;
-	int		counter;
-
-	counter = 0;
-	c_line = line;
-	if (!(ft_isdigit(line[ft_strlen(line) - 1])))
-		throw_error("unexpected symbols in resolution option");
-	while (*c_line != 0)
-	{
-		if (ft_isdigit(*c_line))
-			counter++;
-		if (*c_line == ' ')
-			counter = 0;
-		if (counter > 4)
-			scale_reso();
-		c_line++;
-	}
-	line++;
-	is_resolution_correct(line);
-}
-
-void	fill_color_in_arr(int *direction, char *line)
-{
-	int	i;
-	char	comma;
-	int		comma_counter;
-
-	comma = 'n';
-	comma_counter = 0;
-	i = 0;
-	while (i < 3)
-	{
-		direction[i] = *line - 48;
-		line++;
-		while (ft_isdigit(*line))
-		{
-			direction[i] = (direction[i] * 10) + (*line - 48);
-			line++;
-		}
-		while (line && !(ft_isdigit(*line)))
-		{
-			if (*line == ',')
-				comma_counter++;
-			if (comma_counter > 2)
-				throw_error("unexpected char(s) detected");
-			if (comma == 'y')
-				throw_error("unexpected char(s) detected");
-			if (*line != ',' && ft_isdigit(*line))
-				throw_error("invalid char(s) in color option");
-			else if (*line == ',')
-				comma = 'y';
-			line++;
-		}
-		comma = 'n';
-		i++;
-	}
-}
-
-void	get_color(int *direction, char *line)
-{
-	int		i;
-
-	if (!(ft_isdigit(line[ft_strlen(line) - 1])))
-		throw_error("unexpected symbols in resolution option");
-	while (!(ft_isdigit(*line)) || *line == '-')
-	{
-		if (*line == '-')
-			throw_error("colors must be in range: 0 - 255\n");
-		line++;
-	}
-	fill_color_in_arr(direction, line);
-	i = 0;
-	while (i < 3)
-	{
-		if (direction[i] < 0 || direction[i] > 255)
-			throw_error("colors must be in range: 0 - 255\n");
-		i++;
-	}
-}
-
-void	get_filepath(char *line)
-{
-	char	c;
-	char	c2;
-	char	c3;
-
-	c = *line;
-	line++;
-	c2 = *line;
-	c3 = *(line + 1);
-	if (c3 != ' ' && c3 != '/')
-		throw_error("invalid option");
-	if (c2 != ' ' && c == 'S' && c2 != 'O')
-		throw_error("invalid option");
-	while (*line != '/')
-		line++;
-	if (c == 'N')
-	{
-		if (name_checker(config->north, "nothing"))
-		{
-			free(config->north);
-			config->north = ft_strdup(line);
-			if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) && !(*(line + ft_strlen(line))))
-				throw_error("invalid texture extension");
-		}
-		else
-			throw_error("duplicate north texture option, leave only one");
-	}
-	else if (c == 'S' && c2 == 'O')
-	{
-		if (name_checker(config->south, "nothing"))
-		{
-			free(config->south);
-			config->south = ft_strdup(line);
-			if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) && !(*(line + ft_strlen(line))))
-				throw_error("invalid texture extension");
-		}
-		else
-			throw_error("duplicate south texture option, leave only one");
-	}
-	else if (c == 'S')
-	{
-		if (name_checker(config->sprite, "nothing"))
-		{
-			free(config->sprite);
-			config->sprite = ft_strdup(line);
-			if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) && !(*(line + ft_strlen(line))))
-				throw_error("invalid sprite extension");
-		}
-		else
-			throw_error("duplicate sprite texture option, leave only one");
-	}
-	else if (c == 'W')
-	{
-		if (name_checker(config->west, "nothing"))
-		{
-			free(config->west);
-			config->west = ft_strdup(line);
-			if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) && !(*(line + ft_strlen(line))))
-				throw_error("invalid texture extension");
-		}
-		else
- 			throw_error("duplicate west texture option, leave only one");
-	}
-	else if (c == 'E')
-	{
-		if (name_checker(config->east, "nothing"))
-		{
-			free(config->east);
-			config->east = ft_strdup(line);
-			if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) && !(*(line + ft_strlen(line))))
-				throw_error("invalid texture extension");
-		}
-		else
-			throw_error("duplicate east texture, leave only one");
-	}
-	else
-		throw_error("invalid option");
-}
-
-void	config_init()
+void	config_init(void)
 {
 	if (!(config = malloc(sizeof(t_config))))
 		throw_error("no memory");
@@ -228,22 +31,8 @@ void	config_init()
 	config->sprite = ft_strdup("nothing");
 }
 
-void	first_char(char *line)
+void	config_router(char *line)
 {
-	char	*lp;
-	char	valid_chars[10] = " RNEWSFC1";
-
-	if (!(ft_strchr(valid_chars, line[0])))
-		throw_error("delete invalid char(s)");
-	lp = line;
-	if (*line == ' ')
-	{
-		while (lp++)
-			if (*lp == '1')
-				break ;
-		if (lp == NULL)
-			throw_error("delete spaces before string\n");
-	}
 	if (*line == 'R')
 	{
 		if (config->s_width)
@@ -266,6 +55,25 @@ void	first_char(char *line)
 	}
 	else if (*line == 'N' || *line == 'S' || *line == 'W' || *line == 'E')
 		get_filepath(line);
+}
+
+void	first_char(char *line)
+{
+	char	*lp;
+	char	valid_chars[10] = " RNEWSFC1";
+
+	if (!(ft_strchr(valid_chars, line[0])))
+		throw_error("delete invalid char(s)");
+	lp = line;
+	if (*line == ' ')
+	{
+		while (lp++)
+			if (*lp == '1')
+				break ;
+		if (lp == NULL)
+			throw_error("delete spaces before string\n");
+	}
+	config_router(line);
 }
 
 void completeness_check()
@@ -296,7 +104,7 @@ void	parse_config_file(char *filename)
 	{
 		first_char(line);
 		if (*line == '1')
-			break;
+			break ;
 		free(line);
 	}
 	config->map = parse_map(filename);
