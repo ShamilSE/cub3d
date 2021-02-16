@@ -117,6 +117,17 @@ typedef struct	s_calc_vars {
 	int			text_y;
 	int			x;
 	double		texture_position;
+	double		cameraX;
+	double		rayDirX;
+	double		rayDirY;
+	int			mapX;
+	int			mapY;
+	double		sideDistY;
+	double		sideDistX;
+	double		deltaDistX;
+	double		deltaDistY;
+	double		perpWallDist;
+	int			lineHeight;
 }				t_calc_vars;
 
 char			**parse_map(char *filename);
@@ -141,8 +152,15 @@ void	draw_celling(int x_view);
 void	draw_floor(int x_view);
 void	draw_walls_helper(int y, double step, int color);
 void	draw_walls(int line_height);
-
-
+void	scale_reso();
+void	is_screen_size_correct();
+void	spawn_direction();
+void	data_ini();
+void	allocation();
+int		mlx_get_screen_size(void *mlx_ptr, int *sizex, int *sizey);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
+int	close_window(t_data *data);
+void	get_textures();
 
 t_data		*data;
 t_texture	*texture;
