@@ -41,25 +41,34 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 
 void	calc()
 {
+	double	zBuffer[config->s_width];
+	double	cameraX;
+	double	rayDirX;
+	double	rayDirY;
+	int		mapX;
+	int		mapY;
+	double	sideDistY;
+	double	sideDistX;
+	double	deltaDistX;
+	double	deltaDistY;
+	double	perpWallDist;
+	int		hit;
+	int		lineHeight;
+	double	wallX;
+
 	data->image = mlx_new_image(data->mlx, config->s_width, config->s_height);
 	data->addr = mlx_get_data_addr(data->image, &data->bpp, &data->size, &data->endian);
-	double zBuffer[config->s_width];
-	int	x;
-
-	x = 0;
-	while (x < config->s_width)
+	t_calc->x = 0;
+	while (t_calc->x < config->s_width)
 	{
-		double cameraX = 2 * x / (double)config->s_width - 1;
-		double rayDirX = data->dirX + data->planeX * cameraX;
-		double rayDirY = data->dirY + data->planeY * cameraX;
-		int mapX = (int)data->posX;
-		int mapY = (int)data->posY;
-		double sideDistX;
-		double sideDistY;
-		double deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
-		double deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
-		double perpWallDist;
-		int hit = 0;
+		cameraX = 2 * t_calc->x / (double)config->s_width - 1;
+		rayDirX = data->dirX + data->planeX * cameraX;
+		rayDirY = data->dirY + data->planeY * cameraX;
+		mapX = (int)data->posX;
+		mapY = (int)data->posY;
+		deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
+		deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
+		hit = 0;
 		/*
 		** if ray direction < 0 - sideDistX (length from current player position to first x-crossing) will be the ray to left side
 		** else from current to right
@@ -105,29 +114,28 @@ void	calc()
 			perpWallDist = (mapX - data->posX + (double)(1 - t_calc->stepX) / 2) / rayDirX;
 		else
 			perpWallDist = (mapY - data->posY + (double)(1 - t_calc->stepY) / 2) / rayDirY;
-		zBuffer[x] = perpWallDist;
-		int lineHeight = (int)(config->s_height / perpWallDist);
+		zBuffer[t_calc->x] = perpWallDist;
+		lineHeight = (int)(config->s_height / perpWallDist);
 		t_calc->draw_start = -lineHeight / 2 + config->s_height / 2;
 		if(t_calc->draw_start < 0)
 			t_calc->draw_start = 0;
 		t_calc->draw_end = lineHeight / 2 + config->s_height / 2;
 		if(t_calc->draw_end >= config->s_height)
 			t_calc->draw_end = config->s_height - 1;
-		double wallX;
 		if (t_calc->side == 0)
 			wallX = data->posY + perpWallDist * rayDirY;
 		else
 			wallX = data->posX + perpWallDist * rayDirX;
 		wallX -= floor(wallX);
-		int texX = (int)(wallX * (double)texWidth);
+		t_calc->text_x = (int)(wallX * (double)texWidth);
 		if (t_calc->side == 0 && rayDirX > 0)
-			texX = texWidth - texX - 1;
+			t_calc->text_x = texWidth - t_calc->text_x - 1;
 		if (t_calc->side == 1 && rayDirY < 0)
-			texX = texWidth - texX - 1;
-		draw_celling(x);
-		draw_floor(x);
-		draw_walls(lineHeight,texX, x);
-		x++;
+			t_calc->text_x = texWidth - t_calc->text_x - 1;
+		draw_celling(t_calc->x);
+		draw_floor(t_calc->x);
+		draw_walls(lineHeight);
+		t_calc->x++;
 	}
 	draw_srpites(zBuffer);
 	mlx_put_image_to_window(data->mlx, data->win, data->image, 0, 0);

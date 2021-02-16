@@ -32,7 +32,7 @@ void	init_headers(void)
 	bmp->important_colors = 0;
 }
 
-void	write_headers(void)
+void	write_headers(int fd)
 {
 	write(fd, bmp->file_type, 2);
 	write(fd, &bmp->file_size, 4);
@@ -63,7 +63,7 @@ void	screenshot(void)
 	if ((fd = open("screenshot.bmp", O_CREAT | O_WRONLY | O_TRUNC, 0666)) < 0)
 		throw_error("can't create screenshot");
 	init_headers();
-	write_headers();
+	write_headers(fd);
 	i = config->s_height;
 	while (--i >= 0)
 	{

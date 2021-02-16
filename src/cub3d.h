@@ -7,7 +7,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "mlx.h"
+#include "../headers/mlx.h"
 #include "../headers/libft.h"
 #include "../headers/ft_printf.h"
 #include "../headers/get_next_line.h"
@@ -49,9 +49,22 @@ typedef struct	s_texture
 
 typedef struct	s_sprites
 {
-	double	*x;
-	double	*y;
+	double		*x;
+	double		*y;
 	int			count;
+	double		spriteX;
+	double		spriteY;
+	double		invDet;
+	double		transformX;
+	double		transformY;
+	int			spriteScreenX;
+	int			spriteHeight;
+	int			drawStartY;
+	int			drawEndY;
+	int			spriteWidth;
+	int			drawStartX;
+	int			drawEndX;
+
 }				t_sprites;
 
 typedef struct	s_bpm
@@ -95,6 +108,10 @@ typedef struct	s_calc_vars {
 	int			side;
 	int			stepX;
 	int			stepY;
+	int			text_x;
+	int			text_y;
+	int			x;
+	double		texture_position;
 }				t_calc_vars;
 
 char			**parse_map(char *filename);
@@ -110,8 +127,10 @@ void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int			create_rgb(int r, int g, int b);
 void		draw_celling(int x_view);
 void		draw_floor(int x_view);
-void		draw_walls(int lineHeight, int texX, int x);
+void		draw_walls(int lineHeight);
 void		draw_srpites(double *zBuffer);
+void		move_forward(void);
+void		move_backward(void);
 
 t_data		*data;
 t_texture	*texture;
