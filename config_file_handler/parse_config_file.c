@@ -71,9 +71,11 @@ void	get_color(int *direction, char *line)
 {
 	int		i;
 	char	comma;
+	int		comma_counter;
 
 	i = 0;
 	comma = 'n';
+	comma_counter = 0;
 	if (!(ft_isdigit(line[ft_strlen(line) - 1])))
 		throw_error("unexpected symbols in resolution option");
 	while (!(ft_isdigit(*line)) || *line == '-')
@@ -91,9 +93,12 @@ void	get_color(int *direction, char *line)
 			direction[i] = (direction[i] * 10) + (*line - 48);
 			line++;
 		}
-		i++;
 		while (line && !(ft_isdigit(*line)))
 		{
+			if (*line == ',')
+				comma_counter++;
+			if (comma_counter > 2)
+				throw_error("unexpected char(s) detected");
 			if (comma == 'y')
 				throw_error("unexpected char(s) detected");
 			if (*line != ',' && ft_isdigit(*line))
@@ -103,6 +108,7 @@ void	get_color(int *direction, char *line)
 			line++;
 		}
 		comma = 'n';
+		i++;
 	}
 	i = 0;
 	while (i < 3)

@@ -64,7 +64,12 @@ typedef struct	s_sprites
 	int			spriteWidth;
 	int			drawStartX;
 	int			drawEndX;
-
+	int			stripe;
+	int			text_x;
+	int			text_y;
+	double		dist_tmp;
+	double		x_tmp;
+	double		y_tmp;
 }				t_sprites;
 
 typedef struct	s_bpm
@@ -131,6 +136,13 @@ void		draw_walls(int lineHeight);
 void		draw_srpites(double *zBuffer);
 void		move_forward(void);
 void		move_backward(void);
+int		create_rgb(int r, int g, int b);
+void	draw_celling(int x_view);
+void	draw_floor(int x_view);
+void	draw_walls_helper(int y, double step, int color);
+void	draw_walls(int line_height);
+
+
 
 t_data		*data;
 t_texture	*texture;
@@ -138,5 +150,11 @@ t_sprites	*sprites;
 t_bmp		*bmp;
 t_config	*config;
 t_calc_vars	*t_calc;
+t_sprites	*sprites;
+t_texture	*texture_north;
+t_texture	*texture_south;
+t_texture	*texture_west;
+t_texture	*texture_east;
+t_texture	*texture_sprite;
 
 #endif
