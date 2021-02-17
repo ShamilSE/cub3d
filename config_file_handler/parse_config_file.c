@@ -98,7 +98,8 @@ void	parse_config_file(char *filename)
 
 	config_init();
 	config->filename = ft_strdup(filename);
-	if (!(name_checker(filename, ".cub")))
+	if (!(name_checker(filename, ".cub")) ||
+	(filename[ft_strlen(filename) - 4] != '.'))
 		throw_error("config file must have '.cub' extension");
 	if ((fd = open("map.cub", O_RDONLY)) < 0)
 		throw_error("invalid filename\n");

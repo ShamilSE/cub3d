@@ -188,6 +188,16 @@ void	copy_west_str(char *line);
 void	copy_east_str(char *line);
 void	sprites_router(char c, char c2, char *line);
 void	get_filepath(char *line);
+void	is_map_string_valid_helper(const char
+								   *line, char *valid_map_chars, int *i, int *j);
+void	is_map_string_valid(const char *line);
+size_t	count_map_strings(char *str);
+void	is_map_valid_helper_2(int **i, int **j, int **i1, int **j1);
+void	is_map_valid_helper(int *i, int *j, int *i1, int *j1);
+void	map_valid_init(void);
+void	is_map_valid_helper_3(void);
+int		is_map_valid(void);
+void	parse_map_helper(void);
 
 char		**g_map;
 char		g_comma;
