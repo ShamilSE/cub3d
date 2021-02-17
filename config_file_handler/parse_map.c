@@ -55,49 +55,70 @@ size_t	count_map_strings(char *str)
 	return (map_length);
 }
 
-void	is_map_valid_helper(char **map, int *i, int *j, int *i1, int *j1)
+void	is_map_valid_helper_2(int **i, int **j, int **i1, int **j1)
 {
-	if (map[*i][*j] == '0' || map[*i][*j] == '2')
+	while (g_map[**i][**j1] != '1')
+	{
+		if (g_map[**i][**j1] == '1')
+			continue ;
+		if (ft_strlen(g_map[**i]) == **j1 + 1)
+			throw_error("map is not valid");
+		(**j1)++;
+	}
+	**j1 = **j;
+	while (g_map[**i][**j1] != '1')
+	{
+		if (**j1 == 0)
+			throw_error("map is not valid");
+		(**j1)--;
+	}
+	**i1 = **i;
+}
+
+void	is_map_valid_helper(int *i, int *j, int *i1, int *j1)
+{
+	if (g_map[*i][*j] == '0' || g_map[*i][*j] == '2')
 	{
 		if (*i > 0 && *i < config->map_strings - 1)
 		{
-			if (*j > ft_strlen(map[*i - 1]) || *j > ft_strlen(map[*i + 1]))
+			if (*j > ft_strlen(g_map[*i - 1]) || *j > ft_strlen(g_map[*i + 1]))
 				throw_error("map is not valid");
 		}
 		*j1 = *j;
-		while (map[*i][*j1] != '1')
-		{
-			if (map[*i][*j1] == '1')
-				continue ;
-			if (ft_strlen(map[*i]) == *j1 + 1)
-				throw_error("map is not valid");
-			(*j1)++;
-		}
-		*j1 = *j;
-		while (map[*i][*j1] != '1')
-		{
-			if (*j1 == 0)
-				throw_error("map is not valid");
-			(*j1)--;
-		}
-		*i1 = *i;
-		while (map[*i1][*j] != '1')
+		is_map_valid_helper_2(&i, &j, &i1, &j1);
+		while (g_map[*i1][*j] != '1')
 		{
 			if (*i1 == 0)
 				throw_error("map is not valid");
 			(*i1)--;
 		}
 		*i1 = *i;
-		while (map[*i1] && map[*i1][*j] != '1')
+		while (g_map[*i1] && g_map[*i1][*j] != '1')
 		{
-			if ((map[*i1][*j] != '1') && ((*i1) == config->map_strings - 1))
+			if ((g_map[*i1][*j] != '1') && ((*i1) == config->map_strings - 1))
 				throw_error("map is not valid");
 			(*i1)++;
 		}
 	}
 }
 
-int		is_map_valid(char **map)
+void	is_map_valid_helper_3(int *map_i, int *i, int *j)
+{
+	sprites->x[*map_i] = *i + 0.5;
+	sprites->y[*map_i] = *j + 0.5;
+}
+
+void	is_map_valid_helper_4(int *player_flag, int *i, int *j)
+{
+	*player_flag = 1;
+	data->posX = *i + 0.5;
+	data->posY = *j + 0.5;
+	g_map[*i][*j] = '0';
+}
+
+
+
+int		is_map_valid(void)
 {
 	int	i;
 	int	j;
@@ -110,26 +131,26 @@ int		is_map_valid(char **map)
 	player_flag = 0;
 	i = 0;
 	j = 0;
-	while (map[i])
+	while (g_map[i])
 	{
-		while (map[i][j])
+		while (g_map[i][j])
 		{
-			if (map[i][j] == '2')
+			if (g_map[i][j] == '2')
 			{
 				sprites->x[map_i] = i + 0.5;
 				sprites->y[map_i] = j + 0.5;
 				map_i++;
 			}
-			if (map[i][j] == 'N' || map[i][j] == 'E' || map[i][j] == 'W' || map[i][j] == 'S')
+			if (g_map[i][j] == 'N' || g_map[i][j] == 'E' || g_map[i][j] == 'W' || g_map[i][j] == 'S')
 			{
 				if (player_flag)
 					throw_error("several players on a map, leave only one");
 				player_flag = 1;
 				data->posX = i + 0.5;
 				data->posY = j + 0.5;
-				map[i][j] = '0';
+				g_map[i][j] = '0';
 			}
-			is_map_valid_helper(map, &i, &j, &i1, &j1);
+			is_map_valid_helper(&i, &j, &i1, &j1);
 			j++;
 		}
 		j = 0;
@@ -138,7 +159,7 @@ int		is_map_valid(char **map)
 	return (1);
 }
 
-void	parse_map_helper(char **map)
+void	parse_map_helper(void)
 {
 
 	if (!(sprites->x = malloc(sizeof(double) * sprites->count + 1)))
@@ -149,7 +170,7 @@ void	parse_map_helper(char **map)
 	sprites->y[sprites->count] = 0;
 	if (!config->player)
 		throw_error("there is no player on a map");
-	if (!is_map_valid(map))
+	if (!is_map_valid())
 		throw_error("map is not valid");
 }
 
@@ -173,7 +194,6 @@ char	**parse_map_helper_3(char *filename)
 
 char	**parse_map(char *filename)
 {
-	char	**map;
 	int		i;
 	int		fd;
 	char	*line;
@@ -182,7 +202,7 @@ char	**parse_map(char *filename)
 	m_flag = 'n';
 	fd =  open(filename, O_RDONLY);
 	i = 0;
-	map = parse_map_helper_3(filename);
+	g_map = parse_map_helper_3(filename);
 	while (get_next_line(fd, &line) > 0)
 	{
 		if (*line != '1' && *line != ' ')
@@ -194,15 +214,15 @@ char	**parse_map(char *filename)
 		{
 			m_flag = 'y';
 			is_map_string_valid(line);
-			map[i] = ft_strdup(line);
+			g_map[i] = ft_strdup(line);
 			i++;
 			free(line);
 		}
 	}
 	is_map_string_valid(line);
-	map[i] = ft_strdup(line);
+	g_map[i] = ft_strdup(line);
 	free(line);
-	map[i + 1] = 0x0;
-	parse_map_helper(map);
-	return (map);
+	g_map[i + 1] = 0x0;
+	parse_map_helper();
+	return (g_map);
 }

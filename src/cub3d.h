@@ -130,6 +130,15 @@ typedef struct	s_calc_vars {
 	int			lineHeight;
 }				t_calc_vars;
 
+typedef struct	s_map_valid {
+	int			i;
+	int			j;
+	int			i1;
+	int			j1;
+	int			player_flag;
+	int			map_i;
+}				t_map_valid;
+
 char			**parse_map(char *filename);
 void			parse_config_file(char *filename);
 void			throw_error(char *error_message);
@@ -180,6 +189,7 @@ void	copy_east_str(char *line);
 void	sprites_router(char c, char c2, char *line);
 void	get_filepath(char *line);
 
+char		**g_map;
 char		g_comma;
 int			comma_counter;
 t_data		*data;
@@ -194,5 +204,6 @@ t_texture	*texture_south;
 t_texture	*texture_west;
 t_texture	*texture_east;
 t_texture	*texture_sprite;
+t_map_valid	*map_valid;
 
 #endif
