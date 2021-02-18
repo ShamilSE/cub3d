@@ -95,6 +95,7 @@ int		main(int argc, char **argv)
 		parse_config_file(argv[1]);
 	if (argc > 3)
 		throw_error("too many arguments");
+	is_screen_size_correct();
 	if (!(ft_strncmp(argv[2], "--save", 6)) && ft_strlen(argv[2]) == 6)
 	{
 		screenshot();
@@ -105,7 +106,6 @@ int		main(int argc, char **argv)
 		throw_error("unexpected second argument, need --save");
 	data_ini();
 	spawn_direction();
-	is_screen_size_correct();
 	g_data->win = mlx_new_window(g_data->mlx,
 	g_config->s_width, g_config->s_height, "mlx");
 	get_textures();

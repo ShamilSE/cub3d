@@ -141,10 +141,10 @@ typedef struct		s_calc_vars {
 }					t_calc_vars;
 
 typedef struct		s_map_valid {
-	int				i;
-	int				j;
-	int				i1;
-	int				j1;
+	unsigned int	i;
+	unsigned int	j;
+	unsigned int	i1;
+	unsigned int	j1;
 	int				player_flag;
 	int				map_i;
 }					t_map_valid;

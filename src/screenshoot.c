@@ -32,6 +32,7 @@ void	init_headers(void)
 	g_bmp->important_colors = 0;
 }
 
+
 void	write_headers(int fd)
 {
 	write(fd, g_bmp->file_type, 2);
@@ -51,6 +52,18 @@ void	write_headers(int fd)
 	write(fd, &g_bmp->important_colors, 4);
 }
 
+void	screenshot_calculations(int fd)
+{
+	data_ini();
+	spawn_direction();
+	g_data->win = mlx_new_window(g_data->mlx,
+	g_config->s_width, g_config->s_height, "mlx");
+	get_textures();
+	calc();
+	init_headers();
+	write_headers(fd);
+}
+
 void	screenshot(void)
 {
 	int	fd;
@@ -62,8 +75,7 @@ void	screenshot(void)
 		throw_error("no memory");
 	if ((fd = open("screenshot.bmp", O_CREAT | O_WRONLY | O_TRUNC, 0666)) < 0)
 		throw_error("can't create screenshot");
-	init_headers();
-	write_headers(fd);
+	screenshot_calculations(fd);
 	i = g_config->s_height;
 	while (--i >= 0)
 	{

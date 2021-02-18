@@ -9,6 +9,8 @@ SRC = src/main.c src/screenshoot.c src/movings.c src/my_mlx_pixel_put.c src/draw
 
 MLXFLAGS = -L. -lmlx -framework OpenGL -framework AppKit
 
+CFLAGS = -Wall -Wextra -Werror
+
 all: $(NAME)
 
 COMPILE_MLX:
@@ -16,7 +18,7 @@ COMPILE_MLX:
 $(NAME): $(SRC) src/cub3d.h
 	make -C mlx
 	cp mlx/libmlx.dylib .
-	gcc $(SRC) $(MLXFLAGS) libftprintf.a -o $(NAME)
+	gcc $(CFLAGS) $(SRC) $(MLXFLAGS) libftprintf.a -o $(NAME)
 
 clean: fclean
 	rm -rf libmlx.dylib
