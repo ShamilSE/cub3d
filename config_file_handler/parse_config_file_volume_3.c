@@ -85,6 +85,10 @@ void	get_filepath(char *line)
 	if (c2 != ' ' && c == 'S' && c2 != 'O')
 		throw_error("invalid option");
 	while (*line != '/')
+	{
+		if (*line == '.')
+			break ;
 		line++;
+	}
 	sprites_router(c, c2, line);
 }

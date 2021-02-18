@@ -40,13 +40,13 @@ void	spawn_direction(void)
 
 	i = 0;
 	if (g_config->player == 'W')
-		while (i++ < 16)
+		while (i++ < 47)
 			turn_right();
 	else if (g_config->player == 'S')
 		while (i++ < 32)
 			turn_right();
 	else if (g_config->player == 'E')
-		while (i++ < 47)
+		while (i++ < 16)
 			turn_right();
 }
 
