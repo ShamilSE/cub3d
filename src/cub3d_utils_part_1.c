@@ -84,6 +84,7 @@ void	get_textures(void)
 	&g_texture_west->bpp, &g_texture_west->size, &g_texture_west->endian);
 	g_texture_east->address = (int *)mlx_get_data_addr(g_texture_east->image,
 	&g_texture_east->bpp, &g_texture_east->size, &g_texture_east->endian);
-	g_texture_sprite->address = (int *)mlx_get_data_addr(g_texture_sprite->image,
+	g_texture_sprite->address =
+			(int *)mlx_get_data_addr(g_texture_sprite->image,
 	&g_texture_sprite->bpp, &g_texture_sprite->size, &g_texture_sprite->endian);
 }

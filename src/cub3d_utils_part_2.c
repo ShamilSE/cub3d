@@ -23,10 +23,12 @@ void	prepare_to_draw_helper(void)
 {
 	if (g_t_calc->side == 0)
 		g_t_calc->perp_wall_dist = (g_t_calc->map_x -
-			g_data->pos_x + (double)(1 - g_t_calc->step_x) / 2) / g_t_calc->ray_dir_x;
+		g_data->pos_x + (double)(1 - g_t_calc->step_x) /
+		2) / g_t_calc->ray_dir_x;
 	else
 		g_t_calc->perp_wall_dist = (g_t_calc->map_y -
-			g_data->pos_y + (double)(1 - g_t_calc->step_y) / 2) / g_t_calc->ray_dir_y;
+		g_data->pos_y + (double)(1 - g_t_calc->step_y) /
+		2) / g_t_calc->ray_dir_y;
 }
 
 int		prepare_to_draw(double *z_buffer, int line_height)

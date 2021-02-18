@@ -12,6 +12,30 @@
 
 #include "cub3d.h"
 
+void	count_distance(void)
+{
+	int	hit;
+
+	hit = 0;
+	while (!hit)
+	{
+		if (g_t_calc->side_dist_x < g_t_calc->side_dist_y)
+		{
+			g_t_calc->side_dist_x += g_t_calc->delta_dist_x;
+			g_t_calc->map_x += g_t_calc->step_x;
+			g_t_calc->side = 0;
+		}
+		else
+		{
+			g_t_calc->side_dist_y += g_t_calc->delta_dist_y;
+			g_t_calc->map_y += g_t_calc->step_y;
+			g_t_calc->side = 1;
+		}
+		if (g_config->map[g_t_calc->map_x][g_t_calc->map_y] == '1')
+			hit = 1;
+	}
+}
+
 void	turn_right(void)
 {
 	double	old_dir_x;

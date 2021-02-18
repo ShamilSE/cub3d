@@ -77,7 +77,7 @@ int		is_map_valid(void)
 				g_map[g_map_valid->i][g_map_valid->j] == 'S')
 				is_map_valid_helper_3();
 			is_map_valid_helper(&g_map_valid->i,
-								&g_map_valid->j, &g_map_valid->i1, &g_map_valid->j1);
+			&g_map_valid->j, &g_map_valid->i1, &g_map_valid->j1);
 			g_map_valid->j++;
 		}
 		g_map_valid->j = 0;

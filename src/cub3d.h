@@ -18,7 +18,6 @@
 # include <math.h>
 # include <string.h>
 # include <stdio.h>
-# include <stdlib.h>
 # include "../headers/mlx.h"
 # include "../headers/libft.h"
 # include "../headers/ft_printf.h"
@@ -209,6 +208,9 @@ void				map_valid_init(void);
 void				is_map_valid_helper_3(void);
 int					is_map_valid(void);
 void				parse_map_helper(void);
+void				count_distance(void);
+void				calc_sprites_helper(void);
+void				calc_sprites_helper_2(int *d, int *color_sprite, int y);
 
 char				**g_map;
 char				g_comma;

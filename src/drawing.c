@@ -52,25 +52,19 @@ void	sort_sprites(void)
 
 void	calc_sprites(int i)
 {
-	g_sprites->transform_x = g_sprites->inv_det *
-	(g_data->dir_y * g_sprites->sprite_x - g_data->dir_x * g_sprites->sprite_y);
-	g_sprites->transform_y = g_sprites->inv_det *
-	(-g_data->plane_y * g_sprites->sprite_x + g_data->plane_x * g_sprites->sprite_y);
-	g_sprites->sprite_screen_x = (int)((g_config->s_width / 2) *
-			(1 + g_sprites->transform_x / g_sprites->transform_y));
-	g_sprites->sprite_height =
-	abs((int)(g_config->s_height / (g_sprites->transform_y)));
-	g_sprites->draw_start_y = -g_sprites->sprite_height / 2 + g_config->s_height / 2;
-	if (g_sprites->draw_start_y < 0)
-		g_sprites->draw_start_y = 0;
-	g_sprites->draw_end_y = g_sprites->sprite_height / 2 + g_config->s_height / 2;
+	calc_sprites_helper();
+	g_sprites->draw_end_y = g_sprites->sprite_height
+		/ 2 + g_config->s_height / 2;
 	if (g_sprites->draw_end_y >= g_config->s_height)
 		g_sprites->draw_end_y = g_config->s_height - 1;
-	g_sprites->sprite_width = abs((int)(g_config->s_height / (g_sprites->transform_y)));
-	g_sprites->draw_start_x = -g_sprites->sprite_width / 2 + g_sprites->sprite_screen_x;
+	g_sprites->sprite_width =
+	fabs((g_config->s_height / (g_sprites->transform_y)));
+	g_sprites->draw_start_x =
+	-g_sprites->sprite_width / 2 + g_sprites->sprite_screen_x;
 	if (g_sprites->draw_start_x < 0)
 		g_sprites->draw_start_x = 0;
-	g_sprites->draw_end_x = g_sprites->sprite_width / 2 + g_sprites->sprite_screen_x;
+	g_sprites->draw_end_x = g_sprites->sprite_width
+	/ 2 + g_sprites->sprite_screen_x;
 	if (g_sprites->draw_end_x >= g_config->s_width)
 		g_sprites->draw_end_x = g_config->s_width - 1;
 	g_sprites->stripe = g_sprites->draw_start_x;
@@ -92,11 +86,7 @@ void	draw_sprites_helper(double *z_buffer)
 		y = g_sprites->draw_start_y;
 		while (y < g_sprites->draw_end_y)
 		{
-			d = (y) * 256 - g_config->s_height *
-					128 + g_sprites->sprite_height * 128;
-			g_sprites->text_y = ((d * TEXTURE_HEIGHT) / g_sprites->sprite_height) / 256;
-			color_sprite = g_texture_sprite->address
-			[TEXTURE_WIDTH * g_sprites->text_y + g_sprites->text_x];
+			calc_sprites_helper_2(&d, &color_sprite, y);
 			if (color_sprite != 0)
 				my_mlx_pixel_put(g_data, g_sprites->stripe, y, color_sprite);
 			y++;

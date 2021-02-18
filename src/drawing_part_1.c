@@ -47,7 +47,8 @@ void	draw_walls_helper(int y, double step, int color)
 {
 	if (y >= g_t_calc->draw_start && y <= g_t_calc->draw_end)
 	{
-		g_t_calc->text_y = (int)g_t_calc->texture_position & (TEXTURE_HEIGHT - 1);
+		g_t_calc->text_y = (int)
+		g_t_calc->texture_position & (TEXTURE_HEIGHT - 1);
 		if (g_t_calc->side == 0)
 		{
 			if (g_t_calc->step_x > 0)

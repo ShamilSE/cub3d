@@ -17,7 +17,8 @@ void	define_step_side_dist(void)
 	if (g_t_calc->ray_dir_x < 0)
 	{
 		g_t_calc->step_x = -1;
-		g_t_calc->side_dist_x = (g_data->pos_x - g_t_calc->map_x) * g_t_calc->delta_dist_x;
+		g_t_calc->side_dist_x =
+		(g_data->pos_x - g_t_calc->map_x) * g_t_calc->delta_dist_x;
 	}
 	else
 	{
@@ -28,7 +29,8 @@ void	define_step_side_dist(void)
 	if (g_t_calc->ray_dir_y < 0)
 	{
 		g_t_calc->step_y = -1;
-		g_t_calc->side_dist_y = (g_data->pos_y - g_t_calc->map_y) * g_t_calc->delta_dist_y;
+		g_t_calc->side_dist_y =
+		(g_data->pos_y - g_t_calc->map_y) * g_t_calc->delta_dist_y;
 	}
 	else
 	{
@@ -38,36 +40,27 @@ void	define_step_side_dist(void)
 	}
 }
 
-void	count_distance(void)
-{
-	int	hit;
-
-	hit = 0;
-	while (!hit)
-	{
-		if (g_t_calc->side_dist_x < g_t_calc->side_dist_y)
-		{
-			g_t_calc->side_dist_x += g_t_calc->delta_dist_x;
-			g_t_calc->map_x += g_t_calc->step_x;
-			g_t_calc->side = 0;
-		}
-		else
-		{
-			g_t_calc->side_dist_y += g_t_calc->delta_dist_y;
-			g_t_calc->map_y += g_t_calc->step_y;
-			g_t_calc->side = 1;
-		}
-		if (g_config->map[g_t_calc->map_x][g_t_calc->map_y] == '1')
-			hit = 1;
-	}
-}
-
 void	calc_helper(void)
 {
-	g_data->image = mlx_new_image(g_data->mlx, g_config->s_width, g_config->s_height);
+	g_data->image = mlx_new_image(
+	g_data->mlx, g_config->s_width, g_config->s_height);
 	g_data->addr = mlx_get_data_addr(g_data->image,
 		&g_data->bpp, &g_data->size, &g_data->endian);
 	g_t_calc->x = 0;
+}
+
+void	calc_helper_1(void)
+{
+	g_t_calc->camera_x = 2 * g_t_calc->x / (double)g_config->s_width - 1;
+	g_t_calc->ray_dir_x =
+	g_data->dir_x + g_data->plane_x * g_t_calc->camera_x;
+	g_t_calc->ray_dir_y =
+	g_data->dir_y + g_data->plane_y * g_t_calc->camera_x;
+	g_t_calc->map_x = (int)g_data->pos_x;
+	g_t_calc->map_y = (int)g_data->pos_y;
+	g_t_calc->delta_dist_x = sqrt(1 +
+	(g_t_calc->ray_dir_y * g_t_calc->ray_dir_y) /
+	(g_t_calc->ray_dir_x * g_t_calc->ray_dir_x));
 }
 
 void	calc(void)
@@ -78,15 +71,9 @@ void	calc(void)
 	calc_helper();
 	while (g_t_calc->x < g_config->s_width)
 	{
-		g_t_calc->camera_x = 2 * g_t_calc->x / (double)g_config->s_width - 1;
-		g_t_calc->ray_dir_x = g_data->dir_x + g_data->plane_x * g_t_calc->camera_x;
-		g_t_calc->ray_dir_y = g_data->dir_y + g_data->plane_y * g_t_calc->camera_x;
-		g_t_calc->map_x = (int)g_data->pos_x;
-		g_t_calc->map_y = (int)g_data->pos_y;
-		g_t_calc->delta_dist_x = sqrt(1 + (g_t_calc->ray_dir_y * g_t_calc->ray_dir_y) /
-				(g_t_calc->ray_dir_x * g_t_calc->ray_dir_x));
-		g_t_calc->delta_dist_y = sqrt(1 + (g_t_calc->ray_dir_x * g_t_calc->ray_dir_x) /
-				(g_t_calc->ray_dir_y * g_t_calc->ray_dir_y));
+		calc_helper_1();
+		g_t_calc->delta_dist_y = sqrt(1 + (g_t_calc->ray_dir_x *
+		g_t_calc->ray_dir_x) / (g_t_calc->ray_dir_y * g_t_calc->ray_dir_y));
 		define_step_side_dist();
 		count_distance();
 		line_height = prepare_to_draw(z_buffer, line_height);
