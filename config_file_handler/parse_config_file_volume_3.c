@@ -63,9 +63,9 @@ void	sprites_router(char c, char c2, char *line)
 	else if (c == 'S')
 		copy_sprite_str(line);
 	else if (c == 'W')
-		copy_west_str(line);
-	else if (c == 'E')
 		copy_east_str(line);
+	else if (c == 'E')
+		copy_west_str(line);
 	else
 		throw_error("invalid option");
 }

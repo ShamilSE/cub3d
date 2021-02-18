@@ -32,7 +32,6 @@ void	init_headers(void)
 	g_bmp->important_colors = 0;
 }
 
-
 void	write_headers(int fd)
 {
 	write(fd, g_bmp->file_type, 2);

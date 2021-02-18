@@ -50,7 +50,7 @@ void	sort_sprites(void)
 	}
 }
 
-void	calc_sprites()
+void	calc_sprites(void)
 {
 	calc_sprites_helper();
 	g_sprites->draw_end_y = g_sprites->sprite_height

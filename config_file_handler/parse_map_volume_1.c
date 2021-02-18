@@ -23,7 +23,7 @@ void	is_map_string_valid_helper(const char
 		if (line[*i] == valid_map_chars[*j])
 			break ;
 		if (*j == 7)
-			throw_error("map is not valid");
+			throw_error("map is not valid5");
 		(*j)++;
 	}
 	*j = 0;
@@ -62,7 +62,14 @@ size_t	count_map_strings(char *str)
 	while (get_next_line(fd, &line) > 0)
 	{
 		if (*line == '1' || *line == ' ')
+		{
+			if (*line == ' ')
+				while (*line != '1' || *line)
+					line++;
+			if (!(*line))
+				continue ;
 			map_length++;
+		}
 		free(line);
 	}
 	if (*line == '1' || *line == ' ')
@@ -71,21 +78,22 @@ size_t	count_map_strings(char *str)
 	return (map_length);
 }
 
-void	is_map_valid_helper_2(unsigned int **i, unsigned int **j, unsigned int **i1, unsigned int **j1)
+void	is_map_valid_helper_2(unsigned int **i,
+unsigned int **j, unsigned int **i1, unsigned int **j1)
 {
 	while (g_map[**i][**j1] != '1')
 	{
 		if (g_map[**i][**j1] == '1')
 			continue ;
 		if (ft_strlen(g_map[**i]) == **j1 + 1)
-			throw_error("map is not valid");
+			throw_error("map is not valid6");
 		(**j1)++;
 	}
 	**j1 = **j;
 	while (g_map[**i][**j1] != '1')
 	{
 		if (**j1 == 0)
-			throw_error("map is not valid");
+			throw_error("map is not valid7");
 		(**j1)--;
 	}
 	**i1 = **i;

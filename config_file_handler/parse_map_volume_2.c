@@ -12,28 +12,29 @@
 
 #include "../src/cub3d.h"
 
-void	is_map_valid_helper(unsigned int *i, unsigned int *j, unsigned int *i1, unsigned int *j1)
+void	is_map_valid_helper(unsigned int *i,
+unsigned int *j, unsigned int *i1, unsigned int *j1)
 {
 	if (g_map[*i][*j] == '0' || g_map[*i][*j] == '2')
 	{
 		if (*i > 0 && *i < g_config->map_strings - 1)
 		{
 			if (*j > ft_strlen(g_map[*i - 1]) || *j > ft_strlen(g_map[*i + 1]))
-				throw_error("map is not valid");
+				throw_error("map is not valid1");
 		}
 		*j1 = *j;
 		is_map_valid_helper_2(&i, &j, &i1, &j1);
 		while (g_map[*i1][*j] != '1')
 		{
 			if (*i1 == 0)
-				throw_error("map is not valid");
+				throw_error("map is not valid2");
 			(*i1)--;
 		}
 		*i1 = *i;
 		while (g_map[*i1] && g_map[*i1][*j] != '1')
 		{
 			if ((g_map[*i1][*j] != '1') && ((*i1) == g_config->map_strings - 1))
-				throw_error("map is not valid");
+				throw_error("map is not valid3");
 			(*i1)++;
 		}
 	}
@@ -97,5 +98,5 @@ void	parse_map_helper(void)
 	if (!g_config->player)
 		throw_error("there is no player on a map");
 	if (!is_map_valid())
-		throw_error("map is not valid");
+		throw_error("map is not valid4");
 }
