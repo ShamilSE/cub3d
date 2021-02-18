@@ -208,12 +208,12 @@ t_sprites			*sprites;
 t_bmp				*g_bmp;
 t_config			*config;
 t_calc_vars			*g_t_calc;
-t_sprites			*sprites;
-t_texture			*texture_north;
-t_texture			*texture_south;
-t_texture			*texture_west;
-t_texture			*texture_east;
-t_texture			*texture_sprite;
+t_sprites			*g_sprites;
+t_texture			*g_texture_north;
+t_texture			*g_texture_south;
+t_texture			*g_texture_west;
+t_texture			*g_texture_east;
+t_texture			*g_texture_sprite;
 t_map_valid			*g_map_valid;
 
 #endif

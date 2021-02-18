@@ -95,7 +95,7 @@ void	draw_sprites_helper(double *z_buffer)
 			d = (y) * 256 - config->s_height *
 					128 + sprites->sprite_height * 128;
 			sprites->text_y = ((d * texHeight) / sprites->sprite_height) / 256;
-			color_sprite = texture_sprite->address
+			color_sprite = g_texture_sprite->address
 			[TEXTURE_WIDTH * sprites->text_y + sprites->text_x];
 			if (color_sprite != 0)
 				my_mlx_pixel_put(g_data, sprites->stripe, y, color_sprite);

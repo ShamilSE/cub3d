@@ -41,34 +41,34 @@ void	xpm_to_image(void)
 	int g_width;
 	int g_height;
 
-	if (!(texture_north->image =
+	if (!(g_texture_north->image =
 	mlx_xpm_file_to_image(g_data->mlx, config->north, &g_width, &g_height)))
 		throw_error("invalid texture path");
-	if (!(texture_south->image =
+	if (!(g_texture_south->image =
 	mlx_xpm_file_to_image(g_data->mlx, config->south, &g_width, &g_height)))
 		throw_error("invalid texture path");
-	if (!(texture_west->image =
+	if (!(g_texture_west->image =
 	mlx_xpm_file_to_image(g_data->mlx, config->west, &g_width, &g_height)))
 		throw_error("invalid texture path");
-	if (!(texture_east->image =
+	if (!(g_texture_east->image =
 	mlx_xpm_file_to_image(g_data->mlx, config->east, &g_width, &g_height)))
 		throw_error("invalid texture path");
-	if (!(texture_sprite->image =
+	if (!(g_texture_sprite->image =
 	mlx_xpm_file_to_image(g_data->mlx, config->sprite, &g_width, &g_height)))
 		throw_error("invalid sprite path");
 }
 
 void	malloc_textures(void)
 {
-	if (!(texture_north = malloc(sizeof(t_texture))))
+	if (!(g_texture_north = malloc(sizeof(t_texture))))
 		throw_error("no memory");
-	if (!(texture_south = malloc(sizeof(t_texture))))
+	if (!(g_texture_south = malloc(sizeof(t_texture))))
 		throw_error("no memory");
-	if (!(texture_west = malloc(sizeof(t_texture))))
+	if (!(g_texture_west = malloc(sizeof(t_texture))))
 		throw_error("no memory");
-	if (!(texture_east = malloc(sizeof(t_texture))))
+	if (!(g_texture_east = malloc(sizeof(t_texture))))
 		throw_error("no memory");
-	if (!(texture_sprite = malloc(sizeof(t_texture))))
+	if (!(g_texture_sprite = malloc(sizeof(t_texture))))
 		throw_error("no memory");
 }
 
@@ -76,14 +76,14 @@ void	get_textures(void)
 {
 	malloc_textures();
 	xpm_to_image();
-	texture_north->address = (int *)mlx_get_data_addr(texture_north->image,
-	&texture_north->bpp, &texture_north->size, &texture_north->endian);
-	texture_south->address = (int *)mlx_get_data_addr(texture_south->image,
-	&texture_south->bpp, &texture_south->size, &texture_south->endian);
-	texture_west->address = (int *)mlx_get_data_addr(texture_west->image,
-	&texture_west->bpp, &texture_west->size, &texture_west->endian);
-	texture_east->address = (int *)mlx_get_data_addr(texture_east->image,
-	&texture_east->bpp, &texture_east->size, &texture_east->endian);
-	texture_sprite->address = (int *)mlx_get_data_addr(texture_sprite->image,
-	&texture_sprite->bpp, &texture_sprite->size, &texture_sprite->endian);
+	g_texture_north->address = (int *)mlx_get_data_addr(g_texture_north->image,
+	&g_texture_north->bpp, &g_texture_north->size, &g_texture_north->endian);
+	g_texture_south->address = (int *)mlx_get_data_addr(g_texture_south->image,
+	&g_texture_south->bpp, &g_texture_south->size, &g_texture_south->endian);
+	g_texture_west->address = (int *)mlx_get_data_addr(g_texture_west->image,
+	&g_texture_west->bpp, &g_texture_west->size, &g_texture_west->endian);
+	g_texture_east->address = (int *)mlx_get_data_addr(g_texture_east->image,
+	&g_texture_east->bpp, &g_texture_east->size, &g_texture_east->endian);
+	g_texture_sprite->address = (int *)mlx_get_data_addr(g_texture_sprite->image,
+	&g_texture_sprite->bpp, &g_texture_sprite->size, &g_texture_sprite->endian);
 }

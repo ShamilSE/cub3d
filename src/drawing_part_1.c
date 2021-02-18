@@ -51,19 +51,19 @@ void	draw_walls_helper(int y, double step, int color)
 		if (g_t_calc->side == 0)
 		{
 			if (g_t_calc->step_x > 0)
-				color = texture_south->address[texHeight *
+				color = g_texture_south->address[texHeight *
 				g_t_calc->text_y + g_t_calc->text_x];
 			else
-				color = texture_north->address[texHeight *
+				color = g_texture_north->address[texHeight *
 				g_t_calc->text_y + g_t_calc->text_x];
 		}
 		else
 		{
 			if (g_t_calc->step_y > 0)
-				color = texture_west->address[texHeight *
+				color = g_texture_west->address[texHeight *
 				g_t_calc->text_y + g_t_calc->text_x];
 			else
-				color = texture_east->address[texHeight *
+				color = g_texture_east->address[texHeight *
 				g_t_calc->text_y + g_t_calc->text_x];
 		}
 		g_t_calc->texture_position += step;
