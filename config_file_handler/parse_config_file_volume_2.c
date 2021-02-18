@@ -43,7 +43,7 @@ void	fill_color_in_arr(int *direction, char *line)
 	int	i;
 
 	g_comma = 'n';
-	comma_counter = 0;
+	g_comma_counter = 0;
 	check_color_line(line);
 	i = 0;
 	while (i < 3)

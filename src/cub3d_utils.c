@@ -67,6 +67,6 @@ void	allocation(void)
 		throw_error("no memory");
 	if (!(sprites = malloc(sizeof(t_sprites))))
 		throw_error("no memory");
-	if (!(t_calc = malloc(sizeof(t_calc_vars))))
+	if (!(g_t_calc = malloc(sizeof(t_calc_vars))))
 		throw_error("no memory");
 }

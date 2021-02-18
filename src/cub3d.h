@@ -12,7 +12,7 @@
 # include "../headers/ft_printf.h"
 # include "../headers/get_next_line.h"
 # include <fcntl.h>
-# define texWidth 64
+# define TEXTURE_WIDTH 64
 # define texHeight 64
 # define BUFFER_SIZE 32
 
@@ -201,19 +201,19 @@ void				parse_map_helper(void);
 
 char				**g_map;
 char				g_comma;
-int					comma_counter;
+int					g_comma_counter;
 t_data				*data;
 t_texture			*texture;
 t_sprites			*sprites;
 t_bmp				*bmp;
 t_config			*config;
-t_calc_vars			*t_calc;
+t_calc_vars			*g_t_calc;
 t_sprites			*sprites;
 t_texture			*texture_north;
 t_texture			*texture_south;
 t_texture			*texture_west;
 t_texture			*texture_east;
 t_texture			*texture_sprite;
-t_map_valid			 *map_valid;
+t_map_valid			*map_valid;
 
 #endif

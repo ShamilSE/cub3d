@@ -85,8 +85,8 @@ void	get_resolution(char *line)
 void	to_next_color_char(char *line)
 {
 	if (*line == ',')
-		comma_counter++;
-	if (comma_counter > 2)
+		g_comma_counter++;
+	if (g_comma_counter > 2)
 		throw_error("unexpected char(s) detected");
 	if (g_comma == 'y')
 		throw_error("unexpected char(s) detected");

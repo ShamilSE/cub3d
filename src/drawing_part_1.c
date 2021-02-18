@@ -22,7 +22,7 @@ void	draw_celling(int x_view)
 	int		i;
 
 	i = 0;
-	while (i < t_calc->draw_start)
+	while (i < g_t_calc->draw_start)
 	{
 		my_mlx_pixel_put(data, x_view, i, create_rgb(config->celling[0],
 		config->celling[1], config->celling[2]));
@@ -34,7 +34,7 @@ void	draw_floor(int x_view)
 {
 	int		i;
 
-	i = t_calc->draw_end;
+	i = g_t_calc->draw_end;
 	while (i < config->s_height)
 	{
 		my_mlx_pixel_put(data, x_view, i, create_rgb(config->floor[0],
@@ -45,29 +45,29 @@ void	draw_floor(int x_view)
 
 void	draw_walls_helper(int y, double step, int color)
 {
-	if (y >= t_calc->draw_start && y <= t_calc->draw_end)
+	if (y >= g_t_calc->draw_start && y <= g_t_calc->draw_end)
 	{
-		t_calc->text_y = (int)t_calc->texture_position & (texHeight - 1);
-		if (t_calc->side == 0)
+		g_t_calc->text_y = (int)g_t_calc->texture_position & (texHeight - 1);
+		if (g_t_calc->side == 0)
 		{
-			if (t_calc->step_x > 0)
+			if (g_t_calc->step_x > 0)
 				color = texture_south->address[texHeight *
-				t_calc->text_y + t_calc->text_x];
+				g_t_calc->text_y + g_t_calc->text_x];
 			else
 				color = texture_north->address[texHeight *
-				t_calc->text_y + t_calc->text_x];
+				g_t_calc->text_y + g_t_calc->text_x];
 		}
 		else
 		{
-			if (t_calc->step_y > 0)
+			if (g_t_calc->step_y > 0)
 				color = texture_west->address[texHeight *
-				t_calc->text_y + t_calc->text_x];
+				g_t_calc->text_y + g_t_calc->text_x];
 			else
 				color = texture_east->address[texHeight *
-				t_calc->text_y + t_calc->text_x];
+				g_t_calc->text_y + g_t_calc->text_x];
 		}
-		t_calc->texture_position += step;
-		my_mlx_pixel_put(data, t_calc->x, y, color);
+		g_t_calc->texture_position += step;
+		my_mlx_pixel_put(data, g_t_calc->x, y, color);
 	}
 }
 
@@ -79,8 +79,8 @@ void	draw_walls(int line_height)
 
 	color = 0;
 	step = 1.0 * texHeight / line_height;
-	t_calc->texture_position =
-	(t_calc->draw_start - config->s_height / 2 + line_height / 2) * step;
+	g_t_calc->texture_position =
+	(g_t_calc->draw_start - config->s_height / 2 + line_height / 2) * step;
 	y = 0;
 	while (y < config->s_height)
 	{
