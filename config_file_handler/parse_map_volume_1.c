@@ -13,7 +13,7 @@
 #include "../src/cub3d.h"
 
 void	is_map_string_valid_helper(const char
-	*line, char *valid_map_chars, int *i, int *j)
+	*line, char *valid_map_chars, unsigned int *i, unsigned int *j)
 {
 	while (valid_map_chars[*j])
 	{
@@ -32,9 +32,9 @@ void	is_map_string_valid_helper(const char
 
 void	is_map_string_valid(const char *line)
 {
-	char	*valid_map_chars;
-	int		i;
-	int		j;
+	char			*valid_map_chars;
+	unsigned int	i;
+	unsigned int	j;
 
 	i = 0;
 	j = 0;
@@ -71,7 +71,7 @@ size_t	count_map_strings(char *str)
 	return (map_length);
 }
 
-void	is_map_valid_helper_2(int **i, int **j, int **i1, int **j1)
+void	is_map_valid_helper_2(unsigned int **i, unsigned int **j, unsigned int **i1, unsigned int **j1)
 {
 	while (g_map[**i][**j1] != '1')
 	{

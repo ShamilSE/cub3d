@@ -32,6 +32,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n)
 
 int		close_window(t_data *g_data)
 {
+	g_data->rot_speed = 0.1;
 	exit(0);
 	return (0);
 }

@@ -50,7 +50,7 @@ void	sort_sprites(void)
 	}
 }
 
-void	calc_sprites(int i)
+void	calc_sprites()
 {
 	calc_sprites_helper();
 	g_sprites->draw_end_y = g_sprites->sprite_height
@@ -107,7 +107,7 @@ void	draw_srpites(double *z_buffer)
 		g_sprites->sprite_y = g_sprites->y[i] - g_data->pos_y;
 		g_sprites->inv_det = 1.0 / (g_data->plane_x *
 			g_data->dir_y - g_data->dir_x * g_data->plane_y);
-		calc_sprites(i);
+		calc_sprites();
 		while (g_sprites->stripe < g_sprites->draw_end_x)
 			draw_sprites_helper(z_buffer);
 		i++;

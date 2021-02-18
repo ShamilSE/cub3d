@@ -94,7 +94,6 @@ void	parse_config_file(char *filename)
 	int		fd;
 	char	*line;
 	int		i;
-	char	**map;
 
 	config_init();
 	g_config->filename = ft_strdup(filename);

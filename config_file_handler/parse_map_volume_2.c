@@ -12,7 +12,7 @@
 
 #include "../src/cub3d.h"
 
-void	is_map_valid_helper(int *i, int *j, int *i1, int *j1)
+void	is_map_valid_helper(unsigned int *i, unsigned int *j, unsigned int *i1, unsigned int *j1)
 {
 	if (g_map[*i][*j] == '0' || g_map[*i][*j] == '2')
 	{
