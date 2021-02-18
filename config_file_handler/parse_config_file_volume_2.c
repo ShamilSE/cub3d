@@ -27,10 +27,7 @@ void	check_color_line(char *line)
 				break ;
 			i++;
 			if (i == 13)
-			{
-				printf("%s\n", line);
 				throw_error("invalid char(s) detected");
-			}
 		}
 		i = 0;
 		line++;

@@ -80,19 +80,19 @@ void	look_right(void)
 
 int		movings(int key)
 {
-	if (key == K_W)
+	if (key == 13)
 		move_forward();
-	if (key == K_S)
+	if (key == 1)
 		move_backward();
-	if (key == K_D)
+	if (key == 2)
 		move_right();
-	if (key == K_A)
+	if (key == 0)
 		move_left();
 	if (key == 123)
 		look_left();
 	if (key == 124)
 		look_right();
-	if (key == K_ESC)
+	if (key == 53)
 		exit(0);
 	return (0);
 }

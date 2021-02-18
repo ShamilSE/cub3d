@@ -14,7 +14,6 @@
 # define CUB3D_H
 
 # include "../mlx/mlx.h"
-# include "key_macos.h"
 # include <math.h>
 # include <string.h>
 # include <stdio.h>
@@ -158,7 +157,6 @@ void				screenshot();
 int					movings(int key);
 void				calc();
 void				turn_right();
-void				scale_reso();
 void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int					create_rgb(int r, int g, int b);
 void				draw_celling(int x_view);

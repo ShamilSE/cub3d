@@ -105,9 +105,9 @@ int		main(int argc, char **argv)
 		throw_error("unexpected second argument, need --save");
 	data_ini();
 	spawn_direction();
+	is_screen_size_correct();
 	g_data->win = mlx_new_window(g_data->mlx,
 	g_config->s_width, g_config->s_height, "mlx");
-	is_screen_size_correct();
 	get_textures();
 	calc();
 	loop_of_mlx();

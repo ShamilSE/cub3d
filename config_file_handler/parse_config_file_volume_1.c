@@ -74,8 +74,11 @@ void	get_resolution(char *line)
 			counter++;
 		if (*c_line == ' ')
 			counter = 0;
-		if (counter > 4)
+		if (counter > 8)
+		{
 			scale_reso();
+			return ;
+		}
 		c_line++;
 	}
 	line++;
