@@ -42,7 +42,7 @@ void	is_map_string_valid(const char *line)
 	while (line[i])
 	{
 		if (line[i] == '2')
-			sprites->count++;
+			g_sprites->count++;
 		i++;
 	}
 	i = 0;

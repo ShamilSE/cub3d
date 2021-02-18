@@ -67,8 +67,8 @@ int		is_map_valid(void)
 		{
 			if (g_map[g_map_valid->i][g_map_valid->j] == '2')
 			{
-				sprites->x[g_map_valid->map_i] = g_map_valid->i + 0.5;
-				sprites->y[g_map_valid->map_i] = g_map_valid->j + 0.5;
+				g_sprites->x[g_map_valid->map_i] = g_map_valid->i + 0.5;
+				g_sprites->y[g_map_valid->map_i] = g_map_valid->j + 0.5;
 				g_map_valid->map_i++;
 			}
 			if (g_map[g_map_valid->i][g_map_valid->j] == 'N' ||
@@ -88,12 +88,12 @@ int		is_map_valid(void)
 
 void	parse_map_helper(void)
 {
-	if (!(sprites->x = malloc(sizeof(double) * sprites->count + 1)))
+	if (!(g_sprites->x = malloc(sizeof(double) * g_sprites->count + 1)))
 		throw_error("no memory");
-	if (!(sprites->y = malloc(sizeof(double) * sprites->count + 1)))
+	if (!(g_sprites->y = malloc(sizeof(double) * g_sprites->count + 1)))
 		throw_error("no memory");
-	sprites->x[sprites->count] = 0;
-	sprites->y[sprites->count] = 0;
+	g_sprites->x[g_sprites->count] = 0;
+	g_sprites->y[g_sprites->count] = 0;
 	if (!g_config->player)
 		throw_error("there is no player on a map");
 	if (!is_map_valid())

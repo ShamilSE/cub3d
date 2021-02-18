@@ -47,23 +47,23 @@ void	draw_walls_helper(int y, double step, int color)
 {
 	if (y >= g_t_calc->draw_start && y <= g_t_calc->draw_end)
 	{
-		g_t_calc->text_y = (int)g_t_calc->texture_position & (texHeight - 1);
+		g_t_calc->text_y = (int)g_t_calc->texture_position & (TEXTURE_HEIGHT - 1);
 		if (g_t_calc->side == 0)
 		{
 			if (g_t_calc->step_x > 0)
-				color = g_texture_south->address[texHeight *
+				color = g_texture_south->address[TEXTURE_HEIGHT *
 				g_t_calc->text_y + g_t_calc->text_x];
 			else
-				color = g_texture_north->address[texHeight *
+				color = g_texture_north->address[TEXTURE_HEIGHT *
 				g_t_calc->text_y + g_t_calc->text_x];
 		}
 		else
 		{
 			if (g_t_calc->step_y > 0)
-				color = g_texture_west->address[texHeight *
+				color = g_texture_west->address[TEXTURE_HEIGHT *
 				g_t_calc->text_y + g_t_calc->text_x];
 			else
-				color = g_texture_east->address[texHeight *
+				color = g_texture_east->address[TEXTURE_HEIGHT *
 				g_t_calc->text_y + g_t_calc->text_x];
 		}
 		g_t_calc->texture_position += step;
@@ -78,7 +78,7 @@ void	draw_walls(int line_height)
 	int		color;
 
 	color = 0;
-	step = 1.0 * texHeight / line_height;
+	step = 1.0 * TEXTURE_HEIGHT / line_height;
 	g_t_calc->texture_position =
 	(g_t_calc->draw_start - g_config->s_height / 2 + line_height / 2) * step;
 	y = 0;

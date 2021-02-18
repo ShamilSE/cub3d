@@ -23,7 +23,7 @@ char	**parse_map_helper_3(char *filename)
 {
 	char	**map;
 
-	sprites->count = 0;
+	g_sprites->count = 0;
 	g_config->map_strings = count_map_strings(filename);
 	if (!(map = malloc(sizeof(char *) * (g_config->map_strings + 1))))
 		throw_error("no memory");

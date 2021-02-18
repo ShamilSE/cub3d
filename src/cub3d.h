@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mismene <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/18 07:03:13 by mismene           #+#    #+#             */
+/*   Updated: 2021/02/18 07:03:16 by mismene          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -13,7 +25,7 @@
 # include "../headers/get_next_line.h"
 # include <fcntl.h>
 # define TEXTURE_WIDTH 64
-# define texHeight 64
+# define TEXTURE_HEIGHT 64
 # define BUFFER_SIZE 32
 
 typedef struct		s_data
@@ -152,8 +164,7 @@ void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int					create_rgb(int r, int g, int b);
 void				draw_celling(int x_view);
 void				draw_floor(int x_view);
-void				draw_walls(int lineHeight);
-void				draw_srpites(double *zBuffer);
+void				draw_srpites(double *z_buffer);
 void				move_forward(void);
 void				move_backward(void);
 int					create_rgb(int r, int g, int b);
@@ -189,7 +200,7 @@ void				copy_east_str(char *line);
 void				sprites_router(char c, char c2, char *line);
 void				get_filepath(char *line);
 void				is_map_string_valid_helper(const char
-								   *line, char *valid_map_chars, int *i, int *j);
+						*line, char *valid_map_chars, int *i, int *j);
 void				is_map_string_valid(const char *line);
 size_t				count_map_strings(char *str);
 void				is_map_valid_helper_2(int **i, int **j, int **i1, int **j1);
@@ -204,7 +215,7 @@ char				g_comma;
 int					g_comma_counter;
 t_data				*g_data;
 t_texture			*g_texture;
-t_sprites			*sprites;
+t_sprites			*g_sprites;
 t_bmp				*g_bmp;
 t_config			*g_config;
 t_calc_vars			*g_t_calc;
