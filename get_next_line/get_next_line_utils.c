@@ -92,5 +92,3 @@ char	*ft_gnl_strjoin(char *s1, char *s2)
 	p[i] = '\0';
 	return (p);
 }
-
-
