@@ -41,47 +41,47 @@ void	is_map_valid_helper(int *i, int *j, int *i1, int *j1)
 
 void	map_valid_init(void)
 {
-	map_valid = malloc(sizeof(t_map_valid));
-	map_valid->map_i = 0;
-	map_valid->player_flag = 0;
-	map_valid->i = 0;
-	map_valid->j = 0;
+	g_map_valid = malloc(sizeof(t_map_valid));
+	g_map_valid->map_i = 0;
+	g_map_valid->player_flag = 0;
+	g_map_valid->i = 0;
+	g_map_valid->j = 0;
 }
 
 void	is_map_valid_helper_3(void)
 {
-	if (map_valid->player_flag)
+	if (g_map_valid->player_flag)
 		throw_error("several players on a map, leave only one");
-	map_valid->player_flag = 1;
-	g_data->pos_x = map_valid->i + 0.5;
-	g_data->pos_y = map_valid->j + 0.5;
-	g_map[map_valid->i][map_valid->j] = '0';
+	g_map_valid->player_flag = 1;
+	g_data->pos_x = g_map_valid->i + 0.5;
+	g_data->pos_y = g_map_valid->j + 0.5;
+	g_map[g_map_valid->i][g_map_valid->j] = '0';
 }
 
 int		is_map_valid(void)
 {
 	map_valid_init();
-	while (g_map[map_valid->i])
+	while (g_map[g_map_valid->i])
 	{
-		while (g_map[map_valid->i][map_valid->j])
+		while (g_map[g_map_valid->i][g_map_valid->j])
 		{
-			if (g_map[map_valid->i][map_valid->j] == '2')
+			if (g_map[g_map_valid->i][g_map_valid->j] == '2')
 			{
-				sprites->x[map_valid->map_i] = map_valid->i + 0.5;
-				sprites->y[map_valid->map_i] = map_valid->j + 0.5;
-				map_valid->map_i++;
+				sprites->x[g_map_valid->map_i] = g_map_valid->i + 0.5;
+				sprites->y[g_map_valid->map_i] = g_map_valid->j + 0.5;
+				g_map_valid->map_i++;
 			}
-			if (g_map[map_valid->i][map_valid->j] == 'N' ||
-				g_map[map_valid->i][map_valid->j] == 'E' ||
-				g_map[map_valid->i][map_valid->j] == 'W' ||
-				g_map[map_valid->i][map_valid->j] == 'S')
+			if (g_map[g_map_valid->i][g_map_valid->j] == 'N' ||
+				g_map[g_map_valid->i][g_map_valid->j] == 'E' ||
+				g_map[g_map_valid->i][g_map_valid->j] == 'W' ||
+				g_map[g_map_valid->i][g_map_valid->j] == 'S')
 				is_map_valid_helper_3();
-			is_map_valid_helper(&map_valid->i,
-								&map_valid->j, &map_valid->i1, &map_valid->j1);
-			map_valid->j++;
+			is_map_valid_helper(&g_map_valid->i,
+								&g_map_valid->j, &g_map_valid->i1, &g_map_valid->j1);
+			g_map_valid->j++;
 		}
-		map_valid->j = 0;
-		map_valid->i++;
+		g_map_valid->j = 0;
+		g_map_valid->i++;
 	}
 	return (1);
 }

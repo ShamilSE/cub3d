@@ -70,6 +70,6 @@ char	**parse_map(char *filename)
 	handle_last_string(line, &i);
 	g_map[i + 1] = 0x0;
 	parse_map_helper();
-	free(map_valid);
+	free(g_map_valid);
 	return (g_map);
 }

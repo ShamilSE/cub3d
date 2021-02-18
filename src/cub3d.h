@@ -205,7 +205,7 @@ int					g_comma_counter;
 t_data				*g_data;
 t_texture			*g_texture;
 t_sprites			*sprites;
-t_bmp				*bmp;
+t_bmp				*g_bmp;
 t_config			*config;
 t_calc_vars			*g_t_calc;
 t_sprites			*sprites;
@@ -214,6 +214,6 @@ t_texture			*texture_south;
 t_texture			*texture_west;
 t_texture			*texture_east;
 t_texture			*texture_sprite;
-t_map_valid			*map_valid;
+t_map_valid			*g_map_valid;
 
 #endif

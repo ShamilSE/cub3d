@@ -14,41 +14,41 @@
 
 void	init_headers(void)
 {
-	bmp->file_type[0] = 'B';
-	bmp->file_type[1] = 'M';
-	bmp->file_size = (config->s_width * config->s_height * 4) + 54;
-	bmp->reserved_bytes = 0;
-	bmp->data_offset = 54;
-	bmp->second_header_size = 40;
-	bmp->img_width = config->s_width;
-	bmp->img_height = config->s_height;
-	bmp->planes = 1;
-	bmp->bpp = 32;
-	bmp->compression = 0;
-	bmp->img_size = config->s_width * config->s_height;
-	bmp->x_pixels_per_meter = 2845;
-	bmp->y_pixels_per_meter = 2845;
-	bmp->total_colors = 0;
-	bmp->important_colors = 0;
+	g_bmp->file_type[0] = 'B';
+	g_bmp->file_type[1] = 'M';
+	g_bmp->file_size = (config->s_width * config->s_height * 4) + 54;
+	g_bmp->reserved_bytes = 0;
+	g_bmp->data_offset = 54;
+	g_bmp->second_header_size = 40;
+	g_bmp->img_width = config->s_width;
+	g_bmp->img_height = config->s_height;
+	g_bmp->planes = 1;
+	g_bmp->bpp = 32;
+	g_bmp->compression = 0;
+	g_bmp->img_size = config->s_width * config->s_height;
+	g_bmp->x_pixels_per_meter = 2845;
+	g_bmp->y_pixels_per_meter = 2845;
+	g_bmp->total_colors = 0;
+	g_bmp->important_colors = 0;
 }
 
 void	write_headers(int fd)
 {
-	write(fd, bmp->file_type, 2);
-	write(fd, &bmp->file_size, 4);
-	write(fd, &bmp->reserved_bytes, 4);
-	write(fd, &bmp->data_offset, 4);
-	write(fd, &bmp->second_header_size, 4);
-	write(fd, &bmp->img_width, 4);
-	write(fd, &bmp->img_height, 4);
-	write(fd, &bmp->planes, 2);
-	write(fd, &bmp->bpp, 2);
-	write(fd, &bmp->compression, 4);
-	write(fd, &bmp->img_size, 4);
-	write(fd, &bmp->x_pixels_per_meter, 4);
-	write(fd, &bmp->y_pixels_per_meter, 4);
-	write(fd, &bmp->total_colors, 4);
-	write(fd, &bmp->important_colors, 4);
+	write(fd, g_bmp->file_type, 2);
+	write(fd, &g_bmp->file_size, 4);
+	write(fd, &g_bmp->reserved_bytes, 4);
+	write(fd, &g_bmp->data_offset, 4);
+	write(fd, &g_bmp->second_header_size, 4);
+	write(fd, &g_bmp->img_width, 4);
+	write(fd, &g_bmp->img_height, 4);
+	write(fd, &g_bmp->planes, 2);
+	write(fd, &g_bmp->bpp, 2);
+	write(fd, &g_bmp->compression, 4);
+	write(fd, &g_bmp->img_size, 4);
+	write(fd, &g_bmp->x_pixels_per_meter, 4);
+	write(fd, &g_bmp->y_pixels_per_meter, 4);
+	write(fd, &g_bmp->total_colors, 4);
+	write(fd, &g_bmp->important_colors, 4);
 }
 
 void	screenshot(void)
@@ -58,7 +58,7 @@ void	screenshot(void)
 	int	j;
 	int	color;
 
-	if (!(bmp = malloc(sizeof(t_bmp))))
+	if (!(g_bmp = malloc(sizeof(t_bmp))))
 		throw_error("no memory");
 	if ((fd = open("screenshot.bmp", O_CREAT | O_WRONLY | O_TRUNC, 0666)) < 0)
 		throw_error("can't create screenshot");
@@ -77,5 +77,5 @@ void	screenshot(void)
 	}
 	ft_printf("cheese\n");
 	close(fd);
-	free(bmp);
+	free(g_bmp);
 }
