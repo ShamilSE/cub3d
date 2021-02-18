@@ -203,7 +203,7 @@ char				**g_map;
 char				g_comma;
 int					g_comma_counter;
 t_data				*g_data;
-t_texture			*texture;
+t_texture			*g_texture;
 t_sprites			*sprites;
 t_bmp				*bmp;
 t_config			*config;
