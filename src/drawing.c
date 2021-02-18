@@ -56,23 +56,23 @@ void	calc_sprites(int i)
 	(g_data->dir_y * sprites->sprite_x - g_data->dir_x * sprites->sprite_y);
 	sprites->transform_y = sprites->inv_det *
 	(-g_data->plane_y * sprites->sprite_x + g_data->plane_x * sprites->sprite_y);
-	sprites->sprite_screen_x = (int)((config->s_width / 2) *
+	sprites->sprite_screen_x = (int)((g_config->s_width / 2) *
 			(1 + sprites->transform_x / sprites->transform_y));
 	sprites->sprite_height =
-	abs((int)(config->s_height / (sprites->transform_y)));
-	sprites->draw_start_y = -sprites->sprite_height / 2 + config->s_height / 2;
+	abs((int)(g_config->s_height / (sprites->transform_y)));
+	sprites->draw_start_y = -sprites->sprite_height / 2 + g_config->s_height / 2;
 	if (sprites->draw_start_y < 0)
 		sprites->draw_start_y = 0;
-	sprites->draw_end_y = sprites->sprite_height / 2 + config->s_height / 2;
-	if (sprites->draw_end_y >= config->s_height)
-		sprites->draw_end_y = config->s_height - 1;
-	sprites->sprite_width = abs((int)(config->s_height / (sprites->transform_y)));
+	sprites->draw_end_y = sprites->sprite_height / 2 + g_config->s_height / 2;
+	if (sprites->draw_end_y >= g_config->s_height)
+		sprites->draw_end_y = g_config->s_height - 1;
+	sprites->sprite_width = abs((int)(g_config->s_height / (sprites->transform_y)));
 	sprites->draw_start_x = -sprites->sprite_width / 2 + sprites->sprite_screen_x;
 	if (sprites->draw_start_x < 0)
 		sprites->draw_start_x = 0;
 	sprites->draw_end_x = sprites->sprite_width / 2 + sprites->sprite_screen_x;
-	if (sprites->draw_end_x >= config->s_width)
-		sprites->draw_end_x = config->s_width - 1;
+	if (sprites->draw_end_x >= g_config->s_width)
+		sprites->draw_end_x = g_config->s_width - 1;
 	sprites->stripe = sprites->draw_start_x;
 }
 
@@ -86,13 +86,13 @@ void	draw_sprites_helper(double *z_buffer)
 			(-sprites->sprite_width / 2 + sprites->sprite_screen_x))
 			* TEXTURE_WIDTH / sprites->sprite_width) / 256;
 	if (sprites->transform_y > 0 &&
-	sprites->stripe > 0 && sprites->stripe < config->s_width &&
+	sprites->stripe > 0 && sprites->stripe < g_config->s_width &&
 		sprites->transform_y < z_buffer[sprites->stripe])
 	{
 		y = sprites->draw_start_y;
 		while (y < sprites->draw_end_y)
 		{
-			d = (y) * 256 - config->s_height *
+			d = (y) * 256 - g_config->s_height *
 					128 + sprites->sprite_height * 128;
 			sprites->text_y = ((d * texHeight) / sprites->sprite_height) / 256;
 			color_sprite = g_texture_sprite->address

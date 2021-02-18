@@ -35,13 +35,13 @@ int		prepare_to_draw(double *z_buffer, int line_height)
 
 	prepare_to_draw_helper();
 	z_buffer[g_t_calc->x] = g_t_calc->perp_wall_dist;
-	line_height = (int)(config->s_height / g_t_calc->perp_wall_dist);
-	g_t_calc->draw_start = -line_height / 2 + config->s_height / 2;
+	line_height = (int)(g_config->s_height / g_t_calc->perp_wall_dist);
+	g_t_calc->draw_start = -line_height / 2 + g_config->s_height / 2;
 	if (g_t_calc->draw_start < 0)
 		g_t_calc->draw_start = 0;
-	g_t_calc->draw_end = line_height / 2 + config->s_height / 2;
-	if (g_t_calc->draw_end >= config->s_height)
-		g_t_calc->draw_end = config->s_height - 1;
+	g_t_calc->draw_end = line_height / 2 + g_config->s_height / 2;
+	if (g_t_calc->draw_end >= g_config->s_height)
+		g_t_calc->draw_end = g_config->s_height - 1;
 	if (g_t_calc->side == 0)
 		wall_x = g_data->pos_y + g_t_calc->perp_wall_dist * g_t_calc->ray_dir_y;
 	else

@@ -89,10 +89,10 @@ void	get_color(int *direction, char *line)
 
 void	copy_north_str(char *line)
 {
-	if (name_checker(config->north, "nothing"))
+	if (name_checker(g_config->north, "nothing"))
 	{
-		free(config->north);
-		config->north = ft_strdup(line);
+		free(g_config->north);
+		g_config->north = ft_strdup(line);
 		if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) &&
 		!(*(line + ft_strlen(line))))
 			throw_error("invalid texture extension");
@@ -103,10 +103,10 @@ void	copy_north_str(char *line)
 
 void	copy_south_str(char *line)
 {
-	if (name_checker(config->south, "nothing"))
+	if (name_checker(g_config->south, "nothing"))
 	{
-		free(config->south);
-		config->south = ft_strdup(line);
+		free(g_config->south);
+		g_config->south = ft_strdup(line);
 		if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) &&
 		!(*(line + ft_strlen(line))))
 			throw_error("invalid texture extension");

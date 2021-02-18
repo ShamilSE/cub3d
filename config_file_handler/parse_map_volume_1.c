@@ -19,7 +19,7 @@ void	is_map_string_valid_helper(const char
 	{
 		if (line[*i] == 'N' || line[*i] ==
 		'E' || line[*i] == 'W' || line[*i] == 'S')
-			config->player = line[*i];
+			g_config->player = line[*i];
 		if (line[*i] == valid_map_chars[*j])
 			break ;
 		if (*j == 7)

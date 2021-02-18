@@ -14,10 +14,10 @@
 
 void	copy_sprite_str(char *line)
 {
-	if (name_checker(config->sprite, "nothing"))
+	if (name_checker(g_config->sprite, "nothing"))
 	{
-		free(config->sprite);
-		config->sprite = ft_strdup(line);
+		free(g_config->sprite);
+		g_config->sprite = ft_strdup(line);
 		if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) &&
 		!(*(line + ft_strlen(line))))
 			throw_error("invalid sprite extension");
@@ -28,10 +28,10 @@ void	copy_sprite_str(char *line)
 
 void	copy_west_str(char *line)
 {
-	if (name_checker(config->west, "nothing"))
+	if (name_checker(g_config->west, "nothing"))
 	{
-		free(config->west);
-		config->west = ft_strdup(line);
+		free(g_config->west);
+		g_config->west = ft_strdup(line);
 		if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) &&
 		!(*(line + ft_strlen(line))))
 			throw_error("invalid texture extension");
@@ -42,10 +42,10 @@ void	copy_west_str(char *line)
 
 void	copy_east_str(char *line)
 {
-	if (name_checker(config->east, "nothing"))
+	if (name_checker(g_config->east, "nothing"))
 	{
-		free(config->east);
-		config->east = ft_strdup(line);
+		free(g_config->east);
+		g_config->east = ft_strdup(line);
 		if ((ft_strncmp(line + ft_strlen(line) - 4, ".xpm", 4)) &&
 		!(*(line + ft_strlen(line))))
 			throw_error("invalid texture extension");

@@ -43,7 +43,7 @@ void	is_resolution_correct(char *line)
 		throw_error("resolution must be positive");
 	while (ft_isdigit(*line))
 	{
-		config->s_width = (config->s_width * 10) + (*line - 48);
+		g_config->s_width = (g_config->s_width * 10) + (*line - 48);
 		line++;
 	}
 	while (!(ft_isdigit(*line)))
@@ -54,7 +54,7 @@ void	is_resolution_correct(char *line)
 	}
 	while (ft_isdigit(*line))
 	{
-		config->s_height = (config->s_height * 10) + (*line - 48);
+		g_config->s_height = (g_config->s_height * 10) + (*line - 48);
 		line++;
 	}
 }

@@ -14,42 +14,42 @@
 
 void	config_init(void)
 {
-	if (!(config = malloc(sizeof(t_config))))
+	if (!(g_config = malloc(sizeof(t_config))))
 		throw_error("no memory");
-	config->s_width = 0;
-	config->s_height = 0;
-	config->floor[0] = -1933;
-	config->floor[1] = -1933;
-	config->floor[2] = -1933;
-	config->celling[0] = -1933;
-	config->celling[1] = -1933;
-	config->celling[2] = -1933;
-	config->north = ft_strdup("nothing");
-	config->east = ft_strdup("nothing");
-	config->west = ft_strdup("nothing");
-	config->south = ft_strdup("nothing");
-	config->sprite = ft_strdup("nothing");
+	g_config->s_width = 0;
+	g_config->s_height = 0;
+	g_config->floor[0] = -1933;
+	g_config->floor[1] = -1933;
+	g_config->floor[2] = -1933;
+	g_config->celling[0] = -1933;
+	g_config->celling[1] = -1933;
+	g_config->celling[2] = -1933;
+	g_config->north = ft_strdup("nothing");
+	g_config->east = ft_strdup("nothing");
+	g_config->west = ft_strdup("nothing");
+	g_config->south = ft_strdup("nothing");
+	g_config->sprite = ft_strdup("nothing");
 }
 
 void	config_router(char *line)
 {
 	if (*line == 'R')
 	{
-		if (config->s_width)
+		if (g_config->s_width)
 			throw_error("duplicate resolution option, leave only one");
 		get_resolution(line);
 	}
 	else if (*line == 'F')
 	{
-		if (config->floor[2] == -1933)
-			get_color(config->floor, line);
+		if (g_config->floor[2] == -1933)
+			get_color(g_config->floor, line);
 		else
 			throw_error("duplicate floor color option, leave only one");
 	}
 	else if (*line == 'C')
 	{
-		if (config->celling[2] == -1933)
-			get_color(config->celling, line);
+		if (g_config->celling[2] == -1933)
+			get_color(g_config->celling, line);
 		else
 			throw_error("duplicate celling option, please only one");
 	}
@@ -80,12 +80,12 @@ void	first_char(char *line)
 
 void	completeness_check(void)
 {
-	if (config->floor[2] == -1933 ||
-	config->celling[2] == -1933 ||
-	name_checker(config->north, "nothing") ||
-	name_checker(config->east, "nothing") ||
-	name_checker(config->west, "nothing") ||
-	name_checker(config->south, "nothing"))
+	if (g_config->floor[2] == -1933 ||
+	g_config->celling[2] == -1933 ||
+	name_checker(g_config->north, "nothing") ||
+	name_checker(g_config->east, "nothing") ||
+	name_checker(g_config->west, "nothing") ||
+	name_checker(g_config->south, "nothing"))
 		throw_error("config isn't completed");
 }
 
@@ -97,7 +97,7 @@ void	parse_config_file(char *filename)
 	char	**map;
 
 	config_init();
-	config->filename = ft_strdup(filename);
+	g_config->filename = ft_strdup(filename);
 	if (!(name_checker(filename, ".cub")) ||
 	(filename[ft_strlen(filename) - 4] != '.'))
 		throw_error("config file must have '.cub' extension");
@@ -110,7 +110,7 @@ void	parse_config_file(char *filename)
 			break ;
 		free(line);
 	}
-	config->map = parse_map(filename);
+	g_config->map = parse_map(filename);
 	if (!(ft_strchr(line, '1')))
 		throw_error("1");
 	free(line);

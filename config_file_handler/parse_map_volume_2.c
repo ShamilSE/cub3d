@@ -16,7 +16,7 @@ void	is_map_valid_helper(int *i, int *j, int *i1, int *j1)
 {
 	if (g_map[*i][*j] == '0' || g_map[*i][*j] == '2')
 	{
-		if (*i > 0 && *i < config->map_strings - 1)
+		if (*i > 0 && *i < g_config->map_strings - 1)
 		{
 			if (*j > ft_strlen(g_map[*i - 1]) || *j > ft_strlen(g_map[*i + 1]))
 				throw_error("map is not valid");
@@ -32,7 +32,7 @@ void	is_map_valid_helper(int *i, int *j, int *i1, int *j1)
 		*i1 = *i;
 		while (g_map[*i1] && g_map[*i1][*j] != '1')
 		{
-			if ((g_map[*i1][*j] != '1') && ((*i1) == config->map_strings - 1))
+			if ((g_map[*i1][*j] != '1') && ((*i1) == g_config->map_strings - 1))
 				throw_error("map is not valid");
 			(*i1)++;
 		}
@@ -94,7 +94,7 @@ void	parse_map_helper(void)
 		throw_error("no memory");
 	sprites->x[sprites->count] = 0;
 	sprites->y[sprites->count] = 0;
-	if (!config->player)
+	if (!g_config->player)
 		throw_error("there is no player on a map");
 	if (!is_map_valid())
 		throw_error("map is not valid");

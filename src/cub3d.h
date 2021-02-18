@@ -206,7 +206,7 @@ t_data				*g_data;
 t_texture			*g_texture;
 t_sprites			*sprites;
 t_bmp				*g_bmp;
-t_config			*config;
+t_config			*g_config;
 t_calc_vars			*g_t_calc;
 t_sprites			*g_sprites;
 t_texture			*g_texture_north;

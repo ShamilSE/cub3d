@@ -32,14 +32,14 @@ void	turn_right(void)
 void	move_forward(void)
 {
 	mlx_destroy_image(g_data->mlx, g_data->image);
-	if (config->map[(int)(g_data->pos_x +
+	if (g_config->map[(int)(g_data->pos_x +
 			g_data->dir_x * g_data->move_speed)][(int)(g_data->pos_y)] == '0')
 		g_data->pos_x += g_data->dir_x * g_data->move_speed;
-	if (config->map[(int)(g_data->pos_x)][(int)(g_data->pos_y
+	if (g_config->map[(int)(g_data->pos_x)][(int)(g_data->pos_y
 			+ g_data->dir_y * g_data->move_speed)] == '0')
 		g_data->pos_y += g_data->dir_y * g_data->move_speed;
 	g_data->image = mlx_new_image(g_data->mlx,
-		config->s_width, config->s_height);
+		g_config->s_width, g_config->s_height);
 	g_data->addr = mlx_get_data_addr(g_data->image,
 			&g_data->bpp, &g_data->size, &g_data->endian);
 	calc();
@@ -48,14 +48,14 @@ void	move_forward(void)
 void	move_backward(void)
 {
 	mlx_destroy_image(g_data->mlx, g_data->image);
-	if (config->map[(int)(g_data->pos_x -
+	if (g_config->map[(int)(g_data->pos_x -
 	g_data->dir_x * g_data->move_speed)][(int)(g_data->pos_y)] == '0')
 		g_data->pos_x -= g_data->dir_x * g_data->move_speed;
-	if (config->map[(int)(g_data->pos_x)][(int)(g_data->pos_y -
+	if (g_config->map[(int)(g_data->pos_x)][(int)(g_data->pos_y -
 				g_data->dir_y * g_data->move_speed)] == '0')
 		g_data->pos_y -= g_data->dir_y * g_data->move_speed;
 	g_data->image = mlx_new_image(g_data->mlx,
-			config->s_width, config->s_height);
+			g_config->s_width, g_config->s_height);
 	g_data->addr = mlx_get_data_addr(g_data->image,
 			&g_data->bpp, &g_data->size, &g_data->endian);
 	calc();

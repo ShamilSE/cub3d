@@ -16,16 +16,16 @@ void	init_headers(void)
 {
 	g_bmp->file_type[0] = 'B';
 	g_bmp->file_type[1] = 'M';
-	g_bmp->file_size = (config->s_width * config->s_height * 4) + 54;
+	g_bmp->file_size = (g_config->s_width * g_config->s_height * 4) + 54;
 	g_bmp->reserved_bytes = 0;
 	g_bmp->data_offset = 54;
 	g_bmp->second_header_size = 40;
-	g_bmp->img_width = config->s_width;
-	g_bmp->img_height = config->s_height;
+	g_bmp->img_width = g_config->s_width;
+	g_bmp->img_height = g_config->s_height;
 	g_bmp->planes = 1;
 	g_bmp->bpp = 32;
 	g_bmp->compression = 0;
-	g_bmp->img_size = config->s_width * config->s_height;
+	g_bmp->img_size = g_config->s_width * g_config->s_height;
 	g_bmp->x_pixels_per_meter = 2845;
 	g_bmp->y_pixels_per_meter = 2845;
 	g_bmp->total_colors = 0;
@@ -64,11 +64,11 @@ void	screenshot(void)
 		throw_error("can't create screenshot");
 	init_headers();
 	write_headers(fd);
-	i = config->s_height;
+	i = g_config->s_height;
 	while (--i >= 0)
 	{
 		j = -1;
-		while (config->s_width > ++j)
+		while (g_config->s_width > ++j)
 		{
 			color = *(int*)(g_data->addr +
 					(i * g_data->size + j * (g_data->bpp / 8)));
