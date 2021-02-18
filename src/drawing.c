@@ -33,9 +33,9 @@ void	sort_sprites(void)
 	i = 0;
 	while (i < sprites->count)
 	{
-		sprite_distance[i] = ((data->pos_x - sprites->x[i]) *
-		(data->pos_x - sprites->x[i]) +
-		(data->pos_y - sprites->y[i]) * (data->pos_y - sprites->y[i]));
+		sprite_distance[i] = ((g_data->pos_x - sprites->x[i]) *
+		(g_data->pos_x - sprites->x[i]) +
+		(g_data->pos_y - sprites->y[i]) * (g_data->pos_y - sprites->y[i]));
 		i++;
 	}
 	i = 0;
@@ -53,9 +53,9 @@ void	sort_sprites(void)
 void	calc_sprites(int i)
 {
 	sprites->transform_x = sprites->inv_det *
-	(data->dir_y * sprites->sprite_x - data->dir_x * sprites->sprite_y);
+	(g_data->dir_y * sprites->sprite_x - g_data->dir_x * sprites->sprite_y);
 	sprites->transform_y = sprites->inv_det *
-	(-data->plane_y * sprites->sprite_x + data->plane_x * sprites->sprite_y);
+	(-g_data->plane_y * sprites->sprite_x + g_data->plane_x * sprites->sprite_y);
 	sprites->sprite_screen_x = (int)((config->s_width / 2) *
 			(1 + sprites->transform_x / sprites->transform_y));
 	sprites->sprite_height =
@@ -98,7 +98,7 @@ void	draw_sprites_helper(double *z_buffer)
 			color_sprite = texture_sprite->address
 			[TEXTURE_WIDTH * sprites->text_y + sprites->text_x];
 			if (color_sprite != 0)
-				my_mlx_pixel_put(data, sprites->stripe, y, color_sprite);
+				my_mlx_pixel_put(g_data, sprites->stripe, y, color_sprite);
 			y++;
 		}
 	}
@@ -113,10 +113,10 @@ void	draw_srpites(double *z_buffer)
 	sort_sprites();
 	while (i < sprites->count)
 	{
-		sprites->sprite_x = sprites->x[i] - data->pos_x;
-		sprites->sprite_y = sprites->y[i] - data->pos_y;
-		sprites->inv_det = 1.0 / (data->plane_x *
-			data->dir_y - data->dir_x * data->plane_y);
+		sprites->sprite_x = sprites->x[i] - g_data->pos_x;
+		sprites->sprite_y = sprites->y[i] - g_data->pos_y;
+		sprites->inv_det = 1.0 / (g_data->plane_x *
+			g_data->dir_y - g_data->dir_x * g_data->plane_y);
 		calc_sprites(i);
 		while (sprites->stripe < sprites->draw_end_x)
 			draw_sprites_helper(z_buffer);

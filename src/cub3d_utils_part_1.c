@@ -30,7 +30,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
-int		close_window(t_data *data)
+int		close_window(t_data *g_data)
 {
 	exit(0);
 	return (0);
@@ -42,19 +42,19 @@ void	xpm_to_image(void)
 	int g_height;
 
 	if (!(texture_north->image =
-	mlx_xpm_file_to_image(data->mlx, config->north, &g_width, &g_height)))
+	mlx_xpm_file_to_image(g_data->mlx, config->north, &g_width, &g_height)))
 		throw_error("invalid texture path");
 	if (!(texture_south->image =
-	mlx_xpm_file_to_image(data->mlx, config->south, &g_width, &g_height)))
+	mlx_xpm_file_to_image(g_data->mlx, config->south, &g_width, &g_height)))
 		throw_error("invalid texture path");
 	if (!(texture_west->image =
-	mlx_xpm_file_to_image(data->mlx, config->west, &g_width, &g_height)))
+	mlx_xpm_file_to_image(g_data->mlx, config->west, &g_width, &g_height)))
 		throw_error("invalid texture path");
 	if (!(texture_east->image =
-	mlx_xpm_file_to_image(data->mlx, config->east, &g_width, &g_height)))
+	mlx_xpm_file_to_image(g_data->mlx, config->east, &g_width, &g_height)))
 		throw_error("invalid texture path");
 	if (!(texture_sprite->image =
-	mlx_xpm_file_to_image(data->mlx, config->sprite, &g_width, &g_height)))
+	mlx_xpm_file_to_image(g_data->mlx, config->sprite, &g_width, &g_height)))
 		throw_error("invalid sprite path");
 }
 

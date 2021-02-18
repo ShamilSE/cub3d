@@ -24,7 +24,7 @@ void	draw_celling(int x_view)
 	i = 0;
 	while (i < g_t_calc->draw_start)
 	{
-		my_mlx_pixel_put(data, x_view, i, create_rgb(config->celling[0],
+		my_mlx_pixel_put(g_data, x_view, i, create_rgb(config->celling[0],
 		config->celling[1], config->celling[2]));
 		i++;
 	}
@@ -37,7 +37,7 @@ void	draw_floor(int x_view)
 	i = g_t_calc->draw_end;
 	while (i < config->s_height)
 	{
-		my_mlx_pixel_put(data, x_view, i, create_rgb(config->floor[0],
+		my_mlx_pixel_put(g_data, x_view, i, create_rgb(config->floor[0],
 		config->floor[1], config->floor[2]));
 		i++;
 	}
@@ -67,7 +67,7 @@ void	draw_walls_helper(int y, double step, int color)
 				g_t_calc->text_y + g_t_calc->text_x];
 		}
 		g_t_calc->texture_position += step;
-		my_mlx_pixel_put(data, g_t_calc->x, y, color);
+		my_mlx_pixel_put(g_data, g_t_calc->x, y, color);
 	}
 }
 

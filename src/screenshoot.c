@@ -70,8 +70,8 @@ void	screenshot(void)
 		j = -1;
 		while (config->s_width > ++j)
 		{
-			color = *(int*)(data->addr +
-					(i * data->size + j * (data->bpp / 8)));
+			color = *(int*)(g_data->addr +
+					(i * g_data->size + j * (g_data->bpp / 8)));
 			write(fd, &color, 4);
 		}
 	}
