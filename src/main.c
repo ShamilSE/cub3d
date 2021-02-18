@@ -14,27 +14,27 @@
 
 void	define_step_side_dist(void)
 {
-	if (t_calc->rayDirX < 0)
+	if (t_calc->ray_dir_x < 0)
 	{
-		t_calc->stepX = -1;
-		t_calc->sideDistX = (data->posX - t_calc->mapX) * t_calc->deltaDistX;
+		t_calc->step_x = -1;
+		t_calc->side_dist_x = (data->pos_x - t_calc->map_x) * t_calc->delta_dist_x;
 	}
 	else
 	{
-		t_calc->stepX = 1;
-		t_calc->sideDistX =
-		(t_calc->mapX + 1.0 - data->posX) * t_calc->deltaDistX;
+		t_calc->step_x = 1;
+		t_calc->side_dist_x =
+		(t_calc->map_x + 1.0 - data->pos_x) * t_calc->delta_dist_x;
 	}
-	if (t_calc->rayDirY < 0)
+	if (t_calc->ray_dir_y < 0)
 	{
-		t_calc->stepY = -1;
-		t_calc->sideDistY = (data->posY - t_calc->mapY) * t_calc->deltaDistY;
+		t_calc->step_y = -1;
+		t_calc->side_dist_y = (data->pos_y - t_calc->map_y) * t_calc->delta_dist_y;
 	}
 	else
 	{
-		t_calc->stepY = 1;
-		t_calc->sideDistY =
-		(t_calc->mapY + 1.0 - data->posY) * t_calc->deltaDistY;
+		t_calc->step_y = 1;
+		t_calc->side_dist_y =
+		(t_calc->map_y + 1.0 - data->pos_y) * t_calc->delta_dist_y;
 	}
 }
 
@@ -45,19 +45,19 @@ void	count_distance(void)
 	hit = 0;
 	while (!hit)
 	{
-		if (t_calc->sideDistX < t_calc->sideDistY)
+		if (t_calc->side_dist_x < t_calc->side_dist_y)
 		{
-			t_calc->sideDistX += t_calc->deltaDistX;
-			t_calc->mapX += t_calc->stepX;
+			t_calc->side_dist_x += t_calc->delta_dist_x;
+			t_calc->map_x += t_calc->step_x;
 			t_calc->side = 0;
 		}
 		else
 		{
-			t_calc->sideDistY += t_calc->deltaDistY;
-			t_calc->mapY += t_calc->stepY;
+			t_calc->side_dist_y += t_calc->delta_dist_y;
+			t_calc->map_y += t_calc->step_y;
 			t_calc->side = 1;
 		}
-		if (config->map[t_calc->mapX][t_calc->mapY] == '1')
+		if (config->map[t_calc->map_x][t_calc->map_y] == '1')
 			hit = 1;
 	}
 }
@@ -78,15 +78,15 @@ void	calc(void)
 	calc_helper();
 	while (t_calc->x < config->s_width)
 	{
-		t_calc->cameraX = 2 * t_calc->x / (double)config->s_width - 1;
-		t_calc->rayDirX = data->dirX + data->planeX * t_calc->cameraX;
-		t_calc->rayDirY = data->dirY + data->planeY * t_calc->cameraX;
-		t_calc->mapX = (int)data->posX;
-		t_calc->mapY = (int)data->posY;
-		t_calc->deltaDistX = sqrt(1 + (t_calc->rayDirY * t_calc->rayDirY) /
-				(t_calc->rayDirX * t_calc->rayDirX));
-		t_calc->deltaDistY = sqrt(1 + (t_calc->rayDirX * t_calc->rayDirX) /
-				(t_calc->rayDirY * t_calc->rayDirY));
+		t_calc->camera_x = 2 * t_calc->x / (double)config->s_width - 1;
+		t_calc->ray_dir_x = data->dir_x + data->plane_x * t_calc->camera_x;
+		t_calc->ray_dir_y = data->dir_y + data->plane_y * t_calc->camera_x;
+		t_calc->map_x = (int)data->pos_x;
+		t_calc->map_y = (int)data->pos_y;
+		t_calc->delta_dist_x = sqrt(1 + (t_calc->ray_dir_y * t_calc->ray_dir_y) /
+				(t_calc->ray_dir_x * t_calc->ray_dir_x));
+		t_calc->delta_dist_y = sqrt(1 + (t_calc->ray_dir_x * t_calc->ray_dir_x) /
+				(t_calc->ray_dir_y * t_calc->ray_dir_y));
 		define_step_side_dist();
 		count_distance();
 		line_height = prepare_to_draw(z_buffer, line_height);

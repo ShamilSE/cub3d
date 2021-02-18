@@ -22,11 +22,11 @@ void	loop_of_mlx(void)
 void	prepare_to_draw_helper(void)
 {
 	if (t_calc->side == 0)
-		t_calc->perpWallDist = (t_calc->mapX -
-			data->posX + (double)(1 - t_calc->stepX) / 2) / t_calc->rayDirX;
+		t_calc->perp_wall_dist = (t_calc->map_x -
+			data->pos_x + (double)(1 - t_calc->step_x) / 2) / t_calc->ray_dir_x;
 	else
-		t_calc->perpWallDist = (t_calc->mapY -
-			data->posY + (double)(1 - t_calc->stepY) / 2) / t_calc->rayDirY;
+		t_calc->perp_wall_dist = (t_calc->map_y -
+			data->pos_y + (double)(1 - t_calc->step_y) / 2) / t_calc->ray_dir_y;
 }
 
 int		prepare_to_draw(double *z_buffer, int line_height)
@@ -34,8 +34,8 @@ int		prepare_to_draw(double *z_buffer, int line_height)
 	double	wall_x;
 
 	prepare_to_draw_helper();
-	z_buffer[t_calc->x] = t_calc->perpWallDist;
-	line_height = (int)(config->s_height / t_calc->perpWallDist);
+	z_buffer[t_calc->x] = t_calc->perp_wall_dist;
+	line_height = (int)(config->s_height / t_calc->perp_wall_dist);
 	t_calc->draw_start = -line_height / 2 + config->s_height / 2;
 	if (t_calc->draw_start < 0)
 		t_calc->draw_start = 0;
@@ -43,14 +43,14 @@ int		prepare_to_draw(double *z_buffer, int line_height)
 	if (t_calc->draw_end >= config->s_height)
 		t_calc->draw_end = config->s_height - 1;
 	if (t_calc->side == 0)
-		wall_x = data->posY + t_calc->perpWallDist * t_calc->rayDirY;
+		wall_x = data->pos_y + t_calc->perp_wall_dist * t_calc->ray_dir_y;
 	else
-		wall_x = data->posX + t_calc->perpWallDist * t_calc->rayDirX;
+		wall_x = data->pos_x + t_calc->perp_wall_dist * t_calc->ray_dir_x;
 	wall_x -= floor(wall_x);
 	t_calc->text_x = (int)(wall_x * (double)texWidth);
-	if (t_calc->side == 0 && t_calc->rayDirX > 0)
+	if (t_calc->side == 0 && t_calc->ray_dir_x > 0)
 		t_calc->text_x = texWidth - t_calc->text_x - 1;
-	if (t_calc->side == 1 && t_calc->rayDirY < 0)
+	if (t_calc->side == 1 && t_calc->ray_dir_y < 0)
 		t_calc->text_x = texWidth - t_calc->text_x - 1;
 	return (line_height);
 }

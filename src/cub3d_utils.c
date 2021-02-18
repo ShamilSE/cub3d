@@ -53,12 +53,12 @@ void	spawn_direction(void)
 void	data_ini(void)
 {
 	data->mlx = mlx_init();
-	data->dirX = -1;
-	data->dirY = 0;
-	data->planeX = 0;
-	data->planeY = 0.66;
-	data->moveSpeed = 0.1;
-	data->rotSpeed = 0.1;
+	data->dir_x = -1;
+	data->dir_y = 0;
+	data->plane_x = 0;
+	data->plane_y = 0.66;
+	data->move_speed = 0.1;
+	data->rot_speed = 0.1;
 }
 
 void	allocation(void)

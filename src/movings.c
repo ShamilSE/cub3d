@@ -15,12 +15,12 @@
 void	move_left(void)
 {
 	mlx_destroy_image(data->mlx, data->image);
-	if (config->map[(int)(data->posX - data->dirY *
-	data->moveSpeed)][(int)(data->posY)] == '0')
-		data->posX -= data->dirY * data->moveSpeed;
-	if (config->map[(int)(data->posX)][(int)(data->posY +
-	data->dirX * data->moveSpeed)] == '0')
-		data->posY += data->dirX * data->moveSpeed;
+	if (config->map[(int)(data->pos_x - data->dir_y *
+	data->move_speed)][(int)(data->pos_y)] == '0')
+		data->pos_x -= data->dir_y * data->move_speed;
+	if (config->map[(int)(data->pos_x)][(int)(data->pos_y +
+	data->dir_x * data->move_speed)] == '0')
+		data->pos_y += data->dir_x * data->move_speed;
 	data->image = mlx_new_image(data->mlx,
 			config->s_width, config->s_height);
 	data->addr = mlx_get_data_addr(data->image,
@@ -31,12 +31,12 @@ void	move_left(void)
 void	move_right(void)
 {
 	mlx_destroy_image(data->mlx, data->image);
-	if (config->map[(int)(data->posX + data->dirY *
-	data->moveSpeed)][(int)(data->posY)] == '0')
-		data->posX += data->dirY * data->moveSpeed;
-	if (config->map[(int)(data->posX)][(int)(data->posY -
-	data->dirX * data->moveSpeed)] == '0')
-		data->posY -= data->dirX * data->moveSpeed;
+	if (config->map[(int)(data->pos_x + data->dir_y *
+	data->move_speed)][(int)(data->pos_y)] == '0')
+		data->pos_x += data->dir_y * data->move_speed;
+	if (config->map[(int)(data->pos_x)][(int)(data->pos_y -
+	data->dir_x * data->move_speed)] == '0')
+		data->pos_y -= data->dir_x * data->move_speed;
 	data->image = mlx_new_image(data->mlx,
 			config->s_width, config->s_height);
 	data->addr = mlx_get_data_addr(data->image,
@@ -49,17 +49,17 @@ void	look_left(void)
 	double	old_dir_x;
 	double	old_plane_x;
 
-	old_dir_x = data->dirX;
-	old_plane_x = data->planeX;
+	old_dir_x = data->dir_x;
+	old_plane_x = data->plane_x;
 	mlx_destroy_image(data->mlx, data->image);
-	data->dirX = data->dirX * cos(data->rotSpeed) -
-			data->dirY * sin(data->rotSpeed);
-	data->dirY = old_dir_x * sin(data->rotSpeed) +
-			data->dirY * cos(data->rotSpeed);
-	data->planeX = data->planeX * cos(data->rotSpeed) -
-			data->planeY * sin(data->rotSpeed);
-	data->planeY = old_plane_x * sin(data->rotSpeed) +
-			data->planeY * cos(data->rotSpeed);
+	data->dir_x = data->dir_x * cos(data->rot_speed) -
+			data->dir_y * sin(data->rot_speed);
+	data->dir_y = old_dir_x * sin(data->rot_speed) +
+			data->dir_y * cos(data->rot_speed);
+	data->plane_x = data->plane_x * cos(data->rot_speed) -
+			data->plane_y * sin(data->rot_speed);
+	data->plane_y = old_plane_x * sin(data->rot_speed) +
+			data->plane_y * cos(data->rot_speed);
 	data->image = mlx_new_image(data->mlx,
 			config->s_width, config->s_height);
 	data->addr = mlx_get_data_addr(data->image,

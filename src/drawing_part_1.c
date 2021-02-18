@@ -50,7 +50,7 @@ void	draw_walls_helper(int y, double step, int color)
 		t_calc->text_y = (int)t_calc->texture_position & (texHeight - 1);
 		if (t_calc->side == 0)
 		{
-			if (t_calc->stepX > 0)
+			if (t_calc->step_x > 0)
 				color = texture_south->address[texHeight *
 				t_calc->text_y + t_calc->text_x];
 			else
@@ -59,7 +59,7 @@ void	draw_walls_helper(int y, double step, int color)
 		}
 		else
 		{
-			if (t_calc->stepY > 0)
+			if (t_calc->step_y > 0)
 				color = texture_west->address[texHeight *
 				t_calc->text_y + t_calc->text_x];
 			else

@@ -53,8 +53,8 @@ void	is_map_valid_helper_3(void)
 	if (map_valid->player_flag)
 		throw_error("several players on a map, leave only one");
 	map_valid->player_flag = 1;
-	data->posX = map_valid->i + 0.5;
-	data->posY = map_valid->j + 0.5;
+	data->pos_x = map_valid->i + 0.5;
+	data->pos_y = map_valid->j + 0.5;
 	g_map[map_valid->i][map_valid->j] = '0';
 }
 

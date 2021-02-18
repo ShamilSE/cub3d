@@ -33,9 +33,9 @@ void	sort_sprites(void)
 	i = 0;
 	while (i < sprites->count)
 	{
-		sprite_distance[i] = ((data->posX - sprites->x[i]) *
-		(data->posX - sprites->x[i]) +
-		(data->posY - sprites->y[i]) * (data->posY - sprites->y[i]));
+		sprite_distance[i] = ((data->pos_x - sprites->x[i]) *
+		(data->pos_x - sprites->x[i]) +
+		(data->pos_y - sprites->y[i]) * (data->pos_y - sprites->y[i]));
 		i++;
 	}
 	i = 0;
@@ -52,28 +52,28 @@ void	sort_sprites(void)
 
 void	calc_sprites(int i)
 {
-	sprites->transformX = sprites->invDet *
-	(data->dirY * sprites->spriteX - data->dirX * sprites->spriteY);
-	sprites->transformY = sprites->invDet *
-	(-data->planeY * sprites->spriteX + data->planeX * sprites->spriteY);
-	sprites->spriteScreenX = (int)((config->s_width / 2) *
-			(1 + sprites->transformX / sprites->transformY));
-	sprites->spriteHeight =
-	abs((int)(config->s_height / (sprites->transformY)));
-	sprites->drawStartY = -sprites->spriteHeight / 2 + config->s_height / 2;
-	if (sprites->drawStartY < 0)
-		sprites->drawStartY = 0;
-	sprites->drawEndY = sprites->spriteHeight / 2 + config->s_height / 2;
-	if (sprites->drawEndY >= config->s_height)
-		sprites->drawEndY = config->s_height - 1;
-	sprites->spriteWidth = abs((int)(config->s_height / (sprites->transformY)));
-	sprites->drawStartX = -sprites->spriteWidth / 2 + sprites->spriteScreenX;
-	if (sprites->drawStartX < 0)
-		sprites->drawStartX = 0;
-	sprites->drawEndX = sprites->spriteWidth / 2 + sprites->spriteScreenX;
-	if (sprites->drawEndX >= config->s_width)
-		sprites->drawEndX = config->s_width - 1;
-	sprites->stripe = sprites->drawStartX;
+	sprites->transform_x = sprites->inv_det *
+	(data->dir_y * sprites->sprite_x - data->dir_x * sprites->sprite_y);
+	sprites->transform_y = sprites->inv_det *
+	(-data->plane_y * sprites->sprite_x + data->plane_x * sprites->sprite_y);
+	sprites->sprite_screen_x = (int)((config->s_width / 2) *
+			(1 + sprites->transform_x / sprites->transform_y));
+	sprites->sprite_height =
+	abs((int)(config->s_height / (sprites->transform_y)));
+	sprites->draw_start_y = -sprites->sprite_height / 2 + config->s_height / 2;
+	if (sprites->draw_start_y < 0)
+		sprites->draw_start_y = 0;
+	sprites->draw_end_y = sprites->sprite_height / 2 + config->s_height / 2;
+	if (sprites->draw_end_y >= config->s_height)
+		sprites->draw_end_y = config->s_height - 1;
+	sprites->sprite_width = abs((int)(config->s_height / (sprites->transform_y)));
+	sprites->draw_start_x = -sprites->sprite_width / 2 + sprites->sprite_screen_x;
+	if (sprites->draw_start_x < 0)
+		sprites->draw_start_x = 0;
+	sprites->draw_end_x = sprites->sprite_width / 2 + sprites->sprite_screen_x;
+	if (sprites->draw_end_x >= config->s_width)
+		sprites->draw_end_x = config->s_width - 1;
+	sprites->stripe = sprites->draw_start_x;
 }
 
 void	draw_sprites_helper(double *z_buffer)
@@ -83,18 +83,18 @@ void	draw_sprites_helper(double *z_buffer)
 	int	color_sprite;
 
 	sprites->text_x = (int)(256 * (sprites->stripe -
-			(-sprites->spriteWidth / 2 + sprites->spriteScreenX))
-			* texWidth / sprites->spriteWidth) / 256;
-	if (sprites->transformY > 0 &&
+			(-sprites->sprite_width / 2 + sprites->sprite_screen_x))
+			* texWidth / sprites->sprite_width) / 256;
+	if (sprites->transform_y > 0 &&
 	sprites->stripe > 0 && sprites->stripe < config->s_width &&
-		sprites->transformY < z_buffer[sprites->stripe])
+		sprites->transform_y < z_buffer[sprites->stripe])
 	{
-		y = sprites->drawStartY;
-		while (y < sprites->drawEndY)
+		y = sprites->draw_start_y;
+		while (y < sprites->draw_end_y)
 		{
 			d = (y) * 256 - config->s_height *
-					128 + sprites->spriteHeight * 128;
-			sprites->text_y = ((d * texHeight) / sprites->spriteHeight) / 256;
+					128 + sprites->sprite_height * 128;
+			sprites->text_y = ((d * texHeight) / sprites->sprite_height) / 256;
 			color_sprite = texture_sprite->address
 			[texWidth * sprites->text_y + sprites->text_x];
 			if (color_sprite != 0)
@@ -113,12 +113,12 @@ void	draw_srpites(double *z_buffer)
 	sort_sprites();
 	while (i < sprites->count)
 	{
-		sprites->spriteX = sprites->x[i] - data->posX;
-		sprites->spriteY = sprites->y[i] - data->posY;
-		sprites->invDet = 1.0 / (data->planeX *
-			data->dirY - data->dirX * data->planeY);
+		sprites->sprite_x = sprites->x[i] - data->pos_x;
+		sprites->sprite_y = sprites->y[i] - data->pos_y;
+		sprites->inv_det = 1.0 / (data->plane_x *
+			data->dir_y - data->dir_x * data->plane_y);
 		calc_sprites(i);
-		while (sprites->stripe < sprites->drawEndX)
+		while (sprites->stripe < sprites->draw_end_x)
 			draw_sprites_helper(z_buffer);
 		i++;
 	}
