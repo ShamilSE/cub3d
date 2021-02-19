@@ -37,10 +37,12 @@ void	check_color_line(char *line)
 
 void	fill_color_in_arr(int *direction, char *line)
 {
-	int	i;
+	int		i;
+	char	comma;
+	int		comma_counter;
 
-	g_comma = 'n';
-	g_comma_counter = 0;
+	comma = 'n';
+	comma_counter = 0;
 	check_color_line(line);
 	i = 0;
 	while (i < 3)
@@ -54,10 +56,10 @@ void	fill_color_in_arr(int *direction, char *line)
 		}
 		while (line && !(ft_isdigit(*line)))
 		{
-			to_next_color_char(line);
+			to_next_color_char(line, &comma_counter, &comma);
 			line++;
 		}
-		g_comma = 'n';
+		comma = 'n';
 		i++;
 	}
 }

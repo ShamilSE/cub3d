@@ -85,16 +85,16 @@ void	get_resolution(char *line)
 	is_resolution_correct(line);
 }
 
-void	to_next_color_char(char *line)
+void	to_next_color_char(char *line, int *comma_counter, char *comma)
 {
 	if (*line == ',')
-		g_comma_counter++;
-	if (g_comma_counter > 2)
+		(*comma_counter)++;
+	if (*comma_counter > 2)
 		throw_error("unexpected char(s) detected");
-	if (g_comma == 'y')
+	if (*comma == 'y')
 		throw_error("unexpected char(s) detected");
 	if (*line != ',' && ft_isdigit(*line))
 		throw_error("invalid char(s) in color option");
 	else if (*line == ',')
-		g_comma = 'y';
+		*comma = 'y';
 }

@@ -7,15 +7,16 @@ SRC = src/main.c src/screenshoot.c src/movings.c src/my_mlx_pixel_put.c src/draw
 	config_file_handler/parse_map_volume_2.c\
 	get_next_line/get_next_line.c get_next_line/get_next_line_utils.c\
 
+
+OBJ = $(SRC:.c=.o)
+
 MLXFLAGS = -L. -lmlx -framework OpenGL -framework AppKit
 
 CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
-COMPILE_MLX:
-
-$(NAME): $(SRC) src/cub3d.h
+$(NAME): $(OBJ) src/cub3d.h
 	make -C mlx
 	cp mlx/libmlx.dylib .
 	gcc $(CFLAGS) $(SRC) $(MLXFLAGS) libftprintf.a -o $(NAME)
@@ -26,5 +27,6 @@ clean: fclean
 fclean:
 	rm -rf libmlx.dylib
 	rm -rf $(NAME)
+	rm -rf $(OBJ)
 
 re: fclean all

@@ -185,7 +185,8 @@ void				throw_error(char *error_message);
 int					name_checker(char *name, char *chars);
 void				is_resolution_correct(char *line);
 void				get_resolution(char *line);
-void				to_next_color_char(char *line);
+void				to_next_color_char(char *line,
+					int *comma_counter, char *comma);
 void				check_color_line(char *line);
 void				fill_color_in_arr(int *direction, char *line);
 void				get_color(int *direction, char *line);
@@ -200,8 +201,10 @@ void				is_map_string_valid_helper(const char
 					*line, char *valid_map_chars, unsigned int *i, unsigned int *j);
 void				is_map_string_valid(const char *line);
 size_t				count_map_strings(char *str);
-void				is_map_valid_helper_2(unsigned int **i, unsigned int **j, unsigned int **i1, unsigned int **j1);
-void				is_map_valid_helper(unsigned int *i, unsigned int *j, unsigned int *i1, unsigned int *j1);
+void				is_map_valid_helper_2(unsigned int **i,
+					unsigned int **j, unsigned int **i1, unsigned int **j1);
+void				is_map_valid_helper(unsigned int *i, unsigned int *j,
+					unsigned int *i1, unsigned int *j1);
 void				map_valid_init(void);
 void				is_map_valid_helper_3(void);
 int					is_map_valid(void);
@@ -211,8 +214,6 @@ void				calc_sprites_helper(void);
 void				calc_sprites_helper_2(int *d, int *color_sprite, int y);
 
 char				**g_map;
-char				g_comma;
-int					g_comma_counter;
 t_data				*g_data;
 t_texture			*g_texture;
 t_sprites			*g_sprites;
