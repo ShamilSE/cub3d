@@ -27,11 +27,11 @@ void	is_screen_size_correct(void)
 	int		mlx_size_x;
 	int		mlx_size_y;
 
-	if (g_config->s_width < 5 || g_config->s_height < 5)
-		throw_error("the window size is too small");
 	mlx_get_screen_size(g_data->mlx, &mlx_size_x, &mlx_size_y);
-	if (g_config->s_width > mlx_size_x || g_config->s_height > mlx_size_y)
-		scale_reso();
+	if (g_config->s_width > mlx_size_x)
+		g_config->s_width = mlx_size_x;
+	if (g_config->s_height > mlx_size_y)
+		g_config->s_height = mlx_size_y;
 }
 
 void	spawn_direction(void)

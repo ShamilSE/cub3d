@@ -44,6 +44,7 @@ void	is_resolution_correct(char *line)
 	while (ft_isdigit(*line))
 	{
 		g_config->s_width = (g_config->s_width * 10) + (*line - 48);
+		is_screen_size_correct();
 		line++;
 	}
 	while (!(ft_isdigit(*line)))
@@ -55,32 +56,15 @@ void	is_resolution_correct(char *line)
 	while (ft_isdigit(*line))
 	{
 		g_config->s_height = (g_config->s_height * 10) + (*line - 48);
+		is_screen_size_correct();
 		line++;
 	}
 }
 
 void	get_resolution(char *line)
 {
-	char	*c_line;
-	int		counter;
-
-	counter = 0;
-	c_line = line;
 	if (!(ft_isdigit(line[ft_strlen(line) - 1])))
 		throw_error("unexpected symbols in resolution option");
-	while (*c_line != 0)
-	{
-		if (ft_isdigit(*c_line))
-			counter++;
-		if (*c_line == ' ')
-			counter = 0;
-		if (counter > 8)
-		{
-			scale_reso();
-			return ;
-		}
-		c_line++;
-	}
 	line++;
 	is_resolution_correct(line);
 }
