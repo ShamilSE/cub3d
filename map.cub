@@ -1,29 +1,19 @@
 R 300 300
 
 NO ./src/textures/colorstone.xpm
-SO /Users/shamil/Desktop/CLionProjects/cub3d/src/textures/redbrick.xpm
-WE /Users/shamil/Desktop/CLionProjects/cub3d/src/textures/colorstone.xpm
-EA /Users/shamil/Desktop/CLionProjects/cub3d/src/textures/colorstone.xpm
+SO ./src/textures/redbrick.xpm
+WE ./src/textures/colorstone.xpm
+EA ./src/textures/colorstone.xpm
 
-S /Users/shamil/Desktop/CLionProjects/cub3d/src/textures/colorstone.xpm
-F 255,1,1
-C 1,1,1
+S ./src/textures/barrel.xpm
+F 1,246,200
+C 90,50,190
 
 11111111111
-10S000000001
-10000000001
-10000000001
-10000000001
-10000022001
-10000000001
-10000000001
-10000000001
-10222000001
-10000002201
-10000000001
-10000111111
-100001
-11110111
-  1100001
-11000111
+1000001
+1000001
+100S001
+1000001
+1000221
+1000221
 111111

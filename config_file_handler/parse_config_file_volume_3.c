@@ -67,7 +67,7 @@ void	sprites_router(char c, char c2, char *line)
 	else if (c == 'E')
 		copy_west_str(line);
 	else
-		throw_error("invalid option");
+		throw_error("invalid option1");
 }
 
 void	get_filepath(char *line)
@@ -80,10 +80,14 @@ void	get_filepath(char *line)
 	line++;
 	c2 = *line;
 	c3 = *(line + 1);
-	if (c3 != ' ' && c3 != '/')
-		throw_error("invalid option");
+	if (c3 != ' ' && c3 != '/' && c3 != '.')
+	{
+		printf("%s\n", line);
+		throw_error("invalid option2");
+
+	}
 	if (c2 != ' ' && c == 'S' && c2 != 'O')
-		throw_error("invalid option");
+		throw_error("invalid option3");
 	while (*line != '/')
 	{
 		if (*line == '.')
