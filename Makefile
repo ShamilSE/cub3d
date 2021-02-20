@@ -21,12 +21,11 @@ $(NAME): $(OBJ) src/cub3d.h
 	cp mlx/libmlx.dylib .
 	gcc $(CFLAGS) $(SRC) $(MLXFLAGS) libftprintf.a -o $(NAME)
 
-clean: fclean
-	rm -rf libmlx.dylib
-	rm -rf $(NAME)
-fclean:
-	rm -rf libmlx.dylib
-	rm -rf $(NAME)
+clean:
 	rm -rf $(OBJ)
+
+fclean: clean
+	rm -rf libmlx.dylib
+	rm -rf $(NAME)
 
 re: fclean all

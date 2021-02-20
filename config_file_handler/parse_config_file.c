@@ -62,6 +62,8 @@ void	first_char(char *line)
 	char	*lp;
 	char	*valid_chars;
 
+	if (*line == ' ' && !ft_strchr(line, '1'))
+		throw_error("config!");
 	valid_chars = ft_strdup(" RNEWSFC1");
 	if (!(ft_strchr(valid_chars, line[0])))
 		throw_error("delete invalid char(s)");

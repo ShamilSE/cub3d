@@ -42,7 +42,8 @@ unsigned int *j, unsigned int *i1, unsigned int *j1)
 
 void	map_valid_init(void)
 {
-	g_map_valid = malloc(sizeof(t_map_valid));
+	if (!(g_map_valid = malloc(sizeof(t_map_valid))))
+		throw_error("no memory");
 	g_map_valid->map_i = 0;
 	g_map_valid->player_flag = 0;
 	g_map_valid->i = 0;
@@ -95,7 +96,8 @@ void	parse_map_helper(void)
 		throw_error("no memory");
 	g_sprites->x[g_sprites->count] = 0;
 	g_sprites->y[g_sprites->count] = 0;
-	if (!g_config->player)
+	if (g_config->player != 'N' && g_config->player != 'E' &&
+	g_config->player != 'W' && g_config->player != 'S')
 		throw_error("there is no player on a map");
 	if (!is_map_valid())
 		throw_error("map is not valid4");

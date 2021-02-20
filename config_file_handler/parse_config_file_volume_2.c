@@ -73,7 +73,7 @@ void	get_color(int *direction, char *line)
 	while (!(ft_isdigit(*line)) || *line == '-')
 	{
 		if (*line == '-')
-			throw_error("colors must be in range: 0 - 255\n");
+			throw_error("colors must be in range: 0 - 255");
 		line++;
 	}
 	fill_color_in_arr(direction, line);
@@ -81,7 +81,7 @@ void	get_color(int *direction, char *line)
 	while (i < 3)
 	{
 		if (direction[i] < 0 || direction[i] > 255)
-			throw_error("colors must be in range: 0 - 255\n");
+			throw_error("colors must be in range: 0 - 255");
 		i++;
 	}
 }

@@ -63,9 +63,6 @@ size_t	count_map_strings(char *str)
 	{
 		if (*line == '1' || *line == ' ')
 		{
-			if (*line == ' ')
-//				while (*line != '1' || *line)
-//					line++;
 			if (!(*line))
 				continue ;
 			map_length++;

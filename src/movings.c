@@ -15,12 +15,12 @@
 void	move_left(void)
 {
 	mlx_destroy_image(g_data->mlx, g_data->image);
-	if (g_config->map[(int)(g_data->pos_x - g_data->dir_y *
+	if (g_config->map[(int)(g_data->pos_x - g_data->plane_x *
 	g_data->move_speed)][(int)(g_data->pos_y)] == '0')
-		g_data->pos_x -= g_data->dir_y * g_data->move_speed;
-	if (g_config->map[(int)(g_data->pos_x)][(int)(g_data->pos_y +
-	g_data->dir_x * g_data->move_speed)] == '0')
-		g_data->pos_y += g_data->dir_x * g_data->move_speed;
+		g_data->pos_x -= g_data->plane_x * g_data->move_speed;
+	if (g_config->map[(int)(g_data->pos_x)][(int)(g_data->pos_y -
+	g_data->plane_y * g_data->move_speed)] == '0')
+		g_data->pos_y -= g_data->plane_y * g_data->move_speed;
 	g_data->image = mlx_new_image(g_data->mlx,
 			g_config->s_width, g_config->s_height);
 	g_data->addr = mlx_get_data_addr(g_data->image,
@@ -31,12 +31,12 @@ void	move_left(void)
 void	move_right(void)
 {
 	mlx_destroy_image(g_data->mlx, g_data->image);
-	if (g_config->map[(int)(g_data->pos_x + g_data->dir_y *
+	if (g_config->map[(int)(g_data->pos_x + g_data->plane_x *
 	g_data->move_speed)][(int)(g_data->pos_y)] == '0')
-		g_data->pos_x += g_data->dir_y * g_data->move_speed;
-	if (g_config->map[(int)(g_data->pos_x)][(int)(g_data->pos_y -
-	g_data->dir_x * g_data->move_speed)] == '0')
-		g_data->pos_y -= g_data->dir_x * g_data->move_speed;
+		g_data->pos_x += g_data->plane_x * g_data->move_speed;
+	if (g_config->map[(int)(g_data->pos_x)][(int)(g_data->pos_y +
+	g_data->plane_y * g_data->move_speed)] == '0')
+		g_data->pos_y += g_data->plane_y * g_data->move_speed;
 	g_data->image = mlx_new_image(g_data->mlx,
 			g_config->s_width, g_config->s_height);
 	g_data->addr = mlx_get_data_addr(g_data->image,
