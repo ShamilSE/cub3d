@@ -24,6 +24,7 @@ $(NAME): $(OBJ) src/cub3d.h
 	$(CC) $(CFLAGS) $(SRC) $(MLXFLAGS) libftprintf.a -o $(NAME)
 
 clean:
+	make -C mlx
 	rm -rf $(OBJ)
 	make clean -C mlx
 

@@ -6,7 +6,7 @@ WE ./src/textures/bluestone.xpm
 EA ./src/textures/colorstone.xpm
 
 S ./src/textures/barrel.xpm
-F 1,          246,200
+F 1,246,200
 C 90,50,190
 
 11111111111
