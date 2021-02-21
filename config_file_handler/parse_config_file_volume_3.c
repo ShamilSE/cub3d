@@ -56,18 +56,18 @@ void	copy_east_str(char *line)
 
 void	sprites_router(char c, char c2, char *line)
 {
-	if (c == 'N')
+	if (c == 'N' && c2 == 'O')
 		copy_north_str(line);
 	else if (c == 'S' && c2 == 'O')
 		copy_south_str(line);
-	else if (c == 'S')
+	else if (c == 'S' && c2 == ' ')
 		copy_sprite_str(line);
-	else if (c == 'W')
+	else if (c == 'W' && c2 == 'E')
 		copy_east_str(line);
-	else if (c == 'E')
+	else if (c == 'E' && c2 == 'A')
 		copy_west_str(line);
 	else
-		throw_error("invalid option1");
+		throw_error("incorrect option name");
 }
 
 void	get_filepath(char *line)

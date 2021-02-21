@@ -51,6 +51,7 @@ void	is_resolution_correct(char *line)
 	{
 		if (*line == '-')
 			throw_error("resolution must be positive");
+		undefined_handler(*line);
 		line++;
 	}
 	while (ft_isdigit(*line))
@@ -59,6 +60,8 @@ void	is_resolution_correct(char *line)
 		is_screen_size_correct();
 		line++;
 	}
+	if (*line)
+		throw_error("unexpected char(s) at the end of R line");
 }
 
 void	get_resolution(char *line)

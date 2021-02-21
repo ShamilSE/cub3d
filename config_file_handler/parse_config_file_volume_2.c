@@ -68,6 +68,7 @@ void	get_color(int *direction, char *line)
 {
 	int		i;
 
+	correct_color_handler(line);
 	if (!(ft_isdigit(line[ft_strlen(line) - 1])))
 		throw_error("unexpected symbols in resolution option");
 	while (!(ft_isdigit(*line)) || *line == '-')

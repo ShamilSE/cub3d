@@ -15,8 +15,6 @@
 
 # include "../mlx/mlx.h"
 # include <math.h>
-# include <string.h>
-# include <stdio.h>
 # include "../headers/mlx.h"
 # include "../headers/libft.h"
 # include "../headers/ft_printf.h"
@@ -198,7 +196,8 @@ void				copy_east_str(char *line);
 void				sprites_router(char c, char c2, char *line);
 void				get_filepath(char *line);
 void				is_map_string_valid_helper(const char
-					*line, char *valid_map_chars, unsigned int *i, unsigned int *j);
+					*line, char *valid_map_chars,
+					unsigned int *i, unsigned int *j);
 void				is_map_string_valid(const char *line);
 size_t				count_map_strings(char *str);
 void				is_map_valid_helper_2(unsigned int **i,
@@ -212,6 +211,8 @@ void				parse_map_helper(void);
 void				count_distance(void);
 void				calc_sprites_helper(void);
 void				calc_sprites_helper_2(int *d, int *color_sprite, int y);
+void				undefined_handler(char c);
+void				correct_color_handler(char *line);
 
 char				**g_map;
 t_data				*g_data;
