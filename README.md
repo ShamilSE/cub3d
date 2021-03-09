@@ -8,6 +8,4 @@ make
 cd cub3d
 ./cub3D map.cub
 ```
-
-
 ![](additional/ray_casting.gif)
