@@ -4,8 +4,8 @@
 # Использование:
 ```
 git clone https://github.com/ShamilSE/cub3d/
-make
 cd cub3d
+make
 ./cub3D map.cub
 ```
 ![](additional/ray_casting.gif)
